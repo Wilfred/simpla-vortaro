@@ -13,9 +13,7 @@ def search_word(request, word):
     precise_matches = [w.word for w in Word.objects.filter(word=word)]
     
     variations = get_variations(word)
-    imprecise_matches = []
-    for variation in variations:
-        imprecise_matches += [w.word for w in Word.objects.filter(word=variation)]
+    imprecise_matches = Word.objects.filter(word__in=variations)
 
     template = loader.get_template('vortaro/search.html')
     context = Context({'search_term':word,
