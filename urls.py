@@ -6,7 +6,8 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('',
     (r'^$', 'projektoj.vortaro.views.index'),
-    (r'^(?P<word>[a-zA-Z]+)$', 'projektoj.vortaro.views.search_word'),
+    (r'^serchi/(?P<word>[a-zA-Z]*)$', 'projektoj.vortaro.views.search_word'),
+    (r'^(?P<word>[a-zA-Z]+)$', 'projektoj.vortaro.views.view_word'),
     # Example:
     # (r'^projektoj/', include('projektoj.foo.urls')),
 
