@@ -7,4 +7,6 @@ def index(request):
     return HttpResponse(template.render(context))
 
 def search_word(request, word):
-    return HttpResponse(word + " was searched.")
+    template = loader.get_template('vortaro/word.html')
+    context = Context({'word':word})
+    return HttpResponse(template.render(context))
