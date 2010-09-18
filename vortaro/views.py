@@ -24,4 +24,6 @@ def search_word(request, word):
     return HttpResponse(template.render(context))
 
 def view_word(request, word):
-    return HttpResponse("Vi vidas " + word)
+    template = loader.get_template('vortaro/word.html')
+    context = Context({'word':word})
+    return HttpResponse(template.render(context))

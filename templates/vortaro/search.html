@@ -1,0 +1,61 @@
+<html> 
+ 
+<head> 
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" > 
+<title>La Simpla Vortaro de Esperanto</title> 
+ 
+</head> 
+ 
+<body> 
+
+<h1>La Simpla Vortaro</h1> 
+
+<p><em>Vi serĉis {{ search_term }}.</em></p>
+
+<h3>Preciza Serĉo</h3>
+
+<p>
+{% if precise_matches|length == 0 %}
+  <em>Neniu trovita</em>
+{% else %}
+  {% if precise_matches|length == 1 %}
+    <a href="../{{ precise_matches.0 }}">{{ precise_matches.0 }}</a>
+  {% else %}
+    {% for word in precise_matches %}
+      {% if forloop.last %}
+        <a href="../{{ word }}">{{ word }}</a>
+      {% else %}
+	<a href="../{{ word }}">{{ word }}</a>,
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endif %}
+</p>
+
+<h3>Morfologiaj Diveno(j)</h3>
+
+<p>Fo-o</p>
+
+<h3>Malpreciza Serĉo</h3>
+
+<p>
+{% if imprecise_matches|length == 0 %}
+  <em>Neniu trovita</em>
+{% else %}
+  {% if imprecise_matches|length == 1 %}
+    <a href="../{{ imprecise_matches.0 }}">{{ imprecise_matches.0 }}</a>
+  {% else %}
+    {% for word in imprecise_matches %}
+      {% if forloop.last %}
+        <a href="../{{ word }}">{{ word }}</a>
+      {% else %}
+	<a href="../{{ word }}">{{ word }}</a>,
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endif %}
+</p>
+ 
+</body> 
+ 
+</html>
