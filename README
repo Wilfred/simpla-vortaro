@@ -1,0 +1,12 @@
+La Simpla Vortaro is a project to push what's possible with Esperanto
+dictionaries.
+
+The main areas of interest:
+* built on Django
+* simple, logical interface
+* spell checking and orthography flexibility (unicode, x-system,
+h-system)
+* morphology analysis
+* definitions courtesy of La Reta Vortaro
+
+AGPLv3 licence
