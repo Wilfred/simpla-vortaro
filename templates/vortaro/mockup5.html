@@ -1,0 +1,118 @@
+<html>
+
+<head>
+<title>La Simpla Vortaro</title>
+</head>
+
+<style type="text/css">
+#background {
+  position:absolute;
+  z-index:1;
+  width:100%;
+  height:100%;
+}
+
+#title_backdrop {
+  /* positioning */
+  position:absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 160px;
+  z-index:2;
+  
+  /* colour with transparency */
+  background-color:#000; /* for IE */
+  filter:alpha(opacity=60); /* CSS3 standard */
+  opacity:0.6;
+  
+  /* text positioning */
+  text-align: left;
+  padding: 0px;
+}
+
+#title {
+  /* positioning */
+  position:absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  z-index:2;
+  
+  /* text positioning */
+  text-align: left;
+  padding: 0px;
+}
+
+
+#content_backdrop {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  z-index: 2;
+  
+  /* text appearance */
+  color: #CCC;
+  padding: 10px;
+  text-align: right;
+  font-size: 150%;
+  
+  /* colour with transparency */
+  background-color: #000;
+  filter:alpha(opacity=60); /* for IE */
+  opacity: 0.6; /* CSS3 standard */
+}
+
+html, body {
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  text-align:left;
+}
+
+h1 {
+  font-family: serif;
+  font-weight: normal;
+  font-size: 700%;
+  padding: 0;
+  margin: 10px;
+}
+
+a {
+  color: #ddd;
+  text-decoration: none;
+}
+
+input {
+  font-size: 125%;
+  font-family: serif;
+}
+</style>
+
+<body>
+
+<div>
+<img id="background" src="book.jpg">
+</div>
+
+<div id="title_backdrop">
+</div>
+
+<div id="title">
+    <h1>
+    <a href="http://www.simplavortaro.org">La Simpla Vortaro</a>
+    </h1>
+</div>
+
+<div id="content_backdrop">
+<form> 
+<p><input type="text" name="vorto"></p> 
+</form> 
+</div>
+
+</body>
+
+</html>
