@@ -26,6 +26,10 @@ def is_infinitive(word):
     return True
 
 def is_declinable_adjective(word):
+    table_words = ['ĉiu', 'tiu', 'neniu', 'iu', 'kiu']
+    if word in table_words:
+        return True
+
     if not word.endswith('a'):
         return False
 
@@ -74,3 +78,61 @@ def is_undeclinable_adverb(word):
         return False
 
     return True
+
+def find_word_roots(word):
+    # stem, then split into roots
+
+    # todo: need to stem properly
+    compound = word[:-1]
+    return find_roots(compound)
+
+def find_roots(compound):
+    """Given a word that has been put together using Esperanto roots,
+    find those roots. We do this by working left to right and building
+    up a list of all possible radikoj according to the substrings seen
+    so far.
+
+    In the worse case this is O(2^n) where n is the number of
+    characters in the input string, but in practice the number of
+    entries in the dictionary means that it won't be much worse than
+    linear.
+
+    Examples:
+
+    >>> find_roots('plifortigas')
+    [['pli', 'fort', 'ig']]
+
+    >>> find_roots('persone')
+    [['person'], ['per', 'son']]
+
+    """
+
+    if compound == "":
+        return [[]]
+
+    splits = []
+    for i in range(1, len(compound) + 1):
+        if find_matching(compound[0:i]):
+            # this seems to be a valid word or root
+            # so see if the remainder is valid
+            endings = find_roots(compound[i:])
+            # todo: ending is not an ideal variable name
+            for ending in endings:
+                splits.append([compound[0:i]] + ending)
+    return splits
+
+def find_matching(word):
+    # mockup until DB contains proper roots
+    # note we need to consider both full words and roots
+    # e.g. 'dormoĉambro' -> 'dormo' 'ĉambr' (after stemming)
+
+    words = ['pli', 'sen', 'forta', 'vesti', 'persona', 'sono', 'per',
+             'igi', 'iĝi', 'konkludo', 'dormo', 'ĉambro', 'konko', 'ludo']
+    # avoiding duplicates
+    roots = ['fort', 'vest', 'person', 'son', 'ig', 'iĝ', 'konklud',
+             'dorm', 'ĉambr', 'konk', 'lud']
+
+    return word in (words + roots)
+
+if __name__ == '__main__':
+    print find_word_roots('konkludo')
