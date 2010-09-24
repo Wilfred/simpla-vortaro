@@ -15,13 +15,13 @@
 <h3>Preciza Serĉo</h3>
 
 <p>
-{% if precise_matches|length == 0 %}
+{% if matching_words|length == 0 %}
   <em>Neniu trovita</em>
 {% else %}
-  {% if precise_matches|length == 1 %}
-    <a href="../{{ precise_matches.0 }}">{{ precise_matches.0 }}</a>
+  {% if matching_words|length == 1 %}
+    <a href="../{{ matching_words.0 }}">{{ matching_words.0 }}</a>
   {% else %}
-    {% for word in precise_matches %}
+    {% for word in matching_words %}
       {% if forloop.last %}
         <a href="../{{ word }}">{{ word }}</a>
       {% else %}
@@ -39,13 +39,13 @@
 <h3>Malpreciza Serĉo</h3>
 
 <p>
-{% if imprecise_matches|length == 0 %}
+{% if similar_words|length == 0 %}
   <em>Neniu trovita</em>
 {% else %}
-  {% if imprecise_matches|length == 1 %}
-    <a href="../{{ imprecise_matches.0 }}">{{ imprecise_matches.0 }}</a>
+  {% if similar_words|length == 1 %}
+    <a href="../{{ similar_words.0 }}">{{ similar_words.0 }}</a>
   {% else %}
-    {% for word in imprecise_matches %}
+    {% for word in similar_words %}
       {% if forloop.last %}
         <a href="../{{ word }}">{{ word }}</a>
       {% else %}

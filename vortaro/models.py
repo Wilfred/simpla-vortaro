@@ -34,7 +34,7 @@ class Variant(models.Model):
     variant = models.CharField(max_length=50)
 
     def __unicode__(self):
-        return "{} (from {})".format(self.variant, self.word.word)
+        return self.variant
     
 class Morpheme(models.Model):
     """A potential component of a word that has been put together. For

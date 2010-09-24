@@ -40,7 +40,7 @@ def replace_letter(word, position, letter):
 
     return ''.join(letters)
 
-def get_variations(word):
+def get_spelling_variations(word):
     """Get every possible spelling variation of this string. We
     assume that only one mistake has been made.
 
