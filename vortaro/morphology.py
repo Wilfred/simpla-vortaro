@@ -9,15 +9,15 @@ a word -- we want to product "bluaj" from "blua" but not "laj" from
 """
 
 def is_infinitive(word):
-    if not word.endswith('i'):
+    if not word.endswith(u'i'):
         return False
     
-    pronouns = ['mi', 'vi', 'li', 'ŝi', 'ĝi', 'oni', 'ili', 'si', 'ci']
-    adverbs = ['ĉi']
-    exclamations = ['ahi', 'fi']
-    abbreviations = ['ĥi'] # same as ĥio actually
-    affix = ['-ologi']
-    preposition = ['pli']
+    pronouns = [u'mi', u'vi', u'li', u'ŝi', u'ĝi', u'oni', u'ili', u'si', u'ci']
+    adverbs = [u'ĉi']
+    exclamations = [u'ahi', u'fi']
+    abbreviations = [u'ĥi'] # same as ĥio actually
+    affix = [u'-ologi']
+    preposition = [u'pli']
 
     if word in (pronouns + adverbs + exclamations + abbreviations +
                 affix + preposition):
@@ -26,16 +26,16 @@ def is_infinitive(word):
     return True
 
 def is_declinable_adjective(word):
-    table_words = ['ĉiu', 'tiu', 'neniu', 'iu', 'kiu']
+    table_words = [u'ĉiu', u'tiu', u'neniu', u'iu', u'kiu']
     if word in table_words:
         return True
 
-    if not word.endswith('a'):
+    if not word.endswith(u'a'):
         return False
 
-    onomatopoeia = ['ta'] # to be precise, it's "ta ta ta"
-    exclamations = ['hura', 'pa', 'aha', 'ba', 'ha']
-    prepositions = ['tra', 'la', 'ja']
+    onomatopoeia = [u'ta'] # to be precise, it's "ta ta ta"
+    exclamations = [u'hura', u'pa', u'aha', u'ba', u'ha']
+    prepositions = [u'tra', u'la', u'ja']
 
     if word in (onomatopoeia + exclamations + prepositions):
         return False
@@ -43,35 +43,35 @@ def is_declinable_adjective(word):
     return True
 
 def is_declinable_noun(word):
-    if not word.endswith('o'):
+    if not word.endswith(u'o'):
         return False
 
-    exclamation = ['ho']
+    exclamation = [u'ho']
     # we list the prefices for completeness
-    # although they arguably end '-'
-    affices = ['-o', 'bo-', 'geo-']
-    conjunction = ['do']
-    preposition = ['po']
+    # although they arguably end u'-'
+    affices = [u'-o', u'bo-', u'geo-']
+    conjunction = [u'do']
+    preposition = [u'po']
 
     if word in (exclamation + affices + conjunction + preposition):
         return False
 
     return True
 
-def is_undeclinable_adverb(word):
+def is_declinable_adverb(word):
     # Be warned: I'm not sure that every adverb makes sense
     # with -n
 
-    if not word.endswith('e'):
+    if not word.endswith(u'e'):
         return False
 
-    preposition = ['de', 'je', 'ĉe']
-    exclamation = ['he', 've', 'ehe']
-    conjunction = ['ke']
-    particle = ['ne'] # vague category I know, but nothing else fits
-    fixed_adverbs = ['tre']
-    name = ['Kabe']
-    affix = ['tele-']
+    preposition = [u'de', u'je', u'ĉe']
+    exclamation = [u'he', u've', u'ehe']
+    conjunction = [u'ke']
+    particle = [u'ne'] # vague category I know, but nothing else fits
+    fixed_adverbs = [u'tre']
+    name = [u'Kabe']
+    affix = [u'tele-']
 
     if word in (preposition + exclamation + conjunction + particle +
                 fixed_adverbs + name + affix):
@@ -100,11 +100,11 @@ def find_roots(compound):
 
     Examples:
 
-    >>> find_roots('plifortigas')
-    [['pli', 'fort', 'ig']]
+    >>> find_roots(u'plifortigas')
+    [[u'pli', u'fort', u'ig']]
 
-    >>> find_roots('persone')
-    [['person'], ['per', 'son']]
+    >>> find_roots(u'persone')
+    [[u'person'], [u'per', u'son']]
 
     """
 
@@ -136,13 +136,13 @@ def find_matching(word):
     # note we need to consider both full words and roots
     # e.g. 'dormoĉambro' -> 'dormo' 'ĉambr' (after stemming)
 
-    words = ['pli', 'sen', 'forta', 'vesti', 'persona', 'sono', 'per',
-             'igi', 'iĝi', 'konkludo', 'dormo', 'ĉambro', 'konko', 'ludo']
+    words = [u'pli', u'sen', u'forta', u'vesti', u'persona', u'sono', u'per',
+             u'igi', u'iĝi', u'konkludo', u'dormo', u'ĉambro', u'konko', u'ludo']
     # avoiding duplicates
-    roots = ['fort', 'vest', 'person', 'son', 'ig', 'iĝ', 'konklud',
-             'dorm', 'ĉambr', 'konk', 'lud']
+    roots = [u'fort', u'vest', u'person', u'son', u'ig', u'iĝ', u'konklud',
+             u'dorm', u'ĉambr', u'konk', u'lud']
 
     return word in (words + roots)
 
 if __name__ == '__main__':
-    print find_word_roots('konkludo')
+    print find_word_roots(u'konkludo')
