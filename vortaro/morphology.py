@@ -92,10 +92,11 @@ def find_roots(compound):
     up a list of all possible radikoj according to the substrings seen
     so far.
 
-    In the worse case this is O(2^n) where n is the number of
-    characters in the input string, but in practice the number of
-    entries in the dictionary means that it won't be much worse than
-    linear.
+    For a given string, there are 2^(n-1) possible ways to split it
+    into substrings so this algorithm is potential
+    exponential. However, since we work left to right and don't
+    examine the remainder if a prefix isn't valid, the performance
+    isn't much worse than linear.
 
     Examples:
 
@@ -119,6 +120,15 @@ def find_roots(compound):
             # todo: ending is not an ideal variable name
             for ending in endings:
                 splits.append([compound[0:i]] + ending)
+
+    """In the event of multiple possible splits of this word, we
+    consider the split made of the fewest morphemes to be valid. Given
+    'konklud' as input, we assume that 'konklud-' is more likely than
+    'konk-' 'lud-'. To this end we sort it so fewer splits come first.
+
+    """
+    splits.sort(reverse=True)
+
     return splits
 
 def find_matching(word):
