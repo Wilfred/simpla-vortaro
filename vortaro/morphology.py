@@ -92,6 +92,9 @@ def find_roots(compound):
     up a list of all possible radikoj according to the substrings seen
     so far.
 
+    Since we assume roots are intact, the suffices -ĉjo and -njo which
+    modify the roots cannot be used with this approach.
+
     For a given string, there are 2^(n-1) possible ways to split it
     into substrings so this algorithm is potential
     exponential. However, since we work left to right and don't
