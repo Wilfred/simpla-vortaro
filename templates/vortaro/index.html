@@ -4,42 +4,18 @@
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" > 
 <title>La Simpla Vortaro de Esperanto</title> 
  
-<style type="text/css"> 
-@font-face {
-  font-family: 'TangerineRegular';
-  src: url('tangerine-webfont.eot');
-  src: local('☺'), url('tangerine-webfont.woff') format('woff'), url('tangerine-webfont.ttf') format('truetype'), url('tangerine-webfont.svg#webfontSqWN9UT0') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
- 
-h1 {
-  font-family: "TangerineRegular", serif;
-  font-weight: normal;
-  font-size: 1000%;
-}
-div {
-  margin-left: 3em;
-  margin-top: 1em;
-}
-</style> 
- 
 </head> 
  
 <body> 
  
-<div class="chefapagho"> 
 <h1>La Simpla Vortaro</h1> 
  
-<p>Saluton mondo! Nuntempe ĉi tiu retejo plejparte ne funkcias.</p> 
- 
-<form action="trovi.php" method="post"> 
- <p>Vorto: <input type="text" name="vorto"></p> 
- <p><input type="submit" value="Serĉi"></p> 
-</form> 
- 
-</div> 
+<form action="/serĉi" method="post">
+{% csrf_token %}
+<input type="text" name="vorto">
+<input type="submit" value="Serĉi">
+</form>
  
 </body> 
- 
+
 </html>
