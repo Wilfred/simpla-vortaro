@@ -4,6 +4,7 @@ from django.shortcuts import render_to_response
 
 from projektoj.vortaro.models import Word, Variant
 from spelling import get_spelling_variations
+from morphology import parse_morphology
 
 def index(request):
     return render_to_response('vortaro/index.html', {},
@@ -26,9 +27,16 @@ def search_word(request):
         if (not variant.word in similar_words) and (not variant.word in matching_words):
             similar_words.append(variant.word)
 
+    # get morphological parsing results
+    # of form [['konk', 'lud'], ['konklud']]
+    potential_parsed_roots = parse_morphology(word)
+    # convert to ['konk-lud', 'konklud']
+    potential_parses = ['-'.join(roots) for roots in potential_parsed_roots]
+
     context = Context({'search_term':word,
                        'matching_words':matching_words,
-                       'similar_words':similar_words})
+                       'similar_words':similar_words,
+                       'potential_parses':potential_parses})
     return render_to_response('vortaro/search.html', context,
                               context_instance=RequestContext(request))
 

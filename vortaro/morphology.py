@@ -1,5 +1,6 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
+
+from models import Morpheme
 
 """A few methods for establishing what kind of word a given word
 is. This is particularly useful for generating every possible form of
@@ -79,7 +80,7 @@ def is_declinable_adverb(word):
 
     return True
 
-def find_word_roots(word):
+def parse_morphology(word):
     # stem, then split into roots
 
     # todo: need to stem properly
@@ -136,16 +137,15 @@ def find_roots(compound):
 
 def find_matching(word):
     # mockup until DB contains proper roots
-    # note we need to consider both full words and roots
+    # note we will need to consider both full words and roots
     # e.g. 'dormoĉambro' -> 'dormo' 'ĉambr' (after stemming)
 
-    words = [u'pli', u'sen', u'forta', u'vesti', u'persona', u'sono', u'per',
-             u'igi', u'iĝi', u'konkludo', u'dormo', u'ĉambro', u'konko', u'ludo']
-    # avoiding duplicates
-    roots = [u'fort', u'vest', u'person', u'son', u'ig', u'iĝ', u'konklud',
-             u'dorm', u'ĉambr', u'konk', u'lud']
-
-    return word in (words + roots)
+    matches = Morpheme.objects.filter(morpheme=word)
+    assert len(matches) < 2
+    if len(matches) == 1:
+        return True
+    else:
+        return False
 
 if __name__ == '__main__':
-    print find_word_roots(u'konkludo')
+    print parse_morphology(u'konkludo')

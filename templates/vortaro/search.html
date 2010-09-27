@@ -34,7 +34,23 @@
 
 <h3>Morfologiaj Diveno(j)</h3>
 
-<p>Fo-o</p>
+<p>
+{% if potential_parses|length == 0 %}
+  <em>Neniu trovita</em>
+{% else %}
+  {% if potential_parses|length == 1 %}
+    <a href="../vorto/{{ potential_parses.0 }}">{{ potential_parses.0 }}</a>
+  {% else %}
+    {% for word in potential_parses %}
+      {% if forloop.last %}
+        <a href="../vorto/{{ word }}">{{ word }}</a>
+      {% else %}
+	<a href="../vorto/{{ word }}">{{ word }}</a>,
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endif %}
+</p>
 
 <h3>Malpreciza Serĉo</h3>
 
