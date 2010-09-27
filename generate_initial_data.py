@@ -35,7 +35,7 @@ def get_variants(word):
     if is_infinitive(word):
         root = word[:-1]
         variants.extend([root + 'is', root + 'as', root + 'os', 
-                          root + 'us'])
+                          root + 'us', root + 'u'])
     elif is_declinable_adjective(word):
         variants.extend([word + 'j', word + 'n', word + 'jn'])
     elif is_declinable_noun(word):
