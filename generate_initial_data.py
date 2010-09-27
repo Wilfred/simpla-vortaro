@@ -61,17 +61,30 @@ if __name__ == '__main__':
     initial_data = []
 
     variant_id = 0
+    morpheme_id = 0
     for (word_id, entry) in enumerate(json.load(dictionary)):
         # the word itself
+        word = entry['word']
+        definition = entry['definition']
         initial_data.append({"pk":word_id, "model":"vortaro.word",
-                             "fields":entry})
+                             "fields":{'word':word,
+                                       'definition':definition}})
 
+        # variants (case/declension/tense)
         for variant in get_variants(entry["word"]):
             initial_data.append({"pk":variant_id, 
                                  "model":"vortaro.variant",
                                  "fields":{"variant":variant,
                                            "word":word_id}})
             variant_id += 1
+
+        # morphemes
+        if entry['primary']:
+            initial_data.append({"pk":morpheme_id,
+                                 "model":"vortaro.morpheme",
+                                 "fields":{"primary_word":word_id,
+                                           "morpheme":entry['root']}})
+            morpheme_id += 1
 
     output_file = open('initial_data.json', 'w')
     json.dump(initial_data, output_file)
