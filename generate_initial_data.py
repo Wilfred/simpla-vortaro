@@ -79,12 +79,37 @@ if __name__ == '__main__':
             variant_id += 1
 
         # morphemes
-        if entry['primary'] and len(entry['root']) > 0:
-            initial_data.append({"pk":morpheme_id,
-                                 "model":"vortaro.morpheme",
-                                 "fields":{"primary_word":word_id,
-                                           "morpheme":entry['root']}})
-            morpheme_id += 1
+        # no single characters, allow -o and -a endings
+        """Add morphemes to initial data. We forbid single letter
+        morphemes (none actually exist in word-building) but permit -o
+        and -a endings of words in addition to the root (e.g. we add
+        both 'dom' and 'domo').
+
+        Note that the following words produce clashes: sumo, halo,
+        nova, togo, vila, koto, metro, polo, alo. This is because we
+        cannot distinguish between (for example) metro and metroo in
+        the context of word-building.
+
+        """
+
+        added_morphemes = []
+        if entry['primary']:
+            if len(entry['root']) > 1:
+                initial_data.append({"pk":morpheme_id,
+                                     "model":"vortaro.morpheme",
+                                     "fields":{"primary_word":word_id,
+                                               "morpheme":entry['root']}})
+                added_morphemes.append(entry['root'])
+                morpheme_id += 1
+            if is_declinable_noun(word) or is_declinable_adjective(word):
+                if word not in added_morphemes:
+                    initial_data.append({"pk":morpheme_id,
+                                         "model":"vortaro.morpheme",
+                                         "fields":{"primary_word":word_id,
+                                                   "morpheme":word}})
+                    added_morphemes.append(word)
+                    morpheme_id += 1
+                
 
     output_file = open('initial_data.json', 'w')
     json.dump(initial_data, output_file)

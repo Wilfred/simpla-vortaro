@@ -109,6 +109,10 @@ def find_roots(compound):
     examine the remainder if a prefix isn't valid, the performance
     isn't much worse than linear.
 
+    Examples worth thinking about: senvestigi, persone (is a pun and
+    has two parses), birdkanto, birdokanto, sobrakape (seen in the
+    wild), ĝustatempe, serĉante
+
     Examples:
 
     >>> find_roots(u'plifortigas')
