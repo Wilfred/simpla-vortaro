@@ -11,7 +11,13 @@ def index(request):
                               context_instance=RequestContext(request))
 
 def search_word(request):
-    word = request.POST['vorto']
+    search_term = request.POST['vorto']
+
+    # substitute ' if used
+    if search_term.endswith("'"):
+        word = word[:-1] + 'o'
+    else:
+        word = search_term
     # find all words that match this search term, regardless of variant
     matching_variants = Variant.objects.filter(variant=word)
     matching_words = []
@@ -33,7 +39,7 @@ def search_word(request):
     # convert to ['konk-lud', 'konklud']
     potential_parses = ['-'.join(roots) for roots in potential_parsed_roots]
 
-    context = Context({'search_term':word,
+    context = Context({'search_term':search_term,
                        'matching_words':matching_words,
                        'similar_words':similar_words,
                        'potential_parses':potential_parses})
