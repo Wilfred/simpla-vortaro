@@ -79,7 +79,7 @@ if __name__ == '__main__':
             variant_id += 1
 
         # morphemes
-        if entry['primary']:
+        if entry['primary'] and len(entry['root']) > 0:
             initial_data.append({"pk":morpheme_id,
                                  "model":"vortaro.morpheme",
                                  "fields":{"primary_word":word_id,

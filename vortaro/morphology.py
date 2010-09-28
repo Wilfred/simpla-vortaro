@@ -82,10 +82,17 @@ def is_declinable_adverb(word):
 
 def parse_morphology(word):
     # stem, then split into roots
+    # currently only does -o, -a, -e, -i for stemming
 
-    # todo: need to stem properly
-    compound = word[:-1]
-    return find_roots(compound)
+    if is_infinitive(word) or is_declinable_noun(word) or \
+            is_declinable_adjective(word) or \
+            is_declinable_adverb(word):
+        stem, ending = word[:-1], word[-1]
+        parses =  find_roots(stem)
+        return [parse + [ending] for parse in parses]
+    
+    # doesn't appear to have an ending we can get rid of
+    return find_roots(word)
 
 def find_roots(compound):
     """Given a word that has been put together using Esperanto roots,
@@ -97,7 +104,7 @@ def find_roots(compound):
     modify the roots cannot be used with this approach.
 
     For a given string, there are 2^(n-1) possible ways to split it
-    into substrings so this algorithm is potential
+    into substrings so this algorithm is potentially
     exponential. However, since we work left to right and don't
     examine the remainder if a prefix isn't valid, the performance
     isn't much worse than linear.
@@ -105,10 +112,10 @@ def find_roots(compound):
     Examples:
 
     >>> find_roots(u'plifortigas')
-    [[u'pli', u'fort', u'ig']]
+    [[u'pli', u'fort', u'ig', u'as']]
 
     >>> find_roots(u'persone')
-    [[u'person'], [u'per', u'son']]
+    [[u'person', u'e'], [u'per', u'son', u'e']]
 
     """
 
@@ -136,7 +143,6 @@ def find_roots(compound):
     return splits
 
 def find_matching(word):
-    # mockup until DB contains proper roots
     # note we will need to consider both full words and roots
     # e.g. 'dormoĉambro' -> 'dormo' 'ĉambr' (after stemming)
 
