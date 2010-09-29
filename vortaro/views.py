@@ -35,9 +35,7 @@ def search_word(request):
 
     # get morphological parsing results
     # of form [['konk', 'lud'], ['konklud']]
-    potential_parsed_roots = parse_morphology(word)
-    # convert to ['konk-lud', 'konklud']
-    potential_parses = ['-'.join(roots) for roots in potential_parsed_roots]
+    potential_parses = parse_morphology(word)
 
     context = Context({'search_term':search_term,
                        'matching_words':matching_words,

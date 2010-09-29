@@ -128,18 +128,19 @@ def find_roots(compound):
 
     splits = []
     for i in range(1, len(compound) + 1):
-        if find_matching(compound[0:i]):
+        match = find_matching(compound[0:i])
+        if not match is None:
             # this seems to be a valid word or root
             # so see if the remainder is valid
             endings = find_roots(compound[i:])
             # todo: ending is not an ideal variable name
             for ending in endings:
-                splits.append([compound[0:i]] + ending)
+                splits.append([match] + ending)
 
     """In the event of multiple possible splits of this word, we
     consider the split made of the fewest morphemes to be valid. Given
-    'konklud' as input, we assume that 'konklud-' is more likely than
-    'konk-' 'lud-'. To this end we sort it so fewer splits come first.
+    'konkludo' as input, we assume that 'konklud-o' is more likely than
+    'konk-lud-o'. To this end we sort it so fewer splits come first.
 
     """
     splits.sort(reverse=True)
@@ -147,15 +148,17 @@ def find_roots(compound):
     return splits
 
 def find_matching(word):
+    """See if this word is a valid morpheme in the database. If so,
+    return it."""
     # note we will need to consider both full words and roots
     # e.g. 'dormoĉambro' -> 'dormo' 'ĉambr' (after stemming)
 
     matches = Morpheme.objects.filter(morpheme=word)
     assert len(matches) < 2
     if len(matches) == 1:
-        return True
+        return matches[0]
     else:
-        return False
+        return None
 
 if __name__ == '__main__':
     print parse_morphology(u'konkludo')

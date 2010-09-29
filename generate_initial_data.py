@@ -62,6 +62,7 @@ if __name__ == '__main__':
 
     variant_id = 0
     morpheme_id = 0
+    added_morphemes = []
     for (word_id, entry) in enumerate(json.load(dictionary)):
         # the word itself
         word = entry['word']
@@ -78,8 +79,6 @@ if __name__ == '__main__':
                                            "word":word_id}})
             variant_id += 1
 
-        # morphemes
-        # no single characters, allow -o and -a endings
         """Add morphemes to initial data. We forbid single letter
         morphemes (none actually exist in word-building) but permit -o
         and -a endings of words in addition to the root (e.g. we add
@@ -92,24 +91,34 @@ if __name__ == '__main__':
 
         """
 
-        added_morphemes = []
         if entry['primary']:
-            if len(entry['root']) > 1:
+            """Primary means we will link to this word when we find
+            the morpheme. For example, we link 'dorm' to 'dormi'
+            although 'dormo' is also in the dictionary. 
+            
+            """
+
+            # add word roots (e.g. 'dorm')
+            root = entry['root']
+            if len(root) > 1 and root not in added_morphemes:
                 initial_data.append({"pk":morpheme_id,
                                      "model":"vortaro.morpheme",
                                      "fields":{"primary_word":word_id,
-                                               "morpheme":entry['root']}})
-                added_morphemes.append(entry['root'])
+                                               "morpheme":root}})
+                added_morphemes.append(root)
                 morpheme_id += 1
-            if is_declinable_noun(word) or is_declinable_adjective(word):
-                if word not in added_morphemes:
-                    initial_data.append({"pk":morpheme_id,
-                                         "model":"vortaro.morpheme",
-                                         "fields":{"primary_word":word_id,
-                                                   "morpheme":word}})
-                    added_morphemes.append(word)
-                    morpheme_id += 1
+
+            # add words if they end -o or -a
+            if (is_declinable_noun(word) or is_declinable_adjective(word)) \
+                    and word not in added_morphemes:
+                initial_data.append({"pk":morpheme_id,
+                                     "model":"vortaro.morpheme",
+                                     "fields":{"primary_word":word_id,
+                                               "morpheme":word}})
+                added_morphemes.append(word)
+                morpheme_id += 1
                 
 
+    # TODO: may need to delete the original file
     output_file = open('initial_data.json', 'w')
     json.dump(initial_data, output_file)
