@@ -1,4 +1,5 @@
-from django.http import HttpResponse
+# -*- coding: utf-8 -*-
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import Context, loader, RequestContext
 from django.shortcuts import render_to_response
 
@@ -7,17 +8,21 @@ from spelling import get_spelling_variations
 from morphology import parse_morphology
 
 def index(request):
-    return render_to_response('vortaro/index.html', {},
-                              context_instance=RequestContext(request))
+    # all requests are dispatched from here, to keep URLs simple
 
-def search_word(request):
-    search_term = request.POST['vorto']
+    if u'vorto' in request.GET:
+        return view_word(request.GET[u'vorto'])
+    elif u'serĉo' in request.GET:
+        return search_word(request.GET[u'serĉo'])
+    else:
+        return render_to_response('vortaro/index.html', {})
+
+def search_word(word):
 
     # substitute ' if used
-    if search_term.endswith("'"):
+    if word.endswith("'"):
         word = word[:-1] + 'o'
-    else:
-        word = search_term
+
     # find all words that match this search term, regardless of variant
     matching_variants = Variant.objects.filter(variant=word)
     matching_words = []
@@ -37,14 +42,17 @@ def search_word(request):
     # of form [['konk', 'lud'], ['konklud']]
     potential_parses = parse_morphology(word)
 
-    context = Context({'search_term':search_term,
+    context = Context({'search_term':word,
                        'matching_words':matching_words,
                        'similar_words':similar_words,
                        'potential_parses':potential_parses})
-    return render_to_response('vortaro/search.html', context,
-                              context_instance=RequestContext(request))
+    return render_to_response('vortaro/search.html', context)
 
-def view_word(request, word):
-    template = loader.get_template('vortaro/word.html')
+def view_word(word):
+    # search instead if this word doesn't exist
+    matching_words = Word.objects.filter(word=word)
+    if len(matching_words) == 0:
+        return HttpResponseRedirect(u'/?serĉo=' + word)
+
     context = Context({'word':word})
-    return HttpResponse(template.render(context))
+    return render_to_response('vortaro/word.html', context)

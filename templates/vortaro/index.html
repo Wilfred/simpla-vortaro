@@ -10,9 +10,8 @@
  
 <h1>La Simpla Vortaro</h1> 
  
-<form action="/serĉi" method="post">
-{% csrf_token %}
-<input type="text" name="vorto">
+<form action="/" method="get">
+<input type="text" name="serĉo">
 <input type="submit" value="Serĉi">
 </form>
  
