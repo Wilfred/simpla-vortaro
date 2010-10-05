@@ -1,0 +1,12 @@
+* finish mockup
+* change results pages to use final graphic design
+* make morphology parsing writing system independent
+* sort morphology parses based on morpheme frequency
+* do better stemming for morphology parser
+* use foo<tld/>o as foobar-o so Variant generation is more accurate
+  (and see what I missed the first time)
+* add word definition to results
+* add word definitions in other languages
+* add search functionality for other language words
+* port to Google App Engine
+* Launch!
