@@ -1,12 +1,28 @@
-* finish mockup
-* change results pages to use final graphic design
-* make morphology parsing writing system independent
-* sort morphology parses based on morpheme frequency
-* do better stemming for morphology parser
-* use foo<tld/>o as foobar-o so Variant generation is more accurate
-  (and see what I missed the first time)
-* add word definition to results
-* add word definitions in other languages
-* add search functionality for other language words
-* port to Google App Engine
-* Launch!
+* UI
+** finish mockup
+** change results pages to use final graphic design
+
+* morphology parser
+** make morphology parsing writing system independent
+** sort morphology parses based on morpheme frequency
+** allow the user to give hints (allows esperanto-asocio to work)
+** do better stemming
+** check case sensitivity
+
+* database generation
+** use foo<tld/>o as foobar-o so Variant generation is more accurate (and see what I missed the first time)
+** also prevent Variants being generated for phrases
+
+* search
+** allow searching for terms that contain spaces
+** allow searching for terms that contain hyphens
+** allow searching for other languages
+
+* results pages
+** add word definition to results
+** add word definitions in other languages
+
+* Launch
+** port to Google App Engine
+** write blog post
+** promote
