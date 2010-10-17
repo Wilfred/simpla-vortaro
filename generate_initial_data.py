@@ -56,38 +56,35 @@ if __name__ == '__main__':
     in a format that Django likes.
 
     """
-    dictionary = open('dictionary.json', 'r')
+    dictionary_file = open('dictionary.json', 'r')
 
     initial_data = []
 
     variant_id = 0
     morpheme_id = 0
     added_morphemes = []
-    for (word_id, entry) in enumerate(json.load(dictionary)):
+
+    dictionary = json.load(dictionary_file)
+    for (word_id, (word, entry)) in enumerate(dictionary.items()):
         # the word itself
-        word = entry['word']
-        definition = entry['definition']
+        definitions = entry['definitions']
         initial_data.append({"pk":word_id, "model":"vortaro.word",
                              "fields":{'word':word,
-                                       'definition':definition}})
+                                       'definitions':definitions}})
 
         # variants (case/declension/tense)
-        for variant in get_variants(entry["word"]):
+        for variant in get_variants(word):
             initial_data.append({"pk":variant_id, 
                                  "model":"vortaro.variant",
                                  "fields":{"variant":variant,
                                            "word":word_id}})
             variant_id += 1
 
-        """Add morphemes to initial data. We forbid single letter
-        morphemes (none actually exist in word-building) but permit -o
-        and -a endings of words in addition to the root (e.g. we add
-        both 'dom' and 'domo').
-
-        Note that the following words produce clashes: sumo, halo,
-        nova, togo, vila, koto, metro, polo, alo. This is because we
-        cannot distinguish between (for example) metro and metroo in
-        the context of word-building.
+        """Add morphemes to initial data. Note that the following
+        words produce clashes: sumo, haplo, nova, togo, vila, koto,
+        metro, polo, alo. This is because we cannot distinguish
+        between (for example) metro and metroo in the context of
+        word-building.
 
         """
 
@@ -98,7 +95,8 @@ if __name__ == '__main__':
             
             """
 
-            # add word roots (e.g. 'dorm')
+            # add morphemes (e.g. 'dorm'), forbidding those of one
+            # letter since none actually exist in word buidling
             root = entry['root']
             if len(root) > 1 and root not in added_morphemes:
                 initial_data.append({"pk":morpheme_id,
@@ -108,15 +106,15 @@ if __name__ == '__main__':
                 added_morphemes.append(root)
                 morpheme_id += 1
 
-            # add words if they end -o or -a
-            if (is_declinable_noun(word) or is_declinable_adjective(word)) \
-                    and word not in added_morphemes:
-                initial_data.append({"pk":morpheme_id,
-                                     "model":"vortaro.morpheme",
-                                     "fields":{"primary_word":word_id,
-                                               "morpheme":word}})
-                added_morphemes.append(word)
-                morpheme_id += 1
+        # also add words if they end -o or -a
+        if (is_declinable_noun(word) or is_declinable_adjective(word)) \
+                and word not in added_morphemes:
+            initial_data.append({"pk":morpheme_id,
+                                 "model":"vortaro.morpheme",
+                                 "fields":{"primary_word":word_id,
+                                           "morpheme":word}})
+            added_morphemes.append(word)
+            morpheme_id += 1
                 
 
     # TODO: may need to delete the original file
