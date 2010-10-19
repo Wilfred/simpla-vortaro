@@ -21,6 +21,8 @@
 * results pages
 ** add word definition to results
 ** add word definitions in other languages
+** add rhymes
+** add other words with the same root
 
 * Launch
 ** port to Google App Engine
