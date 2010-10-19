@@ -7,10 +7,16 @@ class Word(models.Model):
 
     """
     word = models.CharField(max_length=50, unique=True)
-    definition = models.TextField()
 
     def __unicode__(self):
         return self.word
+
+class Definition(models.Model):
+    """A definition for a word. One word can have many definitions.
+
+    """
+    word = models.ForeignKey(Word)
+    definition = models.TextField()
 
 class Variant(models.Model):
     """A way of writing a term from the dictionary. Nouns may have
@@ -37,16 +43,12 @@ class Variant(models.Model):
         return self.variant
     
 class Morpheme(models.Model):
-    """A potential component of a word that has been put together. For
-    example, in the word 'plifortigi' the morphemes would be 'pli',
-    'fort' and 'ig'. 
+    """A potential component of a word that has been put together. We
+    generate morphemes in all three major writing systems, and also
+    allow words ending -o or -a to be used wholesale.
 
-    Since we may be splitting a word that has been written in any
-    writing system, we generate potential morphemes in three writing
-    systems: Unicode, x-system and h-system.
-
-    Nouns may be used both with and without -o in word-building, so we
-    allow both (dormosako / dormsako).
+    For example, in the word 'plifortigi' the morphemes would be
+    'pli', 'fort' and 'ig'.
 
     Examples:
 

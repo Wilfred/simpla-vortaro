@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import Context, loader, RequestContext
 from django.shortcuts import render_to_response
 
-from projektoj.vortaro.models import Word, Variant
+from projektoj.vortaro.models import Word, Variant, Definition
 from spelling import get_spelling_variations
 from morphology import parse_morphology
 
@@ -54,5 +54,7 @@ def view_word(word):
     if len(matching_words) == 0:
         return HttpResponseRedirect(u'/?serĉo=' + word)
 
-    context = Context({'word':word})
+    word_obj = matching_words[0]
+    definitions = Definition.objects.filter(word=word_obj)
+    context = Context({'word':word, 'definitions':definitions})
     return render_to_response('vortaro/word.html', context)

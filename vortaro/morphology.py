@@ -142,6 +142,8 @@ def find_roots(compound):
     'konkludo' as input, we assume that 'konklud-o' is more likely than
     'konk-lud-o'. To this end we sort it so fewer splits come first.
 
+    This breaks sometimes: hom-ar-an-o is more likely than homa-rano.
+
     """
     splits.sort(reverse=True)
 

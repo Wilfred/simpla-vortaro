@@ -62,6 +62,7 @@ if __name__ == '__main__':
 
     variant_id = 0
     morpheme_id = 0
+    definition_id = 0
     added_morphemes = []
 
     dictionary = json.load(dictionary_file)
@@ -69,8 +70,7 @@ if __name__ == '__main__':
         # the word itself
         definitions = entry['definitions']
         initial_data.append({"pk":word_id, "model":"vortaro.word",
-                             "fields":{'word':word,
-                                       'definitions':definitions}})
+                             "fields":{'word':word}})
 
         # variants (case/declension/tense)
         for variant in get_variants(word):
@@ -79,6 +79,16 @@ if __name__ == '__main__':
                                  "fields":{"variant":variant,
                                            "word":word_id}})
             variant_id += 1
+
+        # add every definition
+        # note this means that the order of definition_id corresponds
+        # to the order of the definitions from ReVo, which is important
+        for definition in entry['definitions']:
+            initial_data.append({"pk":definition_id,
+                                "model":"vortaro.definition",
+                                "fields":{"definition":definition,
+                                          "word":word_id}})
+            definition_id += 1
 
         """Add morphemes to initial data. Note that the following
         words produce clashes: sumo, haplo, nova, togo, vila, koto,
