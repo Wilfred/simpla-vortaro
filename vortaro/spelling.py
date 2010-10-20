@@ -45,7 +45,7 @@ def get_spelling_variations(word):
     assume that only one mistake has been made.
 
     This code only considers lower case words. The resulting
-    complexity is O(57n+27), where n is the number of characters in
+    complexity is O(57n+29), where n is the number of characters in
     the string.
 
     Somewhat inspired by http://norvig.com/spell-correct.html
@@ -68,6 +68,11 @@ def get_spelling_variations(word):
     for letter in alphabet:
         for i in range(len(word)+1):
             variations.append(insert_letter(word, i, letter))
+
+    # insertion of hyphen in the case of affixes
+    # complexity O(2)
+    variations.append(word + '-')
+    variations.append('-' + word)
 
     # replacements, taking care not to recreate the original word
     # complexity O(27n)
