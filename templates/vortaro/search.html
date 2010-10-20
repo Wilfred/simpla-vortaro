@@ -32,22 +32,6 @@
 {% endif %}
 </p>
 
-<h3>Morfologia(j) Diveno(j)</h3>
-
-<p>
-{% if potential_parses|length == 0 %}
-  <em>Neniu trovita</em>
-{% else %}
-  {% for word in potential_parses %}
-      {% if forloop.last %}
-        {{ word|join:"-" }}
-      {% else %}
-        {{ word|join:"-" }},
-      {% endif %}
-  {% endfor %}
-{% endif %}
-</p>
-
 <h3>Malpreciza Serĉo</h3>
 
 <p>
@@ -67,7 +51,23 @@
   {% endif %}
 {% endif %}
 </p>
- 
+
+<h3>Morfologia(j) Diveno(j)</h3>
+
+<p>
+{% if potential_parses|length == 0 %}
+  <em>Neniu trovita</em>
+{% else %}
+  {% for word in potential_parses %}
+      {% if forloop.last %}
+        {{ word|join:"-" }}
+      {% else %}
+        {{ word|join:"-" }},
+      {% endif %}
+  {% endfor %}
+{% endif %}
+</p>
+
 </body> 
  
 </html>
