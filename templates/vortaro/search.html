@@ -53,20 +53,18 @@
 </p>
 
 <h3>Morfologia(j) Diveno(j)</h3>
+{% load render_morphemes_tag %}
 
-<p>
 {% if potential_parses|length == 0 %}
-  <em>Neniu trovita</em>
+  <p><em>Neniu trovita</em></p>
 {% else %}
-  {% for word in potential_parses %}
-      {% if forloop.last %}
-        {{ word|join:"-" }}
-      {% else %}
-        {{ word|join:"-" }},
-      {% endif %}
+<ul>
+  {% for morpheme_list in potential_parses %}
+  <li>{% render_morphemes morpheme_list %}
   {% endfor %}
+</ul>
 {% endif %}
-</p>
+
 
 </body> 
  
