@@ -6,6 +6,7 @@ from django.shortcuts import render_to_response
 from projektoj.vortaro.models import Word, Variant, Definition
 from spelling import get_spelling_variations
 from morphology import parse_morphology
+from esperanto_sort import compare_esperanto_strings
 
 def index(request):
     # all requests are dispatched from here, to keep URLs simple
@@ -37,6 +38,11 @@ def search_word(word):
     for variant in matching_variants:
         if (not variant.word in similar_words) and (not variant.word in matching_words):
             similar_words.append(variant.word)
+
+    # sort spelling variants into alphabetical order
+    compare = lambda word_x, word_y: compare_esperanto_strings(word_x.word,
+                                                               word_y.word)
+    similar_words.sort(cmp=compare)
 
     # get morphological parsing results
     # of form [['konk', 'lud'], ['konklud']]
