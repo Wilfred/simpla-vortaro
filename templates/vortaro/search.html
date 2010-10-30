@@ -6,13 +6,13 @@
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" > 
 <title>La Simpla Vortaro de Esperanto</title> 
 
-<link rel="stylesheet" type="text/css" href="style.css"> 
+<link rel="stylesheet" type="text/css" href="resources/style.css"> 
 </head> 
  
 <body> 
 
 <div>
-<img id="background" src="book.jpg">
+<img id="background" src="resources/book.jpg">
 </div>
 
 <div id="everything">
@@ -32,7 +32,7 @@
 
 <p><em>Vi serĉis {{ search_term }}.</em></p>
 
-<h3>Preciza Serĉo</h3>
+<h2>Preciza Serĉo</h2>
 
 <p>
 {% if matching_words|length == 0 %}
@@ -52,7 +52,7 @@
 {% endif %}
 </p>
 
-<h3>Malpreciza Serĉo</h3>
+<h2>Malpreciza Serĉo</h2>
 
 <p>
 {% if similar_words|length == 0 %}
@@ -72,7 +72,7 @@
 {% endif %}
 </p>
 
-<h3>Morfologia(j) Diveno(j)</h3>
+<h2>Morfologia(j) Diveno(j)</h2>
 {% load render_morphemes_tag %}
 
 {% if potential_parses|length == 0 %}
