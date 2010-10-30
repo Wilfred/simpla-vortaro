@@ -1,0 +1,25 @@
+from mysite.cgi:
+
+#!/usr/local/bin/python
+import sys, os
+
+# Add a custom Python path.
+sys.path.insert(0, "/home/simplavo/user-python")
+sys.path.insert(0, "/home/simplavo/projektoj")
+sys.path.insert(0, "/home/simplavo")
+
+# Switch to the directory of your project.
+os.chdir("/home/simplavo/projektoj")
+
+# Set the DJANGO_SETTINGS_MODULE environment variable.
+os.environ['DJANGO_SETTINGS_MODULE'] = "settings"
+
+from django.core.servers.fastcgi import runfastcgi
+runfastcgi(method="threaded", daemonize="false")
+
+from .htaccess:
+
+AddHandler fastcgi-script .fcgi
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ mysite.fcgi/$1 [QSA,L]

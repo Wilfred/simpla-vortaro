@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import Context, loader, RequestContext
 from django.shortcuts import render_to_response
 
-from projektoj.vortaro.models import Word, Variant, Definition
+from models import Word, Variant, Definition
 from spelling import get_spelling_variations
 from morphology import parse_morphology
 from esperanto_sort import compare_esperanto_strings
