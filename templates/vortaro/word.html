@@ -6,8 +6,17 @@
 <h2>{{ word }}</h2>
 
 <ol>
-{% for definition in definitions %}
-<li>{{ definition.definition }}
+{% for definition, subdefinitions in definitions %}
+<li>{% if definition.definition %}
+      {{ definition.definition }}
+    {% endif %}
+    {% if subdefinitions|length != 0 %}
+      <ul>
+      {% for index, subdefinition in subdefinitions %}
+      <li>{{ index }}. {{ subdefinition.definition }}
+      {% endfor %}
+      </ul>
+    {% endif %}
 {% endfor %}
 </ol>
 

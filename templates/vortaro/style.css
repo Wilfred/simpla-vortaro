@@ -65,11 +65,28 @@ a {
   color: #fff;
   text-decoration: none;
 }
+a:hover {
+    text-decoration: underline;
+}
 
+/* todo: bump up font size */
 p {
   color: #fff;
 }
 
+ol {
+  color: #fff;
+}
+li {
+  margin-bottom: 1em;
+}
+
+ul {
+  color: #fff;
+  list-style-type: none;
+  margin-left: 0px;
+  padding-left: 0;
+}
 
 input {
   font-size: 125%;

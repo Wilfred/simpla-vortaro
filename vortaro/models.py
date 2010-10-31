@@ -12,10 +12,21 @@ class Word(models.Model):
         return self.word
 
 class Definition(models.Model):
-    """A definition for a word. One word can have many definitions.
+    """A definition for a word. One word can have many
+    definitions. The definition text may be null in a few rare
+    circumstances where we only have subdefinitions. We shouldn't have
+    any "" definitions.
 
     """
     word = models.ForeignKey(Word)
+    definition = models.TextField(null=True)
+
+class Subdefinition(models.Model):
+    """A subdefinition of a specfic definition. One definition can
+    have none or many subdefinitions.
+
+    """
+    root_definition = models.ForeignKey(Definition)
     definition = models.TextField()
 
 class Variant(models.Model):

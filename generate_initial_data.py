@@ -63,12 +63,12 @@ if __name__ == '__main__':
     variant_id = 0
     morpheme_id = 0
     definition_id = 0
+    subdefinition_id = 0
     added_morphemes = []
 
     dictionary = json.load(dictionary_file)
     for (word_id, (word, entry)) in enumerate(dictionary.items()):
         # the word itself
-        definitions = entry['definitions']
         initial_data.append({"pk":word_id, "model":"vortaro.word",
                              "fields":{'word':word}})
 
@@ -83,11 +83,19 @@ if __name__ == '__main__':
         # add every definition
         # note this means that the order of definition_id corresponds
         # to the order of the definitions from ReVo, which is important
-        for definition in entry['definitions']:
+        for (definition, subdefinitions) in entry['definitions']:
             initial_data.append({"pk":definition_id,
                                 "model":"vortaro.definition",
                                 "fields":{"definition":definition,
                                           "word":word_id}})
+            # add every subdefinition for this definition
+            for subdefinition in subdefinitions:
+                initial_data.append({"pk":subdefinition_id,
+                                     "model":"vortaro.subdefinition",
+                                     "fields":{"root_definition":definition_id,
+                                               "definition":subdefinition}})
+                subdefinition_id += 1
+
             definition_id += 1
 
         """Add morphemes to initial data. Note that the following
