@@ -10,9 +10,15 @@ def render_morphemes(morphemes):
     is_first = True
 
     for (i, morpheme) in enumerate(morphemes):
-        # we don't link the list element, which is just a string
+        # the last element
         if i == len(morphemes) - 1:
-            final_string +=  morpheme
+            if type(morpheme) == str or type(morpheme) == unicode:
+                # if stemming produced an ending, the ending is a string
+                final_string +=  morpheme
+            else:
+                # stemming didn't produce an ending, treat as normal
+                final_string += u'<a href="?vorto=%s">%s</a>' % \
+                    (morpheme.primary_word, morpheme.morpheme)
         else:
             final_string += u'<a href="?vorto=%s">%s</a>-' % \
                 (morpheme.primary_word, morpheme.morpheme)
