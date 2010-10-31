@@ -20,7 +20,7 @@ def index(request):
 
 def search_word(word):
 
-    # substitute ' if used
+    # substitute ' if used, since e.g. vort' == vorto
     if word.endswith("'"):
         word = word[:-1] + 'o'
 
@@ -31,6 +31,13 @@ def search_word(word):
         if not variant.word in matching_words:
             matching_words.append(variant.word)
 
+    # return matches in alphabetical order
+    # (in practice this means lower case first since the words are
+    # exact matches)
+    compare = lambda word_x, word_y: compare_esperanto_strings(word_x.word,
+                                                               word_y.word)
+    matching_words.sort(cmp=compare)
+
     # find all potential spelling variants  of this search term
     spelling_variations = get_spelling_variations(word)
     matching_variants = Variant.objects.filter(variant__in=spelling_variations)
@@ -40,8 +47,6 @@ def search_word(word):
             similar_words.append(variant.word)
 
     # sort spelling variants into alphabetical order
-    compare = lambda word_x, word_y: compare_esperanto_strings(word_x.word,
-                                                               word_y.word)
     similar_words.sort(cmp=compare)
 
     # get morphological parsing results
