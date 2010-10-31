@@ -6,7 +6,7 @@ register = template.Library()
 def render_morphemes(morphemes):
     # {{ render_morphemes morphemes }}
 
-    final_string = ""
+    final_string = u""
     is_first = True
 
     for (i, morpheme) in enumerate(morphemes):
@@ -14,7 +14,7 @@ def render_morphemes(morphemes):
         if i == len(morphemes) - 1:
             final_string +=  morpheme
         else:
-            final_string += '<a href="%s">%s</a>-' % (morpheme.primary_word,
-                                                     morpheme.morpheme)
+            final_string += u'<a href="?vorto=%s">%s</a>-' % \
+                (morpheme.primary_word, morpheme.morpheme)
 
     return final_string
