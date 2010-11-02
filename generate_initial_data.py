@@ -64,7 +64,7 @@ if __name__ == '__main__':
     morpheme_id = 0
     definition_id = 0
     subdefinition_id = 0
-    added_morphemes = []
+    added_morphemes = {}
 
     dictionary = json.load(dictionary_file)
     for (word_id, (word, entry)) in enumerate(dictionary.items()):
@@ -98,11 +98,15 @@ if __name__ == '__main__':
 
             definition_id += 1
 
-        """Add morphemes to initial data. Note that the following
-        words produce clashes: sumo, haplo, nova, togo, vila, koto,
-        metro, polo, alo. This is because we cannot distinguish
-        between (for example) metro and metroo in the context of
-        word-building.
+        """Add morphemes to initial data. 
+
+        Note that the following words produce clashes: 
+
+        sumo, haplo, nova, togo, vila, koto, metro, polo, alo --
+        because they could be <word> or <word>o
+
+        Sauda Arabujo/Saŭda Arabujo and Sauda-Arabujo/Saŭda-Arabujo --
+        because in the h-system we don't know which of the pair to pick.
 
         """
 
@@ -117,22 +121,56 @@ if __name__ == '__main__':
             # letter since none actually exist in word buidling
             root = entry['root']
             if len(root) > 1 and root not in added_morphemes:
+                added_morphemes[root] = True
                 initial_data.append({"pk":morpheme_id,
                                      "model":"vortaro.morpheme",
                                      "fields":{"primary_word":word_id,
                                                "morpheme":root}})
-                added_morphemes.append(root)
                 morpheme_id += 1
+
+                # also add in other writing system if different
+                if to_h_system(root) not in added_morphemes:
+                    added_morphemes[to_h_system(root)] = True
+                    initial_data.append({"pk":morpheme_id,
+                                         "model":"vortaro.morpheme",
+                                         "fields":{"primary_word":word_id,
+                                                   "morpheme":to_h_system(root)}})
+                    morpheme_id += 1
+
+                if to_x_system(root) not in added_morphemes:
+                    added_morphemes[to_x_system(root)] = True
+                    initial_data.append({"pk":morpheme_id,
+                                         "model":"vortaro.morpheme",
+                                         "fields":{"primary_word":word_id,
+                                                   "morpheme":to_x_system(root)}})
+                    morpheme_id += 1
 
         # also add words if they end -o or -a
         if (is_declinable_noun(word) or is_declinable_adjective(word)) \
                 and word not in added_morphemes:
+            added_morphemes[word] = True
             initial_data.append({"pk":morpheme_id,
                                  "model":"vortaro.morpheme",
                                  "fields":{"primary_word":word_id,
                                            "morpheme":word}})
-            added_morphemes.append(word)
             morpheme_id += 1
+
+            # and again also add if different in other writing system
+            if to_h_system(word) not in added_morphemes:
+                added_morphemes[to_h_system(word)] = True
+                initial_data.append({"pk":morpheme_id,
+                                     "model":"vortaro.morpheme",
+                                     "fields":{"primary_word":word_id,
+                                               "morpheme":to_h_system(word)}})
+                morpheme_id += 1
+            if to_x_system(word) not in added_morphemes:
+                added_morphemes[to_x_system(word)] = True
+                initial_data.append({"pk":morpheme_id,
+                                     "model":"vortaro.morpheme",
+                                     "fields":{"primary_word":word_id,
+                                               "morpheme":to_x_system(word)}})
+                morpheme_id += 1
+
                 
 
     # TODO: may need to delete the original file
