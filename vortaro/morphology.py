@@ -80,6 +80,19 @@ def is_declinable_adverb(word):
 
     return True
 
+def separate_ending(word):
+    """Take a word and split it (if possible) into a stem and an
+    ending.
+
+    """
+
+    # nouns
+    if is_declinable_noun(word):
+        stem = word[:-1]
+        return (stem, 'o')
+
+    
+
 def parse_morphology(word):
     # stem, then split into roots
     # currently only does -o, -a, -e, -i for stemming
@@ -145,7 +158,7 @@ def find_roots(compound):
     This breaks sometimes: hom-ar-an-o is more likely than homa-rano.
 
     """
-    splits.sort(reverse=True)
+    splits.sort(key=len)
 
     return splits
 
