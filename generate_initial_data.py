@@ -51,128 +51,144 @@ def get_variants(word):
 
     return variants
 
-if __name__ == '__main__':
-    """Open the dictionary dump, generate all the possible variants
-    in a format that Django likes.
+word_id = 0
+def add_word(list_for_database, word):
+    global word_id
+    list_for_database.append({"pk": word_id, "model": "vortaro.word",
+                             "fields": {'word': word}})
+    word_id += 1
+
+    # return id of the word we've just added so we can point to it
+    return word_id - 1
+
+variant_id = 0
+def add_variant(list_for_database, variant, word_id):
+    global variant_id
+    list_for_database.append({"pk": variant_id, 
+                              "model": "vortaro.variant",
+                              "fields": {"variant": variant,
+                                         "word": word_id}})
+    variant_id += 1
+
+definition_id = 0
+def add_definition(list_for_database, definition, word_id):
+    global definition_id
+    list_for_database.append({"pk": definition_id,
+                              "model": "vortaro.definition",
+                              "fields": {"definition": definition,
+                                         "word": word_id}})
+    definition_id += 1
+    
+    # return id of the definition so subdefinitions can point to it
+    return definition_id - 1
+
+subdefinition_id = 0
+def add_subdefinition(list_for_database, subdefinition,
+                      definition_id):
+    global subdefinition_id
+    list_for_database.append({"pk":subdefinition_id,
+                              "model":"vortaro.subdefinition",
+                              "fields":{"root_definition":definition_id,
+                                        "definition":subdefinition}})
+    subdefinition_id += 1
+
+morpheme_id = 0
+def add_morpheme(list_for_database, root, word_id):
+    global morpheme_id
+    list_for_database.append({"pk": morpheme_id,
+                              "model": "vortaro.morpheme",
+                              "fields": {"primary_word": word_id,
+                                         "morpheme": root}})
+    morpheme_id += 1
+
+example_id = 0
+def add_example(list_for_database, example, definition_id):
+    global example_id
+    list_for_database.append({"pk": example_id,
+                              "model": "vortaro.example",
+                              "fields": {"definition": definition_id,
+                                         "example": example}})
+    example_id += 1
+
+def dictionary_to_database(dictionary):
+    """Given a list of dicts, prepare a list of initial data in a
+    format that Django likes.
 
     """
-    dictionary_file = open('dictionary.json', 'r')
+    list_for_database = []
 
-    initial_data = []
-
-    variant_id = 0
-    morpheme_id = 0
-    definition_id = 0
-    subdefinition_id = 0
     added_morphemes = {}
 
-    dictionary = json.load(dictionary_file)
-    for (word_id, (word, entry)) in enumerate(dictionary.items()):
+    for (word, entry) in dictionary.items():
         # the word itself
-        initial_data.append({"pk":word_id, "model":"vortaro.word",
-                             "fields":{'word':word}})
+        word_id = add_word(list_for_database, word)
 
         # variants (case/declension/tense)
         for variant in get_variants(word):
-            initial_data.append({"pk":variant_id, 
-                                 "model":"vortaro.variant",
-                                 "fields":{"variant":variant,
-                                           "word":word_id}})
-            variant_id += 1
+            add_variant(list_for_database, variant, word_id)
 
         # add every definition
         # note this means that the order of definition_id corresponds
         # to the order of the definitions from ReVo, which is important
-        for (definition, subdefinitions) in entry['definitions']:
-            initial_data.append({"pk":definition_id,
-                                "model":"vortaro.definition",
-                                "fields":{"definition":definition,
-                                          "word":word_id}})
+        for (definition, examples, subdefinitions) in entry['definitions']:
+            definition_id = add_definition(list_for_database, definition, word_id)
+
+            # todo: add every example for this definition
+            
             # add every subdefinition for this definition
             for subdefinition in subdefinitions:
-                initial_data.append({"pk":subdefinition_id,
-                                     "model":"vortaro.subdefinition",
-                                     "fields":{"root_definition":definition_id,
-                                               "definition":subdefinition}})
-                subdefinition_id += 1
+                add_subdefinition(list_for_database, subdefinition, definition_id)
 
-            definition_id += 1
-
-        """Add morphemes to initial data. 
-
-        Note that the following words produce clashes: 
-
-        sumo, haplo, nova, togo, vila, koto, metro, polo, alo --
-        because they could be <word> or <word>o
-
-        Sauda Arabujo/Saŭda Arabujo and Sauda-Arabujo/Saŭda-Arabujo --
-        because in the h-system we don't know which of the pair to pick.
-
-        """
-
+        # add morphemes to initial data
         if entry['primary']:
             """Primary means we will link to this word when we find
             the morpheme. For example, we link 'dorm' to 'dormi'
             although 'dormo' is also in the dictionary. 
             
             """
-
             # add morphemes (e.g. 'dorm'), forbidding those of one
             # letter since none actually exist in word buidling
             root = entry['root']
             if len(root) > 1 and root not in added_morphemes:
                 added_morphemes[root] = True
-                initial_data.append({"pk":morpheme_id,
-                                     "model":"vortaro.morpheme",
-                                     "fields":{"primary_word":word_id,
-                                               "morpheme":root}})
-                morpheme_id += 1
+                add_morpheme(list_for_database, root, word_id)
 
                 # also add in other writing system if different
                 if to_h_system(root) not in added_morphemes:
                     added_morphemes[to_h_system(root)] = True
-                    initial_data.append({"pk":morpheme_id,
-                                         "model":"vortaro.morpheme",
-                                         "fields":{"primary_word":word_id,
-                                                   "morpheme":to_h_system(root)}})
-                    morpheme_id += 1
+                    add_morpheme(list_for_database, to_h_system(root),
+                                 word_id)
 
                 if to_x_system(root) not in added_morphemes:
                     added_morphemes[to_x_system(root)] = True
-                    initial_data.append({"pk":morpheme_id,
-                                         "model":"vortaro.morpheme",
-                                         "fields":{"primary_word":word_id,
-                                                   "morpheme":to_x_system(root)}})
-                    morpheme_id += 1
+                    add_morpheme(list_for_database, to_x_system(root),
+                                 word_id)
 
         # also add words if they end -o or -a
         if (is_declinable_noun(word) or is_declinable_adjective(word)) \
                 and word not in added_morphemes:
             added_morphemes[word] = True
-            initial_data.append({"pk":morpheme_id,
-                                 "model":"vortaro.morpheme",
-                                 "fields":{"primary_word":word_id,
-                                           "morpheme":word}})
-            morpheme_id += 1
+            add_morpheme(list_for_database, word, word_id)
 
             # and again also add if different in other writing system
             if to_h_system(word) not in added_morphemes:
                 added_morphemes[to_h_system(word)] = True
-                initial_data.append({"pk":morpheme_id,
-                                     "model":"vortaro.morpheme",
-                                     "fields":{"primary_word":word_id,
-                                               "morpheme":to_h_system(word)}})
-                morpheme_id += 1
+                add_morpheme(list_for_database, to_h_system(word),
+                             word_id)
+
             if to_x_system(word) not in added_morphemes:
                 added_morphemes[to_x_system(word)] = True
-                initial_data.append({"pk":morpheme_id,
-                                     "model":"vortaro.morpheme",
-                                     "fields":{"primary_word":word_id,
-                                               "morpheme":to_x_system(word)}})
-                morpheme_id += 1
+                add_morpheme(list_for_database, to_x_system(word),
+                             word_id)
+    return list_for_database
 
-                
+if __name__ == '__main__':
+    dictionary_file = open('dictionary.json', 'r')
+    dictionary = json.load(dictionary_file)
 
-    # TODO: may need to delete the original file
+    initial_data = dictionary_to_database(dictionary)
+
+    # todo: may need deletion
+    # open and overwrite with the new initial data:
     output_file = open('initial_data.json', 'w')
     json.dump(initial_data, output_file)

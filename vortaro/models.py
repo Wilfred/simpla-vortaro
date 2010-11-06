@@ -29,6 +29,14 @@ class Subdefinition(models.Model):
     root_definition = models.ForeignKey(Definition)
     definition = models.TextField()
 
+class Example(models.Model):
+    """A string that holds a sentence which shows usage of a specific
+    definition of a word. One definition can have many examples.
+
+    """
+    definition = models.ForeignKey(Definition)
+    example = models.TextField()
+
 class Variant(models.Model):
     """A way of writing a term from the dictionary. Nouns may have
     plural or case endings, verbs can be in any tense and so on. We
@@ -57,6 +65,14 @@ class Morpheme(models.Model):
     """A potential component of a word that has been put together. We
     generate morphemes in all three major writing systems, and also
     allow words ending -o or -a to be used wholesale.
+
+    Note that the following words produce clashes: 
+    
+    sumo, haplo, nova, togo, vila, koto, metro, polo, alo --
+    because they could be <word> or <word>o
+
+    Sauda Arabujo/Saŭda Arabujo and Sauda-Arabujo/Saŭda-Arabujo --
+    because in the h-system we don't know which of the pair to pick.
 
     For example, in the word 'plifortigi' the morphemes would be
     'pli', 'fort' and 'ig'.
