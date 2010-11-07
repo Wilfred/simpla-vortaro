@@ -6,12 +6,21 @@
 <h2>{{ word }}</h2>
 
 <ol>
-{% for definition, subdefinitions in definitions %}
+{% for definition, examples, subdefinitions in definitions %}
 <li>{% if definition.definition %}
-      {{ definition.definition }}
+      <p>{{ definition.definition }}</p>
     {% endif %}
+
+    {% if examples|length != 0 %}
+      <ul class="ekzemploj">
+      {% for example in examples %}
+      <li><em>{{ example.example }}</em>
+      {% endfor %}
+      </ul>
+    {% endif %}
+
     {% if subdefinitions|length != 0 %}
-      <ul>
+      <ul class="subdefinoj">
       {% for index, subdefinition in subdefinitions %}
       <li>{{ index }}. {{ subdefinition.definition }}
       {% endfor %}

@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import Context, loader, RequestContext
 from django.shortcuts import render_to_response
 
-from models import Word, Variant, Definition, Subdefinition
+from models import Word, Variant, Definition, Subdefinition, Example
 from spelling import get_spelling_variations, alphabet
 from morphology import parse_morphology
 from esperanto_sort import compare_esperanto_strings
@@ -71,13 +71,15 @@ def view_word(word):
     word_obj = matching_words[0]
     definitions = Definition.objects.filter(word=word_obj)
 
-    # get any subdefinitions
+    # get any subdefinitions and/or examples
     definition_trees = []
     for definition in definitions:
         subdefinitions = Subdefinition.objects.filter(root_definition=definition)
 
+        examples = Example.objects.filter(definition=definition)
+
         # we want to count according the esperanto alphabet for subdefinitions
-        definition_trees.append((definition, zip(alphabet, subdefinitions)))
+        definition_trees.append((definition, examples, zip(alphabet, subdefinitions)))
 
     # we also pass an array of the esperanto alphabet for numbering
     context = Context({'word':word, 'definitions':definition_trees,

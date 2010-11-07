@@ -133,7 +133,9 @@ def dictionary_to_database(dictionary):
         for (definition, examples, subdefinitions) in entry['definitions']:
             definition_id = add_definition(list_for_database, definition, word_id)
 
-            # todo: add every example for this definition
+            # add every example for this definition
+            for example in examples:
+                add_example(list_for_database, example, definition_id)
             
             # add every subdefinition for this definition
             for subdefinition in subdefinitions:

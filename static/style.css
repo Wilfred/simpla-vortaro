@@ -80,16 +80,26 @@ ol {
 li {
   margin-top: 1em;
 }
-
 ul {
-  color: #fff;
-  list-style-type: none;
-  margin-left: 0px;
-  padding-left: 0;
+    color: #fff;
+    list-style-type: none;
+    margin-left: 0;
+    padding-left: 0;
 }
 
 input {
   font-size: 125%;
   font-family: serif;
+}
 
+ul.ekzemploj {
+    margin-left: 2em;
+}
+ul.ekzemploj li {
+    margin-top: 0;
+}
+ul.subdefinoj {
+  list-style-type: none;
+  margin-left: 0;
+  padding-left: 0;
 }
