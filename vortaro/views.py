@@ -19,7 +19,7 @@ def index(request):
     elif u'serĉo' in request.GET:
         return search_word(request.GET[u'serĉo'])
     else:
-        return render_to_response('vortaro/index.html', {})
+        return render_to_response('index.html', {})
 
 def search_word(word):
 
@@ -60,7 +60,7 @@ def search_word(word):
                        'matching_words':matching_words,
                        'similar_words':similar_words,
                        'potential_parses':potential_parses})
-    return render_to_response('vortaro/search.html', context)
+    return render_to_response('search.html', context)
 
 def view_word(word):
     # get the word
@@ -87,4 +87,4 @@ def view_word(word):
     # we also pass an array of the esperanto alphabet for numbering
     context = Context({'word':word, 'definitions':definition_trees,
                        "alphabet": alphabet})
-    return render_to_response('vortaro/word.html', context)
+    return render_to_response('word.html', context)
