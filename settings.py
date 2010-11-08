@@ -14,7 +14,7 @@ PROJECT_DIR = os.path.dirname(__file__)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/home/wilfred/html/projektoj/vortaro/word_db',
+        'NAME': os.path.join(PROJECT_DIR, 'vortaro/word_db'),
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
@@ -80,13 +80,4 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     'vortaro',
-    # 'django.contrib.auth',
-    # 'django.contrib.contenttypes',
-    # 'django.contrib.sessions',
-    # 'django.contrib.sites',
-    # 'django.contrib.messages',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
 )
