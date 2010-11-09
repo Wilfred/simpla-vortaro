@@ -9,7 +9,7 @@ from morphology import parse_morphology
 from esperanto_sort import compare_esperanto_strings
 
 def about(request):
-    return render_to_response('vortaro/about.html', {})
+    return render_to_response('about.html', {})
 
 def index(request):
     # all requests are dispatched from here, to keep URLs simple
