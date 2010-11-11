@@ -74,15 +74,23 @@ def view_word(word):
     word_obj = matching_words[0]
     definitions = Definition.objects.filter(word=word_obj)
 
-    # get any subdefinitions and/or examples
+    # get any examples, subdefinitions and subdefinition examples
     definition_trees = []
     for definition in definitions:
-        subdefinitions = Subdefinition.objects.filter(root_definition=definition)
-
         examples = Example.objects.filter(definition=definition)
 
+        # get subdefinitions with index and examples
+        # e.g. [('ĉ', 'the definition', ['blah', 'blah blah']
+        subdefinitions = Subdefinition.objects.filter(root_definition=definition)
+        numbered_subdefs_with_examples = []
+        for i in range(subdefinitions.count()):
+            sub_examples = Example.objects.filter(definition=subdefinitions[i])
+            numbered_subdefs_with_examples.append((alphabet[i],
+                                                  subdefinitions[i].definition,
+                                                  sub_examples))
+
         # we want to count according the esperanto alphabet for subdefinitions
-        definition_trees.append((definition, examples, zip(alphabet, subdefinitions)))
+        definition_trees.append((definition, examples, numbered_subdefs_with_examples))
 
     # we also pass an array of the esperanto alphabet for numbering
     context = Context({'word':word, 'definitions':definition_trees,

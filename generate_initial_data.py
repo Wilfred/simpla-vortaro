@@ -71,25 +71,48 @@ def add_variant(list_for_database, variant, word_id):
     variant_id += 1
 
 definition_id = 0
-def add_definition(list_for_database, definition, word_id):
+def add_definition(list_for_database, definition_obj, word_id):
+    """Given a definition object, create the correct definition,
+    subdefinition and example rows for the database.
+
+    """
     global definition_id
+
+    # the definition table
+    definition = definition_obj['primary definition']
     list_for_database.append({"pk": definition_id,
                               "model": "vortaro.definition",
                               "fields": {"definition": definition,
                                          "word": word_id}})
+
+    # the subdefinitions (which will handle their own examples)
+    subdefinitions = definition_obj['subdefinitions']
+    for subdefinition in subdefinitions:
+        add_subdefinition(list_for_database, subdefinition, definition_id)
+
+    # examples belonging to this definition
+    examples = definition_obj['examples']
+    for example in examples:
+        add_example(list_for_database, example, definition_id)
+
     definition_id += 1
     
-    # return id of the definition so subdefinitions can point to it
-    return definition_id - 1
-
 subdefinition_id = 0
-def add_subdefinition(list_for_database, subdefinition,
+def add_subdefinition(list_for_database, subdefinition_obj,
                       definition_id):
     global subdefinition_id
+
+    subdefinition = subdefinition_obj['primary definition']
     list_for_database.append({"pk":subdefinition_id,
                               "model":"vortaro.subdefinition",
                               "fields":{"root_definition":definition_id,
                                         "definition":subdefinition}})
+
+    # now add all examples associated with this subdefinition
+    examples = subdefinition_obj['examples']
+    for example in examples:
+        add_example(list_for_database, example, subdefinition_id)
+
     subdefinition_id += 1
 
 morpheme_id = 0
@@ -130,16 +153,8 @@ def dictionary_to_database(dictionary):
         # add every definition
         # note this means that the order of definition_id corresponds
         # to the order of the definitions from ReVo, which is important
-        for (definition, examples, subdefinitions) in entry['definitions']:
-            definition_id = add_definition(list_for_database, definition, word_id)
-
-            # add every example for this definition
-            for example in examples:
-                add_example(list_for_database, example, definition_id)
-            
-            # add every subdefinition for this definition
-            for subdefinition in subdefinitions:
-                add_subdefinition(list_for_database, subdefinition, definition_id)
+        for definition in entry['definitions']:
+            add_definition(list_for_database, definition, word_id)
 
         # add morphemes to initial data
         if entry['primary']:
@@ -158,13 +173,11 @@ def dictionary_to_database(dictionary):
                 # also add in other writing system if different
                 if to_h_system(root) not in added_morphemes:
                     added_morphemes[to_h_system(root)] = True
-                    add_morpheme(list_for_database, to_h_system(root),
-                                 word_id)
+                    add_morpheme(list_for_database, to_h_system(root), word_id)
 
                 if to_x_system(root) not in added_morphemes:
                     added_morphemes[to_x_system(root)] = True
-                    add_morpheme(list_for_database, to_x_system(root),
-                                 word_id)
+                    add_morpheme(list_for_database, to_x_system(root), word_id)
 
         # also add words if they end -o or -a
         if (is_declinable_noun(word) or is_declinable_adjective(word)) \
@@ -175,22 +188,21 @@ def dictionary_to_database(dictionary):
             # and again also add if different in other writing system
             if to_h_system(word) not in added_morphemes:
                 added_morphemes[to_h_system(word)] = True
-                add_morpheme(list_for_database, to_h_system(word),
-                             word_id)
+                add_morpheme(list_for_database, to_h_system(word), word_id)
 
             if to_x_system(word) not in added_morphemes:
                 added_morphemes[to_x_system(word)] = True
-                add_morpheme(list_for_database, to_x_system(word),
-                             word_id)
+                add_morpheme(list_for_database, to_x_system(word), word_id)
+
     return list_for_database
 
 if __name__ == '__main__':
     dictionary_file = open('dictionary.json', 'r')
     dictionary = json.load(dictionary_file)
 
-    initial_data = dictionary_to_database(dictionary)
+    initial_database = dictionary_to_database(dictionary)
 
     # todo: may need deletion
     # open and overwrite with the new initial data:
     output_file = open('initial_data.json', 'w')
-    json.dump(initial_data, output_file)
+    json.dump(initial_database, output_file)

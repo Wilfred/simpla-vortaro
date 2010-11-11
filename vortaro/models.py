@@ -23,11 +23,12 @@ class Definition(models.Model):
 
 class Subdefinition(models.Model):
     """A subdefinition of a specfic definition. One definition can
-    have none or many subdefinitions.
+    have none or many subdefinitions. As with Definition, we allow
+    null.
 
     """
     root_definition = models.ForeignKey(Definition)
-    definition = models.TextField()
+    definition = models.TextField(null=True)
 
 class Example(models.Model):
     """A string that holds a sentence which shows usage of a specific
