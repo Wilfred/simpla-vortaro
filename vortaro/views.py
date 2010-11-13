@@ -21,10 +21,16 @@ def index(request):
     else:
         return render_to_response('index.html', {})
 
-def search_word(word):
+def search_word(search_term):
     # substitute ' if used, since e.g. vort' == vorto
-    if word.endswith("'"):
-        word = word[:-1] + 'o'
+    if search_term.endswith("'"):
+        word = search_term[:-1] + 'o'
+    else:
+        word = search_term
+
+    # strip any hyphens used, since we can't guarantee where they
+    # will/will not appear
+    word = word.replace('-', '')
 
     # find all words that match this search term, regardless of variant
     matching_variants = Variant.objects.filter(variant=word)
@@ -55,7 +61,7 @@ def search_word(word):
     # of form [['konk', 'lud'], ['konklud']]
     potential_parses = parse_morphology(word)
 
-    context = Context({'search_term':word,
+    context = Context({'search_term':search_term,
                        'matching_words':matching_words,
                        'similar_words':similar_words,
                        'potential_parses':potential_parses})
