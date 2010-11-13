@@ -45,7 +45,12 @@
 {% endif %}
 </p>
 
-<h2>Morfologia(j) Diveno(j)</h2>
+{% if potential_parses|length == 1 %}
+<h2>Morfologia Diveno</h2>
+{% else %}
+<h2>Morfologiaj Divenoj</h2>
+{% endif %}
+
 {% load render_morphemes_tag %}
 
 {% if potential_parses|length == 0 %}
