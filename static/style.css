@@ -72,6 +72,9 @@ a {
 a:hover {
     text-decoration: underline;
 }
+h1 a:hover {
+    text-decoration: none;
+}
 
 /* todo: bump up font size */
 p {
