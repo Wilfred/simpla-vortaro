@@ -38,7 +38,7 @@
 
 <div id="search">
   <form action="/" method="get">
-    <input type="text" name="serĉo">
+    <input type="text" value="{% block searchterm %}{% endblock %}" name="serĉo">
     <input type="submit" value="Serĉi">
   </form>
 </div>
