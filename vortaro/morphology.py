@@ -2,108 +2,287 @@
 
 from models import Morpheme
 
-"""A few methods for establishing what kind of word a given word
-is. This is particularly useful for generating every possible form of
-a word -- we want to product "bluaj" from "blua" but not "laj" from
-"la" and so on.
+r"""Esperanto morphology tools. We have methods for identifying word
+type, for stemming and for parsing combined words.
+
+A major use of this code is for generating every possible form of a
+word -- we want to produce "bluaj" from "blua" but not "laj" from "la"
+and so on.
+
+For the split_* methods, these have been cross checked using the
+following commands to find exceptions (singular nouns in this
+example):
+
+fish> egrep -iw '^.*o$' <word_list.txt | awk '{ print length(), $0 | "sort -n" }' | less
 
 """
 
-def is_infinitive(word):
-    if not word.endswith(u'i'):
-        return False
-    
-    pronouns = [u'mi', u'vi', u'li', u'ŝi', u'ĝi', u'oni', u'ili', u'si', u'ci']
-    adverbs = [u'ĉi']
-    exclamations = [u'ahi', u'fi']
-    abbreviations = [u'ĥi'] # same as ĥio actually
-    affix = [u'-ologi']
-    preposition = [u'pli']
+def split_verb(word):
+    """If this word is a verb, return a tuple of the stem and the
+    ending. Otherwise, return None.
 
-    if word in (pronouns + adverbs + exclamations + abbreviations +
-                affix + preposition):
-        return False
-    
-    return True
+    We consider every tense, but ignore participles (-anta, -ata etc).
+
+    """
+    # infinitives
+    if word.endswith('i'):
+        # *i words that are not verbs:
+        pronouns = [u'mi', u'vi', u'li', u'ŝi', u'ĝi', u'oni', u'ili', u'si', u'ci']
+        adverbs = [u'ĉi']
+        exclamations = [u'ahi', u'fi']
+        abbreviations = [u'ĥi'] # same as ĥio actually
+        affix = [u'-ologi']
+        preposition = [u'pli']
+
+        if word in (pronouns + adverbs + exclamations + abbreviations +
+                    affix + preposition):
+            return None
+        else:
+            return (word[:-1], 'i')
+
+    if word.endswith('is'):
+        exclamation = ['bis']
+        prefix = ['mis']
+        preposition = [u'ĝis']
+        names = [u'Ĝenĝis', u'Ĝinĝis']
+
+        if word in (exclamation + prefix + preposition + names):
+            return None
+        else:
+            return (word[:-2], 'is')
+
+    if word.endswith('as'):
+        # no exceptions as far as I'm aware
+        return (word[:-2], 'as')
+
+    if word.endswith('os'):
+        # also no exceptions it seems
+        return (word[:-2], 'os')
+
+    if word.endswith('us'):
+        adverb = [u'ĵus']
+        conjunctions = ['plus', 'minus']
+        if word in (adverb + conjunctions):
+            return None
+        else:
+            return (word[:-2], 'us')
+
+    if word.endswith('u'):
+        table_words = ['kiu', u'ĉiu', 'tiu', 'neniu', 'iu']
+        numbers = ['unu', 'du']
+        onomatopoeia = ['fu']
+        interjections = ['hu', 'nu']
+        adverbs = ['ju', 'plu']
+        conjunction = [u'ĉu']
+        if word in (table_words + numbers + onomatopoeia +
+                    interjections + adverbs + conjunction):
+            return None
+        else:
+            return (word[:-1], 'u')
+
+    return None
+
+def split_adjective(word):
+    """If the word is an adjective, return a tuple of the stem and the
+    ending. Otherwise return None.
+
+    """
+    if word.endswith('a'):
+        onomatopoeia = ['ta'] # to be precise, it's "ta ta ta"
+        exclamations = ['hura', 'pa', 'aha', 'ba', 'ha']
+        prepositions = ['tra', 'la', 'ja']
+        if word in (onomatopoeia + exclamations + prepositions):
+            return None
+        else:
+            return (word[:-1], 'a')
+
+    if word.endswith('aj'):
+        exclamation = ['aj']
+        conjunction = ['kaj']
+        if word in (exclamation + conjunction):
+            return None
+        else:
+            return (word[:-2], 'aj')
+
+    if word.endswith('an'):
+        names = ['Osman', 'Jordan']
+        if word in names:
+            return None
+        else:
+            return (word[:-2], 'an')
+
+    if word.endswith('ajn'):
+        if word == 'ajn':
+            return None
+        else:
+            return (word[:-3], 'ajn')
+
+    # table words ending -u act as adjectives
+    if word.endswith('u'):
+        table_words = ['kiu', u'ĉiu', 'tiu', 'neniu', 'iu']
+        if word in table_words:
+            return (word[:-1], 'u')
+        else:
+            return None
+
+    if word.endswith('uj'):
+        # arguably 'neniuj' doesn't exist, but for the sake of completeness
+        table_words = ['kiuj', u'ĉiuj', 'tiuj', 'neniuj', 'iuj']
+        if word in table_words:
+            return (word[:-2], 'uj')
+        else:
+            return None
+
+    if word.endswith('un'):
+        table_words = ['kiun', u'ĉiun', 'tiun', 'neniun', 'iun']
+        if word in table_words:
+            return (word[:-2], 'un')
+        else:
+            return None
+
+    if word.endswith('ujn'):
+        # also arguably 'neniujn' doesn't exist
+        table_words = ['kiujn', u'ĉiujn', 'tiujn', 'neniujn', 'iujn']
+        if word in table_words:
+            return (word[:-3], 'ujn')
+        else:
+            return None
+
+    return None
+
+def split_noun(word):
+    """Split a word into a tuple of its stem and its ending, if it's a
+    noun. Otherwise return None.
+
+    """
+    if word.endswith('o'):
+        exclamation = ['ho']
+        # we list the prefices for completeness
+        # although they arguably end '-'
+        affices = ['-o', 'bo-', 'geo-']
+        conjunction = ['do']
+        preposition = ['po']
+        if word in [exclamation + affices + conjunction + preposition]:
+            return None
+        else:
+            return (word[:-1], 'o')
+
+    if word.endswith('oj'):
+        if word == 'oj': # exclamation
+            return None
+        else:
+            return (word[:-2], 'oj')
+
+    if word.endswith('on'):
+        if word == 'Simeon': # name
+            return None
+        else:
+            return (word[:-2], 'on')
+
+    if word.endswith('ojn'):
+        # appears there are no exceptions
+        return (word[:-3], 'ojn')
+
+    return None
+
+def split_adverb(word):
+    """Split a word into a tuple of its stem and its ending, if it's
+    an adjective. Otherwise return None.
+
+    I'm not convinced every adverb actually makes sense with an -en
+    ending, but we deal with all the exceptions I've found.
+
+    """
+    if word.endswith('e'):
+        preposition = ['de', 'je', u'ĉe']
+        exclamation = ['he', 've', 'ehe']
+        conjunctions = ['ke', 'se']
+        particle = ['ne'] # vague category I know, but nothing else fits
+        fixed_adverbs = ['tre']
+        name = ['Kabe']
+        affix = ['tele-'] # again affices only for completeness
+        if word in (preposition + exclamation + conjunctions + 
+                    particle + fixed_adverbs + name + affix):
+            return None
+        else:
+            return (word[:-1], 'e')
+
+    if word.endswith('en'):
+        prepositions = ['en', 'sen']
+        adverb = ['jen']
+        affix = ['sen-']
+        name = ['Eden']
+        exclamation = ['amen']
+        if word in (prepositions + adverb + affix + name + exclamation):
+            return None
+        else:
+            return (word[:-2], 'en')
+
+    return None
+
+def is_infinitive(word):
+    if split_verb(word):
+        (stem, ending) = split_verb(word)
+        if ending == 'i':
+            return True
+
+    return False
 
 def is_declinable_adjective(word):
-    table_words = [u'ĉiu', u'tiu', u'neniu', u'iu', u'kiu']
-    if word in table_words:
-        return True
+    if split_adjective(word):
+        (stem, ending) = split_adjective(word)
+        if ending == 'a' or ending == 'u':
+            return True
 
-    if not word.endswith(u'a'):
-        return False
-
-    onomatopoeia = [u'ta'] # to be precise, it's "ta ta ta"
-    exclamations = [u'hura', u'pa', u'aha', u'ba', u'ha']
-    prepositions = [u'tra', u'la', u'ja']
-
-    if word in (onomatopoeia + exclamations + prepositions):
-        return False
-
-    return True
+    return False
 
 def is_declinable_noun(word):
-    if not word.endswith(u'o'):
-        return False
+    if split_noun(word):
+        (stem, ending) = split_noun(word)
+        if ending == 'o':
+            return True
 
-    exclamation = [u'ho']
-    # we list the prefices for completeness
-    # although they arguably end u'-'
-    affices = [u'-o', u'bo-', u'geo-']
-    conjunction = [u'do']
-    preposition = [u'po']
-
-    if word in (exclamation + affices + conjunction + preposition):
-        return False
-
-    return True
+    return False
 
 def is_declinable_adverb(word):
     # Be warned: I'm not sure that every adverb makes sense
     # with -n
+    if split_adverb(word):
+        (stem, ending) = split_adverb(word)
+        if ending == 'e':
+            return True
 
-    if not word.endswith(u'e'):
-        return False
-
-    preposition = [u'de', u'je', u'ĉe']
-    exclamation = [u'he', u've', u'ehe']
-    conjunction = [u'ke']
-    particle = [u'ne'] # vague category I know, but nothing else fits
-    fixed_adverbs = [u'tre']
-    name = [u'Kabe']
-    affix = [u'tele-']
-
-    if word in (preposition + exclamation + conjunction + particle +
-                fixed_adverbs + name + affix):
-        return False
-
-    return True
-
-def separate_ending(word):
-    """Take a word and split it (if possible) into a stem and an
-    ending.
-
-    """
-
-    # nouns
-    if is_declinable_noun(word):
-        stem = word[:-1]
-        return (stem, 'o')
-
-    
+    return False
 
 def parse_morphology(word):
-    # stem, then split into roots
-    # currently only does -o, -a, -e, -i for stemming
+    """Given a word (possibly constructed using word-building
+    ('vortfarado'), stem it (if possible) then split it into its
+    constituent roots.
 
-    if is_infinitive(word) or is_declinable_noun(word) or \
-            is_declinable_adjective(word) or \
-            is_declinable_adverb(word):
-        stem, ending = word[:-1], word[-1]
-        parses =  find_roots(stem)
+    We return a list of Morpheme objects followed (optionally) by a
+    string of the ending.
+
+    """
+    if split_verb(word):
+        (stem, ending) = split_verb(word)
+        parses = find_roots(stem)
         return [parse + [ending] for parse in parses]
-    
+
+    if split_adjective(word):
+        (stem, ending) = split_adjective(word)
+        parses = find_roots(stem)
+        return [parse + [ending] for parse in parses]
+
+    if split_noun(word):
+        (stem, ending) = split_noun(word)
+        parses = find_roots(stem)
+        return [parse + [ending] for parse in parses]
+
+    if split_adverb(word):
+        (stem, ending) = split_adverb(word)
+        parses = find_roots(stem)
+        return [parse + [ending] for parse in parses]
+
     # doesn't appear to have an ending we can get rid of
     return find_roots(word)
 

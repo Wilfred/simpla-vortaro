@@ -22,7 +22,6 @@ def index(request):
         return render_to_response('index.html', {})
 
 def search_word(word):
-
     # substitute ' if used, since e.g. vort' == vorto
     if word.endswith("'"):
         word = word[:-1] + 'o'
