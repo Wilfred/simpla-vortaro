@@ -66,11 +66,16 @@ h3 {
 }
 
 a {
-  color: #fff;
+  color: #2EFE2E;
   text-decoration: none;
 }
 a:hover {
     text-decoration: underline;
+}
+
+h1 a {
+    color: #fff;
+    text-decoration: none;
 }
 h1 a:hover {
     text-decoration: none;
