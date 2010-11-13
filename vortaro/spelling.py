@@ -63,6 +63,13 @@ def get_spelling_variations(word):
     for i in range(len(word)):
         variations.append(delete_letter(word, i))
 
+    # replacements, taking care not to recreate the original word
+    # complexity O(27n)
+    for i in range(len(word)):
+        for letter in alphabet:
+            if word[i] != letter:
+                variations.append(replace_letter(word, i, letter))
+
     # insertions
     # complexity O(28n+28)
     for letter in alphabet:
@@ -73,12 +80,5 @@ def get_spelling_variations(word):
     # complexity O(2)
     variations.append(word + '-')
     variations.append('-' + word)
-
-    # replacements, taking care not to recreate the original word
-    # complexity O(27n)
-    for i in range(len(word)):
-        for letter in alphabet:
-            if word[i] != letter:
-                variations.append(replace_letter(word, i, letter))
 
     return variations
