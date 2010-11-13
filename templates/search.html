@@ -45,6 +45,7 @@
 {% endif %}
 </p>
 
+{# heading, adding plural only if multiple or zero results #}
 {% if potential_parses|length == 1 %}
 <h2>Morfologia Diveno</h2>
 {% else %}
@@ -53,14 +54,25 @@
 
 {% load render_morphemes_tag %}
 
+{% comment %} print either nothing found, one line or multiple lines with a label
+of the most likely {% endcomment %}
 {% if potential_parses|length == 0 %}
   <p><em>Neniu trovita</em></p>
+{% else %}{% if potential_parses|length == 1 %}
+<ul>
+  <li>{% render_morphemes potential_parses.0 %}
+</ul>
 {% else %}
 <ul>
-  {% for morpheme_list in potential_parses %}
-  <li>{% render_morphemes morpheme_list %}
+  <li>
+  {% for potential_parse in potential_parses %}
+    {% if forloop.first %}
+      <li>{% render_morphemes potential_parse %} (plej verŝajne)</li>
+    {% else %}
+      <li>{% render_morphemes potential_parse %}</li>
+    {% endif %}
   {% endfor %}
 </ul>
-{% endif %}
+{% endif %}{% endif %}
 
 {% endblock %}

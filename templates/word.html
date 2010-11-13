@@ -14,7 +14,7 @@
     {% if examples|length != 0 %}
       <ul class="ekzemploj">
       {% for example in examples %}
-      <li><em>{{ example.example }}</em>
+      <li><em>{{ example.example }}</em></li>
       {% endfor %}
       </ul>
     {% endif %}
@@ -22,12 +22,12 @@
     {% if subdefinitions|length != 0 %}
       <ul class="subdefinoj">
       {% for index, subdefinition, examples in subdefinitions %}
-      <li>{{ index }}. {{ subdefinition }}
+      <li>{{ index }}. {{ subdefinition }}</li>
 
         {% if examples|length != 0 %}
           <ul class="ekzemploj">
           {% for example in examples %}
-            <li><em>{{ example.example }}</em>
+            <li><em>{{ example.example }}</em></li>
           {% endfor %}
           </ul>
         {% endif %}
