@@ -32,7 +32,8 @@ def search_word(search_term):
     # will/will not appear
     word = word.replace('-', '')
 
-    # find all words that match this search term, regardless of variant
+    # find all words that match this search term, regardless of
+    # variant and avoiding duplicates
     matching_variants = Variant.objects.filter(variant=word)
     matching_words = []
     for variant in matching_variants:
@@ -46,8 +47,12 @@ def search_word(search_term):
                                                                word_y.word)
     matching_words.sort(cmp=compare)
 
-    # find all potential spelling variants  of this search term
+    # test as many possible spellings of this search term as possible
+    # within the 999 variable limit of sqlite
     spelling_variations = get_spelling_variations(word)
+    if len(spelling_variations) > 999:
+        spelling_variations = spelling_variations[:999]
+
     matching_variants = Variant.objects.filter(variant__in=spelling_variations)
     similar_words = []
     for variant in matching_variants:
