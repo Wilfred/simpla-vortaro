@@ -27,7 +27,7 @@
 <body> 
 
 <div>
-<img id="background" src="resources/book.jpg">
+<img id="background" src="resources/book.jpg" alt="background">
 </div>
 
 <div id="everything">
@@ -38,8 +38,10 @@
 
 <div id="search">
   <form action="/" method="get">
-    <input type="text" value="{% block searchterm %}{% endblock %}" name="serĉo">
-    <input type="submit" value="Serĉi">
+    <p>
+      <input type="text" value="{% block searchterm %}{% endblock %}" name="serĉo">
+      <input type="submit" value="Serĉi">
+    </p>
   </form>
 </div>
 
