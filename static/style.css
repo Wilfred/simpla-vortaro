@@ -112,7 +112,7 @@ ul.ekzemploj li {
     margin-top: 0;
     font-style: italic;
 }
-ul.ekzemploj p {
+ul.ekzemploj li p {
     /* make all lines other than first more indented */
     text-indent: -1.5em;
     padding-left: 2em;
@@ -121,4 +121,10 @@ ul.subdefinoj {
   list-style-type: none;
   margin-left: 0;
   padding-left: 0;
+}
+ul.subdefinoj li p {
+    /* make all lines other than first more indented, to simulate a list */
+    text-indent: -1.3em;
+    padding-left: 1.3em;
+
 }

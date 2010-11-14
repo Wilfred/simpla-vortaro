@@ -22,7 +22,7 @@
     {% if subdefinitions|length != 0 %}
       <ul class="subdefinoj">
       {% for index, subdefinition, examples in subdefinitions %}
-      <li>{{ index }}. {{ subdefinition }}</li>
+      <li><p>{{ index }}. {{ subdefinition }}</p></li>
 
         {% if examples|length != 0 %}
           <ul class="ekzemploj">
