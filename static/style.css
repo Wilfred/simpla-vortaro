@@ -110,6 +110,7 @@ ul.ekzemploj {
 }
 ul.ekzemploj li {
     margin-top: 0;
+    font-style: italic;
 }
 ul.subdefinoj {
   list-style-type: none;
