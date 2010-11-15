@@ -15,13 +15,67 @@ def index(request):
     # all requests are dispatched from here, to keep URLs simple
 
     if u'vorto' in request.GET:
-        return view_word(request.GET[u'vorto'])
+        return render_word_view(request.GET[u'vorto'])
     elif u'serĉo' in request.GET:
-        return search_word(request.GET[u'serĉo'])
+        return render_word_search(request.GET[u'serĉo'])
     else:
         return render_to_response('index.html', {})
 
-def search_word(search_term):
+def precise_word_search(word):
+    """Find every possible term this word could be. Our variant table
+    holds every possible conjugation and declension, so we just query
+    that and remove duplicates.
+
+    We return results in alphabetical order. However, the only way to
+    get more than one result is if we have the same string in
+    different cases, so really this just means lower case first.
+
+    """
+    matching_variants = Variant.objects.filter(variant=word)
+
+    # find corresponding words, stripping duplicates
+    matching_words = []
+    for variant in matching_variants:
+        if not variant.word in matching_words:
+            matching_words.append(variant.word)
+
+    # sort alphabetically
+    compare = lambda x, y: compare_esperanto_strings(x.word, y.word)
+    matching_words.sort(cmp=compare)
+
+    return matching_words
+
+def imprecise_word_search(word):
+    """We generate alternative strings and also look them up in the
+    dictionary. For very long words (13 letters or more) we generate
+    too many alternatives so we only test the first 999 to keep sqlite
+    happy.
+
+    Results are returned in alphabetical order.
+
+    """
+    spelling_variations = get_spelling_variations(word)
+
+    # limit for sqlite
+    if len(spelling_variations) > 999:
+        spelling_variations = spelling_variations[:999]
+
+    # find matches
+    matching_variants = Variant.objects.filter(variant__in=spelling_variations)
+
+    # find corresponding words, stripping duplicates
+    similar_words = []
+    for variant in matching_variants:
+        if (not variant.word in similar_words):
+            similar_words.append(variant.word)
+
+    # sort spelling variants into alphabetical order
+    compare = lambda x, y: compare_esperanto_strings(x.word, y.word)
+    similar_words.sort(cmp=compare)
+
+    return similar_words    
+
+def render_word_search(search_term):
     # substitute ' if used, since e.g. vort' == vorto
     if search_term.endswith("'"):
         word = search_term[:-1] + 'o'
@@ -32,35 +86,15 @@ def search_word(search_term):
     # will/will not appear
     word = word.replace('-', '')
 
-    # find all words that match this search term, regardless of
-    # variant and avoiding duplicates
-    matching_variants = Variant.objects.filter(variant=word)
-    matching_words = []
-    for variant in matching_variants:
-        if not variant.word in matching_words:
-            matching_words.append(variant.word)
+    # all variants were stored lower case, so in case the user does
+    # all caps:
+    word = word.lower()
 
-    # return matches in alphabetical order
-    # (in practice this means lower case first since the words are
-    # exact matches)
-    compare = lambda word_x, word_y: compare_esperanto_strings(word_x.word,
-                                                               word_y.word)
-    matching_words.sort(cmp=compare)
+    matching_words = precise_word_search(word)
 
-    # test as many possible spellings of this search term as possible
-    # within the 999 variable limit of sqlite
-    spelling_variations = get_spelling_variations(word)
-    if len(spelling_variations) > 999:
-        spelling_variations = spelling_variations[:999]
-
-    matching_variants = Variant.objects.filter(variant__in=spelling_variations)
-    similar_words = []
-    for variant in matching_variants:
-        if (not variant.word in similar_words) and (not variant.word in matching_words):
-            similar_words.append(variant.word)
-
-    # sort spelling variants into alphabetical order
-    similar_words.sort(cmp=compare)
+    # imprecise search, excluding those already found in the precise search
+    similar_words = [term for term in imprecise_word_search(word)
+                     if term not in matching_words]
 
     # get morphological parsing results
     # of form [['konk', 'lud'], ['konklud']]
@@ -72,7 +106,7 @@ def search_word(search_term):
                        'potential_parses':potential_parses})
     return render_to_response('search.html', context)
 
-def view_word(word):
+def render_word_view(word):
     # get the word
     matching_words = Word.objects.filter(word=word)
 
