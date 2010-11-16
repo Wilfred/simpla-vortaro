@@ -15,8 +15,8 @@
     width: 40em;
     z-index: 1;
     margin-top: -1em; /* otherwise we always scroll. There is probably
-    a better solution which I haven't spotted. */
-  
+			 a better solution which I haven't spotted. */
+    
     /* colour with transparency */
     background-color:#000; /* for IE */
     filter:alpha(opacity=75); /* CSS3 standard */
@@ -67,8 +67,8 @@ h3 {
 }
 
 a {
-  color: #2EFE2E;
-  text-decoration: none;
+    color: #2EFE2E;
+    text-decoration: none;
 }
 a:hover {
     text-decoration: underline;
@@ -84,14 +84,14 @@ h1 a:hover {
 
 /* todo: bump up font size */
 p {
-  color: #fff;
+    color: #fff;
 }
 
 ol {
-  color: #fff;
+    color: #fff;
 }
 li {
-  margin-top: 1em;
+    margin-top: 1em;
 }
 ul {
     color: #fff;
@@ -101,30 +101,25 @@ ul {
 }
 
 input {
-  font-size: 125%;
-  font-family: serif;
+    font-size: 125%;
+    font-family: serif;
 }
 
 ul.ekzemploj {
-    margin-left: 2em;
-}
-ul.ekzemploj li {
+    margin-left: 2.5em;
     margin-top: 0;
     font-style: italic;
-}
-ul.ekzemploj li p {
-    /* make all lines other than first more indented */
-    text-indent: -1.5em;
-    padding-left: 2em;
+    text-indent: 0;
 }
 ul.subdefinoj {
-  list-style-type: none;
-  margin-left: 0;
-  padding-left: 0;
-}
-ul.subdefinoj li p {
+    list-style-type: none;
+    margin-left: 0;
+
     /* make all lines other than first more indented, to simulate a list */
     text-indent: -1.3em;
     padding-left: 1.3em;
-
+}
+ul.subdefinoj ul.ekzemploj {
+    /* indent to same levels as examples for main definition */
+    margin-left: 1.5em;
 }
