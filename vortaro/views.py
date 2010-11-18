@@ -82,6 +82,10 @@ def render_word_search(search_term):
     else:
         word = search_term
 
+    # if word is stupidly long, truncate it
+    if len(word) > 40:
+        word = word[:40]
+
     # strip any hyphens used, since we can't guarantee where they
     # will/will not appear
     word = word.replace('-', '')
