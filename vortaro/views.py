@@ -8,16 +8,26 @@ from spelling import get_spelling_variations, alphabet
 from morphology import parse_morphology
 from esperanto_sort import compare_esperanto_strings
 
+from projektoj.logger import Logger
+
+log = Logger()
+
 def about(request):
     return render_to_response('about.html', {})
 
 def index(request):
     # all requests are dispatched from here, to keep URLs simple
 
-    if u'vorto' in request.GET:
-        return render_word_view(request.GET[u'vorto'])
+    if 'vorto' in request.GET:
+        word = request.GET['vorto']
+
+        log.log_view_word(word, request.META['REMOTE_ADDR'])
+        return render_word_view(word)
     elif u'serĉo' in request.GET:
-        return render_word_search(request.GET[u'serĉo'])
+        search_term = request.GET[u'serĉo']
+
+        log.log_search(search_term, request.META['REMOTE_ADDR'])
+        return render_word_search(search_term)
     else:
         return render_to_response('index.html', {})
 
