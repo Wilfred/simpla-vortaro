@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	  "http://www.w3.org/TR/html4/strict.dtd">
+<html> 
+ 
+<head> 
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" > 
+<title>{% block title %}La Simpla Vortaro de Esperanto{% endblock %}</title> 
+
+<link rel="stylesheet" type="text/css" href="resources/style.css"> 
+</head> 
+ 
+<body> 
+
+<div>
+<img id="background" src="resources/book.jpg">
+</div>
+
+<div id="everything">
+
+<div id="header">
+  <h1><a href="../">La Simpla Vortaro</a></h1>
+</div>
+
+<div id="search">
+  <form action="/" method="get">
+    <input type="text" name="serĉo">
+    <input type="submit" value="Serĉi">
+  </form>
+</div>
+
+<div id="content">
+{% block content%}
+<p>La Simpla Vortaro estas reta vortaro kiu povas helpi vin trovi la
+  <em>deziratan</em> vorton. (<a href="pri">Legi pli</a>)</p>
+{% endblock %}
+</div>
+
+</div>
+
+</body> 
+ 
+</html>
