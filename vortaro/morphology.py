@@ -254,6 +254,29 @@ def is_declinable_adverb(word):
 
     return False
 
+def score_parse(parse):
+    """Given a parse (a list of Morphemes plus optional string
+    ending), return a badness score so we can sort for
+    likelihood. Values for this function have been tuned using
+    test_parser.py.
+
+    """
+    # ignore string endings from stemmer
+    if type(parse[-1]) == str:
+        parse = parse[:-1]
+
+    # fewer, longer morphemes is more likely
+    badness = len(parse)
+
+    # well known affixes are more likely
+    # (which ones specifically to include chosen by trial and error)
+    for affix in ['ig', 'il', 'ul', 'ej', 'in', 'an', 'ar']:
+        for morpheme in parse:
+            if morpheme.morpheme == affix:
+                badness -= 0.5
+
+    return badness
+
 def parse_morphology(word):
     """Given a word (possibly constructed using word-building
     ('vortfarado'), stem it (if possible) then split it into its
@@ -331,15 +354,9 @@ def find_roots(compound):
             for ending in endings:
                 splits.append([match] + ending)
 
-    """In the event of multiple possible splits of this word, we
-    consider the split made of the fewest morphemes to be valid. Given
-    'konkludo' as input, we assume that 'konklud-o' is more likely than
-    'konk-lud-o'. To this end we sort it so fewer splits come first.
-
-    This breaks sometimes: hom-ar-an-o is more likely than homa-rano.
-
-    """
-    splits.sort(key=len)
+    # if there are multiple parses, try to make the first one the most
+    # likely possibility
+    splits.sort(key=score_parse)
 
     return splits
 
