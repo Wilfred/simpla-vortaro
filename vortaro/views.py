@@ -104,6 +104,10 @@ def render_word_search(search_term):
     # of form [['konk', 'lud'], ['konklud']]
     potential_parses = parse_morphology(word)
 
+    # potential parses are weighted by likelihood, only show top two
+    # since the rest are probably nonsensical
+    potential_parses = potential_parses[:2]
+
     context = Context({'search_term':search_term,
                        'matching_words':matching_words,
                        'similar_words':similar_words,
