@@ -105,13 +105,13 @@ input {
     font-family: serif;
 }
 
-ul.ekzemploj {
+.ekzemploj {
     margin-left: 2.5em;
     margin-top: 0;
     font-style: italic;
     text-indent: 0;
 }
-ul.subdefinoj {
+.subdefinoj {
     list-style-type: none;
     margin-left: 0;
 
@@ -119,7 +119,10 @@ ul.subdefinoj {
     text-indent: -1.3em;
     padding-left: 1.3em;
 }
-ul.subdefinoj ul.ekzemploj {
+.subdefinoj .ekzemploj {
     /* indent to same levels as examples for main definition */
     margin-left: 1.5em;
+}
+.rimarkoj {
+    font-style: italic;
 }

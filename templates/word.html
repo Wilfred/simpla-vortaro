@@ -11,18 +11,18 @@
       <p>{{ definition.definition }}</p>
     {% endif %}
 
-    {% if remarks|length != 0 %}
-      <ul class="rimarkoj">
-      {% for remark in remarks %}
-      <li><p>{{ remark.remark }}</p></li>
-      {% endfor %}
-      </ul>
-    {% endif %}
-
     {% if examples|length != 0 %}
       <ul class="ekzemploj">
       {% for example in examples %}
       <li><p>{{ example.example }}</p></li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if remarks|length != 0 %}
+      <ul class="rimarkoj">
+      {% for remark in remarks %}
+      <li><p>Rimarko: {{ remark.remark }}</p></li>
       {% endfor %}
       </ul>
     {% endif %}
