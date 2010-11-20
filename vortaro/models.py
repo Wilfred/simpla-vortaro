@@ -38,6 +38,14 @@ class Example(models.Model):
     definition = models.ForeignKey(Definition)
     example = models.TextField()
 
+class Remark(models.Model):
+    """A string that holds a remark about a definition. One definition
+    can have multiple remarks.
+
+    """
+    definition = models.ForeignKey(Definition)
+    remark = models.TextField()
+
 class Variant(models.Model):
     """A way of writing a term from the dictionary. Nouns may have
     plural or case endings, verbs can be in any tense and so on. We

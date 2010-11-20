@@ -6,9 +6,17 @@
 <h2>{{ word }}</h2>
 
 <ol>
-{% for definition, examples, subdefinitions in definitions %}
+{% for definition, remarks, examples, subdefinitions in definitions %}
 <li>{% if definition.definition %}
       <p>{{ definition.definition }}</p>
+    {% endif %}
+
+    {% if remarks|length != 0 %}
+      <ul class="rimarkoj">
+      {% for remark in remarks %}
+      <li><p>{{ remark.remark }}</p></li>
+      {% endfor %}
+      </ul>
     {% endif %}
 
     {% if examples|length != 0 %}

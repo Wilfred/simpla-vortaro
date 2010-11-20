@@ -96,6 +96,11 @@ def add_definition(list_for_database, definition_obj, word_id):
     for example in examples:
         add_example(list_for_database, example, definition_id)
 
+    # remarks belonging to this definition
+    remarks = definition_obj['remarks']
+    for remark in remarks:
+        add_remark(list_for_database, remark, definition_id)
+
     definition_id += 1
     
 subdefinition_id = 0
@@ -133,6 +138,15 @@ def add_example(list_for_database, example, definition_id):
                               "fields": {"definition": definition_id,
                                          "example": example}})
     example_id += 1
+
+remark_id = 0
+def add_remark(list_for_database, remark, definition_id):
+    global remark_id
+    list_for_database.append({"pk": remark_id,
+                              "model": "vortaro.remark",
+                              "fields": {"definition": definition_id,
+                                         "remark": remark}})
+    remark_id += 1
 
 def dictionary_to_database(dictionary):
     """Given a list of dicts, prepare a list of initial data in a
