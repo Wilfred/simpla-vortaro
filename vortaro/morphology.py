@@ -263,6 +263,8 @@ def parse_morphology(word):
     string of the ending.
 
     """
+    assert type(word) == str or type(word) == unicode
+
     if split_verb(word):
         (stem, ending) = split_verb(word)
         parses = find_roots(stem)
@@ -307,11 +309,11 @@ def find_roots(compound):
 
     Examples:
 
-    >>> find_roots(u'plifortigas')
-    [[u'pli', u'fort', u'ig', u'as']]
+    >>> find_roots('plifortigas')
+    [['pli', 'fort', 'ig', 'as']]
 
-    >>> find_roots(u'persone')
-    [[u'person', u'e'], [u'per', u'son', u'e']]
+    >>> find_roots('persone')
+    [['person', 'e'], ['per', 'son', 'e']]
 
     """
 

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import json
-from vortaro.morphology import *
 from copy import copy
+
+from vortaro.morphology import *
 
 def to_h_system(word):
     h_system = {u'ĉ':u'ch', u'Ĉ':u'Ch', u'ĝ':u'gh', u'Ĝ':u'Gh', u'ĥ':u'hh',
