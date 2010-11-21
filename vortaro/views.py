@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import Context, loader, RequestContext
 from django.shortcuts import render_to_response
 
-from models import Word, Variant, Definition, Subdefinition, Example, Remark
+from models import Word, Variant, PrimaryDefinition, Subdefinition, Example, Remark
 from spelling import get_spelling_variations, alphabet
 from morphology import parse_morphology
 from esperanto_sort import compare_esperanto_strings
@@ -134,7 +134,7 @@ def render_word_view(word):
 
     # get definitions
     word_obj = matching_words[0]
-    definitions = Definition.objects.filter(word=word_obj)
+    definitions = PrimaryDefinition.objects.filter(word=word_obj)
 
     # get any examples, remarks, subdefinitions and subdefinition examples
     definition_trees = []
