@@ -89,6 +89,7 @@ def populate_database(dictionary):
         count += 1
         if count > 5000:
             transaction.commit()
+            count = 0
         word_obj = Word(word=word)
         word_obj.save()
 
