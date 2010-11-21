@@ -12,23 +12,29 @@ class Word(models.Model):
         return self.word
 
 class Definition(models.Model):
-    """A definition for a word. One word can have many
+    """A definition can either belong to a word (a PrimaryDefinition)
+    or to another definition (a Subdefinition). Examples can be
+    associated with either type, so we create a parent class.
+
+    """
+    definition = models.TextField(null=True)
+
+class PrimaryDefinition(Definition):
+    """A definition for a word. One word can have many primary
     definitions. The definition text may be null in a few rare
     circumstances where we only have subdefinitions. We shouldn't have
     any "" definitions.
 
     """
     word = models.ForeignKey(Word)
-    definition = models.TextField(null=True)
 
-class Subdefinition(models.Model):
+class Subdefinition(Definition):
     """A subdefinition of a specfic definition. One definition can
     have none or many subdefinitions. As with Definition, we allow
     null.
 
     """
-    root_definition = models.ForeignKey(Definition)
-    definition = models.TextField(null=True)
+    root_definition = models.ForeignKey(PrimaryDefinition)
 
 class Example(models.Model):
     """A string that holds a sentence which shows usage of a specific
@@ -63,7 +69,6 @@ class Variant(models.Model):
     "aĉetas", "aĉetu", "aĉetanta", "acxetis", "achetata" and so on.
 
     """
-
     word = models.ForeignKey(Word)
     variant = models.CharField(max_length=50)
 
