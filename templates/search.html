@@ -45,12 +45,7 @@
 {% endif %}
 </p>
 
-{# heading, adding plural only if multiple or zero results #}
-{% if potential_parses|length == 1 %}
-<h2>Morfologia Diveno</h2>
-{% else %}
-<h2>Morfologiaj Divenoj</h2>
-{% endif %}
+<h2>Vortfarada Serĉo</h2>
 
 {% load render_morphemes_tag %}
 
@@ -67,7 +62,7 @@ of the most likely {% endcomment %}
   <li>
   {% for potential_parse in potential_parses %}
     {% if forloop.first %}
-      <li>{% render_morphemes potential_parse %} (plej verŝajne)</li>
+      <li>{% render_morphemes potential_parse %} (plej verŝajna)</li>
     {% else %}
       <li>{% render_morphemes potential_parse %}</li>
     {% endif %}
