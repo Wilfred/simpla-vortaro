@@ -270,7 +270,8 @@ def score_parse(parse):
 
     # well known affixes are more likely
     # (which ones specifically to include chosen by trial and error)
-    for affix in ['ig', 'il', 'ul', 'ej', 'in', 'an', 'ar']:
+    for affix in ['ig', 'il', 'ul', 'ej', 'in', 'an', 'ar', 'ant',
+                  'int', 'ont']:
         for morpheme in parse:
             if morpheme.morpheme == affix:
                 badness -= 0.5
