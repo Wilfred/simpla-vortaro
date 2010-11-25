@@ -9,18 +9,18 @@ def render_morphemes(morphemes):
     final_string = u""
     is_first = True
 
-    for (i, morpheme) in enumerate(morphemes):
-        # the last element
-        if i == len(morphemes) - 1:
-            if type(morpheme) == str or type(morpheme) == unicode:
-                # if stemming produced an ending, the ending is a string
-                final_string +=  morpheme
-            else:
-                # stemming didn't produce an ending, treat as normal
-                final_string += u'<a href="?vorto=%s">%s</a>' % \
-                    (morpheme.primary_word, morpheme.morpheme)
-        else:
-            final_string += u'<a href="?vorto=%s">%s</a>-' % \
-                (morpheme.primary_word, morpheme.morpheme)
+    return '-'.join([morpheme_to_html(morpheme) for morpheme in morphemes])
 
-    return final_string
+def morpheme_to_html(morpheme):
+    if type(morpheme) == str or type(morpheme) == unicode:
+        # successful stemming produces strings in the parse
+        return morpheme
+
+    # morpheme object:
+    if morpheme.primary_word:
+        # normal case
+        return u'<a href="?vorto=%s">%s</a>' % \
+            (morpheme.primary_word, morpheme.morpheme)
+    else:
+        # only occurs on -ant, -int, -ont, -unt
+        return morpheme.morpheme

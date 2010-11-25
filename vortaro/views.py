@@ -154,7 +154,8 @@ def render_word_view(word):
                                                   sub_examples))
 
         # we want to count according the esperanto alphabet for subdefinitions
-        definition_trees.append((definition, remarks, examples, numbered_subdefs_with_examples))
+        definition_trees.append((definition, remarks, examples,
+                                 numbered_subdefs_with_examples))
 
     # we also pass an array of the esperanto alphabet for numbering
     context = Context({'word':word, 'definitions':definition_trees,

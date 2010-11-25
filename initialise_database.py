@@ -168,6 +168,11 @@ def populate_database(dictionary):
                 Morpheme(primary_word=word_obj,
                          morpheme=to_x_system(word)).save()
 
+    # add -ant, etc morphemes which aren't in ReVo
+    assert 'ant' not in seen_morphemes
+    for morpheme in ['int', 'ant', 'ont', 'unt']:
+        Morpheme(morpheme=morpheme).save()
+
     # final commit of any leftovers
     transaction.commit()
 

@@ -80,6 +80,10 @@ class Morpheme(models.Model):
     generate morphemes in all three major writing systems, and also
     allow words ending -o or -a to be used wholesale.
 
+    Since -ant, -int, -ont and -unt aren't in ReVo, we add them
+    manually with a null primary_word. No other Morphemes should be
+    like this.
+
     Note that the following words produce clashes: 
     
     sumo, haplo, nova, togo, vila, koto, metro, polo, alo --
@@ -101,7 +105,7 @@ class Morpheme(models.Model):
 
     """
 
-    primary_word = models.ForeignKey(Word)
+    primary_word = models.ForeignKey(Word, null=True)
     morpheme = models.CharField(max_length=50, unique=True)
 
     def __unicode__(self):
