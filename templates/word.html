@@ -22,7 +22,7 @@
     {% if remarks|length != 0 %}
       <ul class="rimarkoj">
       {% for remark in remarks %}
-      <li><p>Rimarko: {{ remark.remark }}</p></li>
+      <li><p>{{ remark.remark }}</p></li>
       {% endfor %}
       </ul>
     {% endif %}
