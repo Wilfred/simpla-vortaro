@@ -175,6 +175,10 @@ def populate_database(dictionary):
     for morpheme in ['int', 'ant', 'ont', 'unt']:
         Morpheme(morpheme=morpheme).save()
 
+    assert 'at' not in seen_morphemes
+    for morpheme in ['it', 'at', 'ot']:
+        Morpheme(morpheme=morpheme).save()
+
     # final commit of any leftovers
     transaction.commit()
 
