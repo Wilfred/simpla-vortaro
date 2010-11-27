@@ -19,8 +19,8 @@
     
     /* colour with transparency */
     background-color:#000; /* for IE */
-    filter:alpha(opacity=75); /* CSS3 standard */
-    opacity:0.75;
+    filter:alpha(opacity=80); /* CSS3 standard */
+    opacity:0.80;
 }
 
 #header {
@@ -122,7 +122,4 @@ input {
 .subdefinoj .ekzemploj {
     /* indent to same levels as examples for main definition */
     margin-left: 1.5em;
-}
-.rimarkoj {
-    font-style: italic;
 }
