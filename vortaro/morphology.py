@@ -220,6 +220,12 @@ def split_adverb(word):
 
     return None
 
+def is_pronoun(word):
+    if word in ['mi', 'vi', 'li', u'ŝi', 'ni', 'ili', 'si', 'ci']:
+        return True
+
+    return False
+
 def is_infinitive(word):
     if split_verb(word):
         (stem, ending) = split_verb(word)
@@ -231,7 +237,7 @@ def is_infinitive(word):
 def is_declinable_adjective(word):
     if split_adjective(word):
         (stem, ending) = split_adjective(word)
-        if ending == 'a' or ending == 'u':
+        if ending == 'a' or ending == 'u' or ending == 'i':
             return True
 
     return False

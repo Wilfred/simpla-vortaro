@@ -58,6 +58,8 @@ def get_variants(word):
         variants.extend([word + 'j', word + 'n', word + 'jn'])
     elif is_declinable_adverb(word):
         variants.extend([word + 'n'])
+    elif is_pronoun(word):
+        variants.extend([word + 'n'])
 
     # add additional variants if they are different in other writing
     # systems
