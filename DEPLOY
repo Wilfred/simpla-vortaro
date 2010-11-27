@@ -1,4 +1,7 @@
-from mysite.cgi:
+First, make sure settings have debug switched off and 
+that Django is not serving static data.
+
+Then add the following CGI files as mysite.cgi:
 
 #!/usr/local/bin/python
 import sys, os
