@@ -295,6 +295,20 @@ def parse_morphology(word):
     """
     assert type(word) == str or type(word) == unicode
 
+    # for table words, just get them as-is
+    if word in [u'ĉio', 'cxio', 'chio', 'nenio', 'tio', 'io', 'kio',
+                u'ĉiu', 'cxiu', 'chiu', 'neniu', 'tiu', 'iu', 'kiu',
+                u'ĉie', 'cxie', 'chie', 'nenie', 'tie', 'ie', 'kie',
+                u'ĉia', 'cxia', 'chia', 'nenia', 'tia', 'ia', 'kia']:
+        return [[find_matching(word)]]
+
+    # for table words with -j or -n endings, print 'nenio-n' instead of 'neni-on'
+    if word in [u'ĉion', 'cxion', 'chion', 'nenion', 'tion', 'ion', 'kion',
+                u'ĉiun', 'cxiun', 'chiun', 'neniun', 'tiun', 'iun', 'kiun',
+                u'ĉien', 'cxien', 'chien', 'nenien', 'tien', 'ien', 'kien',
+                u'ĉian', 'cxian', 'chian', 'nenian', 'tian', 'ian', 'kian']:
+        return [[find_matching(word[:-1]), 'n']]
+
     if split_verb(word):
         (stem, ending) = split_verb(word)
         parses = find_roots(stem)
