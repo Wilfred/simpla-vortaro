@@ -1,5 +1,8 @@
 First, make sure settings have debug switched off and 
-that Django is not serving static data.
+that Django is not serving static data (check MEDIA settings).
+
+Then create a logs directory. You also need to copy static to resources/ somewhere on the 
+webserver.
 
 Then add the following CGI files as mysite.cgi:
 

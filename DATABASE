@@ -1,0 +1,4 @@
+generate data with ReVo-utils
+copy JSON to .
+reset app
+$ python2 manage.py shell -> %run initialise_database.py
