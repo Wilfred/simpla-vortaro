@@ -1,65 +1,7 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-	  "http://www.w3.org/TR/html4/strict.dtd">
-<html> 
- 
-<head> 
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" > 
-<title>{% block title %}La Simpla Vortaro de Esperanto{% endblock %}</title> 
+{% extends "index.html" %}
 
-<link rel="stylesheet" type="text/css" href="resources/style.css">
+{% block title %}La Simpla Vortaro: Eraro{% endblock %}
 
-<script type="text/javascript"> 
- 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-11973220-3']);
-  _gaq.push(['_trackPageview']);
- 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
- 
-</script>
-
-<link href="resources/favicon.ico" rel="icon" type="image/x-icon">
-
-</head>
- 
-<body> 
-
-<div>
-<img id="background" src="resources/book.jpg" alt="background">
-</div>
-
-<div id="everything">
-
-<div id="header">
-  <h1><a href="../">La Simpla Vortaro</a></h1>
-</div>
-
-<div id="search">
-  <form action="/" method="get">
-    <p>
-      <input type="text" value="{% block searchterm %}{% endblock %}"
-	     name="serĉo" id="search_box">
-      <input type="submit" value="Serĉi">
-    </p>
-  </form>
-</div>
-
-<div id="content">
-{% block content%}
+{% block content %}
 <p>Ho! Io malbona okazis.</p>
 {% endblock %}
-</div>
-
-</div>
-
-<script type="text/javascript">
-document.getElementById('search_box').focus();
-</script>
-
-</body> 
- 
-</html>

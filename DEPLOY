@@ -1,3 +1,5 @@
+Prequisites: install Django and Flup on the server (assuming shared hosting).
+
 First, make sure settings have debug switched off and 
 that Django is not serving static data (check MEDIA settings).
 
@@ -6,7 +8,7 @@ and duplicate favicon.ico in the root.
 
 Then add the following CGI files as mysite.cgi:
 
-#!/usr/local/bin/python
+#!/usr/local/bin/python2.6
 import sys, os
 
 # Add a custom Python path.
