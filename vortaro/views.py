@@ -19,12 +19,12 @@ def index(request):
     # all requests are dispatched from here, to keep URLs simple
 
     if 'vorto' in request.GET:
-        word = request.GET['vorto']
+        word = request.GET['vorto'].strip()
 
         log.log_view_word(word, request.META['REMOTE_ADDR'])
         return render_word_view(word)
     elif u'serĉo' in request.GET:
-        search_term = request.GET[u'serĉo']
+        search_term = request.GET[u'serĉo'].strip()
 
         log.log_search(search_term, request.META['REMOTE_ADDR'])
         return render_word_search(search_term)
