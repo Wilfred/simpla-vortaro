@@ -3,7 +3,7 @@
 {% block title %}{{ word }} - La Simpla Vortaro{% endblock %}
 
 {% block content %}
-<h2>{{ word }}</h2>
+<h2>Vorto: {{ word }}</h2>
 
 <ol>
 {% for definition, remarks, examples, subdefinitions in definitions %}
@@ -43,6 +43,20 @@
       {% endfor %}
       </ul>
     {% endif %}
+{% endfor %}
+</ol>
+
+<h2>En aliaj lingvoj</h2>
+
+<ol>
+{% for definition_translations in all_translations %}
+<li>
+  <ul>
+    {% for translation in definition_translations %}
+    <li>{{ translation.language_code }}: {{ translation.translation }}
+    {% endfor %}
+  </ul>
+</li>
 {% endfor %}
 </ol>
 

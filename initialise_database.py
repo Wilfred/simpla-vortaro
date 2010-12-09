@@ -89,9 +89,9 @@ def populate_database(dictionary):
     count = 0
     for (word, entry) in dictionary.items():
         count += 1
-        if count > 5000:
+        if count % 5000 == 0:
             transaction.commit()
-            count = 0
+
         word_obj = Word(word=word)
         word_obj.save()
 
@@ -127,6 +127,11 @@ def populate_database(dictionary):
             # remarks belonging to this definition
             for remark in definition_dict['remarks']:
                 Remark(definition=definition_obj, remark=remark).save()
+
+            # words in other languages which have the same meaning
+            for (language_code, translation) in definition_dict['translations'].items():
+                Translation(definition=definition_obj, translation=translation,
+                            language_code=language_code).save()
 
         # add morphemes to initial data
         if entry['primary']:

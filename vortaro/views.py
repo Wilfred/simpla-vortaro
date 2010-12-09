@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import Context, loader, RequestContext
 from django.shortcuts import render_to_response
 
-from models import Word, Variant, PrimaryDefinition, Subdefinition, Example, Remark
+from models import Word, Variant, PrimaryDefinition, Subdefinition, Example, Remark, Translation
 from spelling import get_spelling_variations, alphabet
 from morphology import parse_morphology
 from esperanto_sort import compare_esperanto_strings
@@ -157,7 +157,14 @@ def render_word_view(word):
         definition_trees.append((definition, remarks, examples,
                                  numbered_subdefs_with_examples))
 
+    # get translations for every definition
+    all_translations = []
+    for definition in definitions:
+        translations = list(Translation.objects.filter(definition=definition))
+        translations.sort(key=(lambda trans: trans.language_code))
+        all_translations.append(translations)
+
     # we also pass an array of the esperanto alphabet for numbering
     context = Context({'word':word, 'definitions':definition_trees,
-                       "alphabet": alphabet})
+                       "alphabet": alphabet, 'all_translations': all_translations})
     return render_to_response('word.html', context)
