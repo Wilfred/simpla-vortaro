@@ -162,6 +162,7 @@ def render_word_view(word):
     for definition in definitions:
         translations = list(Translation.objects.filter(definition=definition))
         translations.sort(key=(lambda trans: trans.language_code))
+
         all_translations.append(translations)
 
     # we also pass an array of the esperanto alphabet for numbering
