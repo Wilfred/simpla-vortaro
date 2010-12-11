@@ -83,7 +83,16 @@ def imprecise_word_search(word):
     compare = lambda x, y: compare_esperanto_strings(x.word, y.word)
     similar_words.sort(cmp=compare)
 
-    return similar_words    
+    return similar_words
+
+def translation_search(search_term):
+    translations = list(Translation.objects.filter(translation=search_term))
+
+    # sort by language, but within each language 'alphabetically'
+    # (strictly speaking this is a unicode string sort)
+    translations.sort(key=(lambda trans: trans.translation))
+    translations.sort(key=(lambda trans: trans.language_code))
+    return translations
 
 def render_word_search(search_term):
     # substitute ' if used, since e.g. vort' == vorto
@@ -118,10 +127,14 @@ def render_word_search(search_term):
     # since the rest are probably nonsensical
     potential_parses = potential_parses[:2]
 
+    # get matching translations
+    translations = translation_search(word)
+
     context = Context({'search_term':search_term,
                        'matching_words':matching_words,
                        'similar_words':similar_words,
-                       'potential_parses':potential_parses})
+                       'potential_parses':potential_parses,
+                       'translations':translations})
     return render_to_response('search.html', context)
 
 def render_word_view(word):

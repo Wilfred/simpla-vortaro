@@ -70,4 +70,13 @@ of the most likely {% endcomment %}
 </ul>
 {% endif %}{% endif %}
 
+<h2>Alialingva Serĉo</h2>
+
+<ul>
+{% for translation in translations %}
+<li>{{ translation.language }}: <!-- need to link to both defs and subdefs -->
+{{ translation.definition }} ({{ translation.translation }})</li>
+{% endfor %}
+</ul>
+
 {% endblock %}
