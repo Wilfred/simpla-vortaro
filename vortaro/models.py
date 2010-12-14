@@ -116,6 +116,9 @@ class Translation(models.Model):
     language.
 
     """
+    # word is just a convenience to save us working out which word a
+    # definition belog to
+    word = models.ForeignKey(Word)
     definition = models.ForeignKey(Definition)
     translation = models.TextField()
     language_code = models.CharField(max_length=10)

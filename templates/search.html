@@ -73,9 +73,15 @@ of the most likely {% endcomment %}
 <h2>Alialingva Serĉo</h2>
 
 <ul>
+{% if translations|length == 0 %}
+<li><em>Neniu trovita</em></li>
+{% endif %}
+
 {% for translation in translations %}
-<li>{{ translation.language }}: <!-- need to link to both defs and subdefs -->
-{{ translation.definition }} ({{ translation.translation }})</li>
+<li>{{ translation.language }}:
+  <a href="../?vorto={{ translation.word }}">{{ translation.word }}</a>
+  ({{ translation.translation }})
+</li>
 {% endfor %}
 </ul>
 
