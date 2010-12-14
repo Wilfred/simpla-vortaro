@@ -27,6 +27,11 @@ def index(request):
         search_term = request.GET[u'serĉo'].strip()
 
         log.log_search(search_term, request.META['REMOTE_ADDR'])
+
+        # allow users to go directly to a word definition:
+        if 'rekte' in request.GET:
+            return render_word_view(search_term)
+
         return render_word_search(search_term)
     else:
         return render_to_response('index.html', {})
