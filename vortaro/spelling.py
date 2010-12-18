@@ -1,10 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-raw_alphabet = ['a', 'b', 'c', 'ĉ', 'd', 'e', 'f', 'g', 'ĝ', 'h', 'ĥ',
-                'i', 'j', 'ĵ', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's',
-                'ŝ', 't', 'u', 'ŭ', 'v', 'z']
-alphabet = [letter.decode('utf8') for letter in raw_alphabet]
+
+alphabet = [u'a', u'b', u'c', u'ĉ', u'd', u'e', u'f', u'g', u'ĝ', u'h', u'ĥ',
+            u'i', u'j', u'ĵ', u'k', u'l', u'm', u'n', u'o', u'p', u'r', u's',
+            u'ŝ', u't', u'u', u'ŭ', u'v', u'z']
     
 def transpose(word, position):
     # swap letter at position with letter at position+1
