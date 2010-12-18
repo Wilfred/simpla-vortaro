@@ -4,7 +4,7 @@ register = template.Library()
 
 @register.simple_tag
 def render_morphemes(morphemes):
-    # {{ render_morphemes morphemes }}
+    # {% render_morphemes morphemes %}
 
     final_string = u""
     is_first = True
@@ -22,5 +22,5 @@ def morpheme_to_html(morpheme):
         return u'<a href="?vorto=%s">%s</a>' % \
             (morpheme.primary_word, morpheme.morpheme)
     else:
-        # only occurs on -ant, -int, -ont, -unt
+        # only occurs on participle affixes and endings
         return morpheme.morpheme

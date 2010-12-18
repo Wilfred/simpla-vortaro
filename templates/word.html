@@ -2,6 +2,8 @@
 
 {% block title %}{{ word }} - La Simpla Vortaro{% endblock %}
 
+{% load esperanto_ordinal_tag %}
+
 {% block content %}
 <h2>Vorto: {{ word }}</h2>
 
@@ -29,8 +31,8 @@
 
     {% if subdefinitions|length != 0 %}
       <ul class="subdefinoj">
-      {% for index, subdefinition, examples in subdefinitions %}
-      <li><p>{{ index }}. {{ subdefinition }}</p></li>
+      {% for subdefinition, examples in subdefinitions %}
+      <li><p>{% esperanto_ordinal forloop.counter0 %}. {{ subdefinition }}</p></li>
 
         {% if examples|length != 0 %}
           <ul class="ekzemploj">
@@ -49,9 +51,10 @@
 <h2>En aliaj lingvoj</h2>
 
 <ol>
-{% for definition_translations in all_translations %}
+{% for definition_translations, subdefinitions_translations in translations %}
 <li>
   <ul>
+    {# render the translations for each primary definiton #}
     {% for translation_group in definition_translations %}
       {% for translation in translation_group %}
         {% if forloop.first %}
@@ -64,6 +67,32 @@
         {% endif %}
       {% endfor %}
     {% endfor %}
+
+    {# render the translations for each subdefinition of this primary definition #}
+    <li><ul>{% for subdefinitition_translation in subdefinitions_translations %}
+              {% if forloop.first %}
+                <li>{% esperanto_ordinal forloop.counter0 %}. <ul>
+              {% endif %}
+
+              {% for subdef_translation_group in subdefinition_translations %}
+                {% for translation in subdef_translation_group %}
+                  {% if forloop.first %}
+                    <li>{{ translation.language }}:
+                  {% endif %}
+
+                  {% if forloop.last %}
+                    {{ translation.translation }}</li>
+                  {% else %}
+                    {{ translation.translation}},
+                  {% endif %}
+                {% endfor %}
+              {% endfor %}
+
+              {% if forloop.last %}
+                </ul></li>
+              {% endif %}
+           {% endfor %}
+    </ul></li>
   </ul>
 </li>
 {% endfor %}
