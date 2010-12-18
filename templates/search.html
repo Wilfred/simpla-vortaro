@@ -79,8 +79,10 @@ of the most likely {% endcomment %}
 
 {% for translation_group in translations %}
 <li>
-  {{ translation_group.0.language }}:
   {% for translation in translation_group %}
+    {% if forloop.first %}
+      {{ translation.language }}:
+    {% endif %}
     {% if forloop.last %}
       <a href="../?vorto={{ translation.word }}">{{ translation.word }}</a>
       ({{ translation.translation }})
