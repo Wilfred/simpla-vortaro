@@ -28,9 +28,19 @@ def index(request):
 
         log.log_search(search_term, request.META['REMOTE_ADDR'])
 
-        # allow users to go directly to a word definition:
+        # allow users to go directly to a word definition if we can find one,
+        # changing case if necessary:
         if 'rekte' in request.GET:
-            return render_word_view(search_term)
+            # sadly sqlite does not support case insensitivity on utf8 strings
+            if len(Word.objects.filter(word=search_term)) > 0:
+                return render_word_view(search_term)
+
+            if len(Word.objects.filter(word=search_term.lower())) > 0:
+                return render_word_view(search_term.lower())
+
+            # (note capitalisation doesn't work for ĉŝĝĵĥŭ -- FIXME)
+            if len(Word.objects.filter(word=search_term.capitalize())) > 0:
+                return render_word_view(search_term.capitalize())
 
         return render_word_search(search_term)
     else:
