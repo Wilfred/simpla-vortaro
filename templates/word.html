@@ -52,8 +52,17 @@
 {% for definition_translations in all_translations %}
 <li>
   <ul>
-    {% for translation in definition_translations %}
-    <li>{{ translation.language }}: {{ translation.translation }}
+    {% for translation_group in definition_translations %}
+      {% for translation in translation_group %}
+        {% if forloop.first %}
+          <li>{{ translation.language }}:
+        {% endif %}
+        {% if forloop.last %}
+          {{ translation.translation }}</li>
+        {% else %}
+          {{ translation.translation}},
+        {% endif %}
+      {% endfor %}
     {% endfor %}
   </ul>
 </li>

@@ -129,10 +129,11 @@ def populate_database(dictionary):
                 Remark(definition=definition_obj, remark=remark).save()
 
             # words in other languages which have the same meaning
-            for (language_code, translation) in definition_dict['translations'].items():
-                Translation(word=word_obj, definition=definition_obj,
-                            translation=translation,
-                            language_code=language_code).save()
+            for (language_code, translations) in definition_dict['translations'].items():
+                for translation in translations:
+                    Translation(word=word_obj, definition=definition_obj,
+                                translation=translation,
+                                language_code=language_code).save()
 
         # add morphemes to initial data
         if entry['primary']:

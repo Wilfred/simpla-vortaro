@@ -103,11 +103,25 @@ def imprecise_word_search(word):
 def translation_search(search_term):
     translations = list(Translation.objects.filter(translation=search_term))
 
-    # sort by language, but within each language 'alphabetically'
-    # (strictly speaking this is a unicode string sort)
-    translations.sort(key=(lambda trans: trans.translation))
-    translations.sort(key=(lambda trans: trans.language_code))
-    return translations
+    return group_translations(translations)
+
+def group_translations(translations):
+    """Given a list of translations, group into a list of lists where each
+    sublist only contains translations of one language. Assumes the list is
+    already sorted by language.
+
+    """
+    if not translations:
+        return []
+
+    grouped_translations = [[translations[0]]]
+    for translation in translations[1:]:
+        if translation.language == grouped_translations[-1][-1].language:
+            grouped_translations[-1].append(translation)
+        else:
+            grouped_translations.append([translation])
+
+    return grouped_translations
 
 def render_word_search(search_term):
     # substitute ' if used, since e.g. vort' == vorto
@@ -189,7 +203,7 @@ def render_word_view(word):
     all_translations = []
     for definition in definitions:
         translations = list(Translation.objects.filter(definition=definition))
-        translations.sort(key=(lambda trans: trans.language_code))
+        translations = group_translations(translations)
 
         all_translations.append(translations)
 
