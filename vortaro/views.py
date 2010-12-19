@@ -12,6 +12,23 @@ from projektoj.logger import Logger
 
 log = Logger()
 
+def clean_search_term(search_term):
+    # substitute ' if used, since e.g. vort' == vorto
+    if search_term.endswith("'"):
+        clean_term = search_term[:-1] + 'o'
+    else:
+        clean_term = search_term
+
+    # strip any hyphens used, since we can't guarantee where they
+    # will/will not appear
+    clean_term = clean_term.replace('-', '')
+
+    # all variants were stored lower case, so in case the user does
+    # all caps:
+    clean_term = clean_term.lower()
+
+    return clean_term
+
 def about(request):
     return render_to_response('about.html', {})
 
@@ -28,19 +45,13 @@ def index(request):
 
         log.log_search(search_term, request.META['REMOTE_ADDR'])
 
-        # allow users to go directly to a word definition if we can find one,
-        # changing case if necessary:
+        # allow users to go directly to a word definition if we can find one
         if 'rekte' in request.GET:
-            # sadly sqlite does not support case insensitivity on utf8 strings
-            if len(Word.objects.filter(word=search_term)) > 0:
-                return render_word_view(search_term)
+            word = clean_search_term(search_term)
+            matches = precise_word_search(word)
 
-            if len(Word.objects.filter(word=search_term.lower())) > 0:
-                return render_word_view(search_term.lower())
-
-            # (note capitalisation doesn't work for ĉŝĝĵĥŭ -- FIXME)
-            if len(Word.objects.filter(word=search_term.capitalize())) > 0:
-                return render_word_view(search_term.capitalize())
+            if matches:
+                return render_word_view(matches[0].word)
 
         return render_word_search(search_term)
     else:
@@ -127,6 +138,8 @@ def render_word_search(search_term):
     # if search term is stupidly long, truncate it
     if len(search_term) > 40:
         search_term = search_term[:40]
+
+    word = clean_search_term(search_term)
 
     # substitute ' if used, since e.g. vort' == vorto
     if search_term.endswith("'"):
