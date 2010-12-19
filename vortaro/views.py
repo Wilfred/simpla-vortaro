@@ -125,6 +125,8 @@ def group_translations(translations):
     if not translations:
         return []
 
+    translations.sort(key=(lambda t: t.language), cmp=compare_esperanto_strings)
+
     grouped_translations = [[translations[0]]]
     for translation in translations[1:]:
         if translation.language == grouped_translations[-1][-1].language:
