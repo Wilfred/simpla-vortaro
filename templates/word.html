@@ -9,68 +9,73 @@
 
 <ol>
 {% for definition, remarks, examples, subdefinitions in definitions %}
-<li>{% if definition.definition %}
-      <p>{{ definition.definition }}</p>
-    {% endif %}
+  {% if definition.definition %}
+    <li><p>{{ definition.definition }}</p></li>
+  {% endif %}
 
     {% if examples|length != 0 %}
-      <ul class="ekzemploj">
+      <li><ul class="ekzemploj">
       {% for example in examples %}
       <li><p>{{ example.example }}</p></li>
       {% endfor %}
-      </ul>
+      </ul></li>
     {% endif %}
 
     {% if remarks|length != 0 %}
-      <ul class="rimarkoj">
+      <li><ul class="rimarkoj">
       {% for remark in remarks %}
       <li><p>{{ remark.remark }}</p></li>
       {% endfor %}
-      </ul>
+      </ul></li>
     {% endif %}
 
     {% if subdefinitions|length != 0 %}
-      <ul class="subdefinoj">
+      <li><ul class="subdefinoj">
       {% for subdefinition, examples in subdefinitions %}
       <li><p>{% esperanto_ordinal forloop.counter0 %}. {{ subdefinition }}</p></li>
 
         {% if examples|length != 0 %}
-          <ul class="ekzemploj">
+          <li><ul class="ekzemploj">
           {% for example in examples %}
             <li><p>{{ example.example }}</p></li>
           {% endfor %}
-          </ul>
+          </ul></li>
         {% endif %}
 
       {% endfor %}
-      </ul>
+      </ul></li>
     {% endif %}
 {% endfor %}
 </ol>
 
 <h2>En aliaj lingvoj</h2>
 
-<ol>
+<ol>{% spaceless %}
 {% for definition_translations, subdefinitions_translations in translations %}
 <li>
   <ul>
     {# render the translations for each primary definiton #}
     {% for translation_group in definition_translations %}
+
+      <li>
       {% for translation in translation_group %}
         {% if forloop.first %}
-          <li>{{ translation.language }}:
+          {{ translation.language }}:
         {% endif %}
         {% if forloop.last %}
-          {{ translation.translation }}</li>
+          {{ translation.translation }}
         {% else %}
           {{ translation.translation}},
         {% endif %}
       {% endfor %}
+      </li>
     {% endfor %}
 
     {# render the translations for each subdefinition of this primary definition #}
+
+    {% if subdefinitions_translations|length != 0 %}
     <li><ul>{% for subdefinition_translation in subdefinitions_translations %}
-              <li><ul><li>{% esperanto_ordinal forloop.counter0 %}. 
+              <li><ul><li>{% esperanto_ordinal forloop.counter0 %}.
 
               {% for subdef_translation_group in subdefinition_translation %}
                 {% if not forloop.first %}
@@ -91,14 +96,14 @@
 		</li>
               {% endfor %}
 
-              {% if forloop.last %}
-                </ul></li>
-              {% endif %}
+              </ul></li>
+
            {% endfor %}
     </ul></li>
+    {% endif %}
   </ul>
 </li>
 {% endfor %}
-</ol>
+</ol>{% endspaceless %}
 
 {% endblock %}
