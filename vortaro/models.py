@@ -201,3 +201,5 @@ class Translation(models.Model):
 
         return language_map[self.language_code]
 
+    def __unicode__(self):
+        return "%s: %s" % (self.language, self.translation)

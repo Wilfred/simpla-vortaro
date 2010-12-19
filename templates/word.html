@@ -69,23 +69,26 @@
     {% endfor %}
 
     {# render the translations for each subdefinition of this primary definition #}
-    <li><ul>{% for subdefinitition_translation in subdefinitions_translations %}
-              {% if forloop.first %}
-                <li>{% esperanto_ordinal forloop.counter0 %}. <ul>
-              {% endif %}
+    <li><ul>{% for subdefinition_translation in subdefinitions_translations %}
+              <li><ul><li>{% esperanto_ordinal forloop.counter0 %}. 
 
-              {% for subdef_translation_group in subdefinition_translations %}
+              {% for subdef_translation_group in subdefinition_translation %}
+                {% if not forloop.first %}
+		  <li>&nbsp;&nbsp;&nbsp;
+                {% endif %}
+
                 {% for translation in subdef_translation_group %}
                   {% if forloop.first %}
-                    <li>{{ translation.language }}:
+                    {{ translation.language }}:
                   {% endif %}
 
                   {% if forloop.last %}
-                    {{ translation.translation }}</li>
+                    {{ translation.translation }}
                   {% else %}
                     {{ translation.translation}},
                   {% endif %}
                 {% endfor %}
+		</li>
               {% endfor %}
 
               {% if forloop.last %}
