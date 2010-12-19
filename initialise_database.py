@@ -74,23 +74,20 @@ def get_variants(word):
 
     return variants
 
-@transaction.commit_manually
+@transaction.commit_on_success
 def populate_database(dictionary):
     """Given a dictionary file from a JSON dump created by
     ReVo-utilities, write its contents to the database.
 
-    We only commit every 1000 words because it would take hours if we
-    commit every object separately.
+    We only commit once because it would take hours if we commit every
+    object separately.
 
     """
+
     # no duplicate morphemes
     seen_morphemes = {}
 
-    count = 0
     for (word, entry) in dictionary.items():
-        count += 1
-        if count % 5000 == 0:
-            transaction.commit()
 
         word_obj = Word(word=word)
         word_obj.save()
@@ -119,6 +116,13 @@ def populate_database(dictionary):
                 for example in subdefinition_dict['examples']:
                     Example(definition=subdefinition_obj,
                             example=example).save()
+
+                # all translations associated with this subdefinition
+                for (language_code, translations) in subdefinition_dict['translations'].items():
+                    for translation in translations:
+                        Translation(word=word_obj, definition=subdefinition_obj,
+                                    translation=translation,
+                                    language_code=language_code).save()
 
             # examples belonging to this definition
             for example in definition_dict['examples']:
@@ -185,9 +189,6 @@ def populate_database(dictionary):
     assert 'at' not in seen_morphemes
     for morpheme in ['it', 'at', 'ot']:
         Morpheme(morpheme=morpheme).save()
-
-    # final commit of any leftovers
-    transaction.commit()
 
 if __name__ == '__main__':
     dictionary_file = open('dictionary.json', 'r')
