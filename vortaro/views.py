@@ -124,15 +124,15 @@ def group_translations(translations):
     return grouped_translations
 
 def render_word_search(search_term):
+    # if search term is stupidly long, truncate it
+    if len(search_term) > 40:
+        search_term = search_term[:40]
+
     # substitute ' if used, since e.g. vort' == vorto
     if search_term.endswith("'"):
         word = search_term[:-1] + 'o'
     else:
         word = search_term
-
-    # if word is stupidly long, truncate it
-    if len(word) > 40:
-        word = word[:40]
 
     # strip any hyphens used, since we can't guarantee where they
     # will/will not appear
@@ -156,8 +156,9 @@ def render_word_search(search_term):
     # since the rest are probably nonsensical
     potential_parses = potential_parses[:2]
 
-    # get matching translations
-    translations = translation_search(word)
+    # get matching translations, ignoring changes we made for
+    # esperanto words
+    translations = translation_search(search_term)
 
     context = Context({'search_term':search_term,
                        'matching_words':matching_words,
