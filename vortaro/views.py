@@ -152,6 +152,9 @@ def render_word_search(search_term):
     # strip any hyphens used, since we can't guarantee where they
     # will/will not appear
     word = word.replace('-', '')
+    # except if we start with a hyphen, which was probably deliberate
+    if search_term.startswith('-'):
+        word = '-' + word
 
     # all variants were stored lower case, so in case the user does
     # all caps:
