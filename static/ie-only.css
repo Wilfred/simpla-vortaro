@@ -1,0 +1,9 @@
+#everything {
+    background-color: #000;
+    filter: alpha(opacity=80);
+}
+
+h2 {
+    color: #000;
+    filter: alpha(opacity=80);
+}
