@@ -82,7 +82,12 @@ if __name__ == '__main__':
                       (u'kielvifartulo', [u'kiel-vi-fart-ul-o']),
                       # stupid word but all we have for testing -ant, -int etc
                       (u'serĉantigis', [u'serĉ-ant-ig-is']),
-                      (u'lernintulo', [u'lern-int-ul-o'])]
+                      (u'lernintulo', [u'lern-int-ul-o']),
+                      # gets confused with vi-dal
+                      (u'vidalvida', [u'vid-al-vid-a']),
+                      (u'ĉifrita', [u'ĉifr-it-a']),
+                      (u'ĉifrata', [u'ĉifr-at-a']),
+                      (u'ĉifrota', [u'ĉifr-ot-a'])]
 
     suite = unittest.TestSuite()
     for (compound, expected_output) in correct_parses:
