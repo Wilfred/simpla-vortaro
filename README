@@ -25,4 +25,6 @@ $ python mange.py runserver
 
 Deployment:
 
-Make sure you turn off debug in settings.py.
+Make sure you turn off debug in settings.py. Depending on your setup
+on your server, you may also need to turn off logging in
+vortaro/views.py.
