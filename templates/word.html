@@ -17,7 +17,13 @@
     {% if examples|length != 0 %}
       <ul class="ekzemploj">
       {% for example in examples %}
-      <li><p>{{ example.example }}</p></li>
+        <li><p>
+        {% if example.source %}
+	  <acronym title="{{ example.source }}">{{ example.example }}</acronym>
+	{% else %}
+	  {{ example.example }}
+	{% endif %}
+        </p></li>
       {% endfor %}
       </ul>
     {% endif %}

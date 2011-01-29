@@ -43,6 +43,7 @@ class Example(models.Model):
     """
     definition = models.ForeignKey(Definition)
     example = models.TextField()
+    source = models.TextField(null=True)
 
 class Remark(models.Model):
     """A string that holds a remark about a definition. One definition

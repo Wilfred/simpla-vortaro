@@ -113,9 +113,9 @@ def populate_database(dictionary):
                 subdefinition_obj.save()
 
                 # now all examples associated with this subdefinition
-                for example in subdefinition_dict['examples']:
+                for (example, source) in subdefinition_dict['examples']:
                     Example(definition=subdefinition_obj,
-                            example=example).save()
+                            example=example, source=source).save()
 
                 # all translations associated with this subdefinition
                 for (language_code, translations) in subdefinition_dict['translations'].items():
@@ -125,8 +125,9 @@ def populate_database(dictionary):
                                     language_code=language_code).save()
 
             # examples belonging to this definition
-            for example in definition_dict['examples']:
-                Example(definition=definition_obj, example=example).save()
+            for (example, source) in definition_dict['examples']:
+                Example(definition=definition_obj, example=example, 
+                        source=source).save()
 
             # remarks belonging to this definition
             for remark in definition_dict['remarks']:
