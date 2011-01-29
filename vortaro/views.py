@@ -8,10 +8,6 @@ from spelling import get_spelling_variations, alphabet
 from morphology import parse_morphology
 from esperanto_sort import compare_esperanto_strings
 
-from projektoj.logger import Logger
-
-log = Logger()
-
 def clean_search_term(search_term):
     # substitute ' if used, since e.g. vort' == vorto
     if search_term.endswith("'"):
@@ -38,12 +34,9 @@ def index(request):
     if 'vorto' in request.GET:
         word = request.GET['vorto'].strip()
 
-        log.log_view_word(word, request.META['REMOTE_ADDR'])
         return render_word_view(word)
     elif u'serĉo' in request.GET:
         search_term = request.GET[u'serĉo'].strip()
-
-        log.log_search(search_term, request.META['REMOTE_ADDR'])
 
         # allow users to go directly to a word definition if we can find one
         if 'rekte' in request.GET:
