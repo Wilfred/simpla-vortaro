@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+   <ShortName>Simpla Vortaro</ShortName>
+   <Description>Serĉi vortojn per La Simpla Vortaro</Description>
+   <Image height="16" width="16" type="image/x-icon">
+   http://www.simplavortaro.org/resources/favicon.ico</Image>
+   <Tags>esperanto vortaro vortoj serĉi</Tags>
+   <Url type="text/html"  method="get"
+        template="http://www.simplavortaro.org/?serĉo={searchTerms}"/>
+ </OpenSearchDescription>
