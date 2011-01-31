@@ -22,6 +22,7 @@ working directory.
 3. `In [1]: %run initialise_database.py`
 
 `Do you really want to exit ([y]/n)?`
+
 4. `$ python mange.py runserver`
 
 Deployment
