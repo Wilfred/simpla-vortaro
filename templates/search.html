@@ -8,41 +8,29 @@
 <h2>Preciza Serĉo</h2>
 
 <p>
-{% if matching_words|length == 0 %}
-  <em>Neniu trovita</em>
-{% else %}
-  {% if matching_words|length == 1 %}
-    <a href="{% url index %}?vorto={{ matching_words.0 }}">{{ matching_words.0 }}</a>
+{% for word in matching_words %}
+  {% if forloop.last %}
+    <a href="{% url index %}?vorto={{ word }}">{{ word }}</a>
   {% else %}
-    {% for word in matching_words %}
-      {% if forloop.last %}
-        <a href="{% url index %}?vorto={{ word }}">{{ word }}</a>
-      {% else %}
-	<a href="{% url index %}?vorto={{ word }}">{{ word }}</a>,
-      {% endif %}
-    {% endfor %}
+    <a href="{% url index %}?vorto={{ word }}">{{ word }}</a>,
   {% endif %}
-{% endif %}
+{% empty %}
+  <em>Neniu trovita</em>
+{% endfor %}
 </p>
 
 <h2>Malpreciza Serĉo</h2>
 
 <p>
-{% if similar_words|length == 0 %}
-  <em>Neniu trovita</em>
-{% else %}
-  {% if similar_words|length == 1 %}
-    <a href="{% url index %}?vorto={{ similar_words.0 }}">{{ similar_words.0 }}</a>
+{% for word in similar_words %}
+  {% if forloop.last %}
+    <a href="{% url index %}?vorto={{ word }}">{{ word }}</a>
   {% else %}
-    {% for word in similar_words %}
-      {% if forloop.last %}
-        <a href="{% url index %}?vorto={{ word }}">{{ word }}</a>
-      {% else %}
-	<a href="{% url index %}?vorto={{ word }}">{{ word }}</a>,
-      {% endif %}
-    {% endfor %}
+    <a href="{% url index %}?vorto={{ word }}">{{ word }}</a>,
   {% endif %}
-{% endif %}
+{% empty %}
+  <em>Neniu trovita</em>
+{% endfor %}
 </p>
 
 <h2>Vortfarada Serĉo</h2>
@@ -51,24 +39,17 @@
 
 {% comment %} print either nothing found, one line or multiple lines with a label
 of the most likely {% endcomment %}
-{% if potential_parses|length == 0 %}
-  <p><em>Neniu trovita</em></p>
-{% else %}{% if potential_parses|length == 1 %}
 <ul>
-  <li>{% render_morphemes potential_parses.0 %}
-</ul>
-{% else %}
-<ul>
-  <li>
-  {% for potential_parse in potential_parses %}
-    {% if forloop.first %}
+{% for potential_parse in potential_parses %}
+    {% if forloop.first and potential_parses|length > 1 %}
       <li>{% render_morphemes potential_parse %} (plej verŝajna)</li>
     {% else %}
       <li>{% render_morphemes potential_parse %}</li>
     {% endif %}
-  {% endfor %}
+{% empty %}
+<li>Neniu trovita</li>
+{% endfor %}
 </ul>
-{% endif %}{% endif %}
 
 <h2>Alialingva Serĉo</h2>
 
