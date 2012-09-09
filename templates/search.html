@@ -12,13 +12,13 @@
   <em>Neniu trovita</em>
 {% else %}
   {% if matching_words|length == 1 %}
-    <a href="../?vorto={{ matching_words.0 }}">{{ matching_words.0 }}</a>
+    <a href="{% url index %}?vorto={{ matching_words.0 }}">{{ matching_words.0 }}</a>
   {% else %}
     {% for word in matching_words %}
       {% if forloop.last %}
-        <a href="../?vorto={{ word }}">{{ word }}</a>
+        <a href="{% url index %}?vorto={{ word }}">{{ word }}</a>
       {% else %}
-	<a href="../?vorto={{ word }}">{{ word }}</a>,
+	<a href="{% url index %}?vorto={{ word }}">{{ word }}</a>,
       {% endif %}
     {% endfor %}
   {% endif %}
@@ -32,13 +32,13 @@
   <em>Neniu trovita</em>
 {% else %}
   {% if similar_words|length == 1 %}
-    <a href="../?vorto={{ similar_words.0 }}">{{ similar_words.0 }}</a>
+    <a href="{% url index %}?vorto={{ similar_words.0 }}">{{ similar_words.0 }}</a>
   {% else %}
     {% for word in similar_words %}
       {% if forloop.last %}
-        <a href="../?vorto={{ word }}">{{ word }}</a>
+        <a href="{% url index %}?vorto={{ word }}">{{ word }}</a>
       {% else %}
-	<a href="../?vorto={{ word }}">{{ word }}</a>,
+	<a href="{% url index %}?vorto={{ word }}">{{ word }}</a>,
       {% endif %}
     {% endfor %}
   {% endif %}
@@ -84,10 +84,10 @@ of the most likely {% endcomment %}
       {{ translation.language }}:
     {% endif %}
     {% if forloop.last %}
-      <a href="../?vorto={{ translation.word }}">{{ translation.word }}</a>
+      <a href="{% url index %}?vorto={{ translation.word }}">{{ translation.word }}</a>
       ({{ translation.translation }})
     {% else %}
-      <a href="../?vorto={{ translation.word }}">{{ translation.word }}</a>
+      <a href="{% url index %}?vorto={{ translation.word }}">{{ translation.word }}</a>
       ({{ translation.translation }}),
     {% endif %}
   {% endfor %}
