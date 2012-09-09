@@ -14,7 +14,7 @@ PROJECT_DIR = os.path.dirname(__file__)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_DIR, 'vortaro/word_db'),
+        'NAME': os.path.join(PROJECT_DIR, 'word_db'),
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
