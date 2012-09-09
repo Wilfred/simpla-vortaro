@@ -40,6 +40,15 @@ Copy the JSON file to the root of the project and call it
     $ python manage.py flush`
     $ python manage.py shell`
     In [1]: %run initialise_database.py`
+    
+    
+Running the tests
+-----------------
+
+The tests require production data, since the entire site is read only
+anyway. Make sure you have `word_db`.
+
+    $ DJANGO_SETTINGS_MODULE=settings python test_parser.py
 
 Deployment
 ----------
