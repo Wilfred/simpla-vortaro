@@ -277,7 +277,7 @@ def score_parse(parse):
     # well known affixes are more likely
     # (which ones specifically to include chosen by trial and error)
     for affix in ['ig', 'il', 'ul', 'ej', 'in', 'an', 'ar', 'ant',
-                  'int', 'ont', 'at', 'it', 'ot', 'al']:
+                  'int', 'ont', 'at', 'it', 'ot', 'al', 'em']:
         for morpheme in parse:
             if morpheme.morpheme == affix:
                 badness -= 0.5
@@ -293,7 +293,7 @@ def parse_morphology(word):
     string of the ending.
 
     """
-    assert type(word) == str or type(word) == unicode
+    assert isinstance(word, basestring)
 
     # for table words, just get them as-is
     if word in [u'ĉio', 'cxio', 'chio', 'nenio', 'tio', 'io', 'kio',

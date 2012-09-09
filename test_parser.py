@@ -3,12 +3,6 @@
 know which one is right. This is a set of sample words that all have
 multiple parses used to ensure we return the correct one(s).
 
-Format: (input, correct_parses_in_priority_order)
-
-To run this (bash shell assumed):
-$ export DJANGO_SETTINGS_MODULE=settings
-$ python2.7 test_parser.py
-
 """
 
 import unittest
@@ -61,6 +55,7 @@ class WordSegmentationTest(unittest.TestCase):
             self.assertEqual(self.expected_output[i], actual_output[i])
         
 if __name__ == '__main__':
+    # Format: (input, correct_parses_in_priority_order)
     correct_parses = [(u'homarano', [u'hom-ar-an-o', u'homa-ran-o']),
                       (u'hundomalfermilo', [u'hundo-mal-ferm-il-o']),
                       (u'persone', [u'person-e', u'per-son-e']),
@@ -87,7 +82,8 @@ if __name__ == '__main__':
                       (u'vidalvida', [u'vid-al-vid-a']),
                       (u'ĉifrita', [u'ĉifr-it-a']),
                       (u'ĉifrata', [u'ĉifr-at-a']),
-                      (u'ĉifrota', [u'ĉifr-ot-a'])]
+                      (u'ĉifrota', [u'ĉifr-ot-a']),
+                      (u'eraremulo', [u'erar-em-ul-o'])]
 
     suite = unittest.TestSuite()
     for (compound, expected_output) in correct_parses:
