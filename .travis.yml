@@ -4,4 +4,4 @@ python:
 install:
   - pip install -r requirements.pip
 script:
-  - echo todo
+  - python manage.py test
