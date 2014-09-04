@@ -42,12 +42,12 @@
 <div id="everything">
 
 <div id="header">
-  <h1><a href="{% url index %}">La Simpla Vortaro</a></h1>
+  <h1><a href="{% url 'index'%}">La Simpla Vortaro</a></h1>
 </div>
 
 <div id="search">
   <p id="status">Nun funkcias multe pli rapide!</p>
-  <form action="{% url index %}" method="get">
+  <form action="{% url 'index'%}" method="get">
     <p>
       <input type="text" value="{% block searchterm %}{% endblock %}"
 	     name="serĉo" id="search_box">
@@ -62,7 +62,7 @@
 
 <div id="content">
 {% block content%}
-<p><a href="{% url about %}">Informo pri La Simpla Vortaro</a></p>
+<p><a href="{% url 'about'%}">Informo pri La Simpla Vortaro</a></p>
 {% endblock %}
 </div>
 
