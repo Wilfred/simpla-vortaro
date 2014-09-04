@@ -1,3 +1,5 @@
+[![Requirements Status](https://requires.io/github/Wilfred/simpla-vortaro/requirements.png?branch=master)](https://requires.io/github/Wilfred/simpla-vortaro/requirements/?branch=master)
+
 La Simpla Vortaro is a Django website intended to push what's possible
 with online Esperanto dictionaries.
 
