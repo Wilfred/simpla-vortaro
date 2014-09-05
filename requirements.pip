@@ -1,8 +1,8 @@
-Django==1.5.10
+Django==1.7
 Fabric==1.10.0
 argparse==1.2.1
 ecdsa==0.11
-gunicorn==18.0
+gunicorn==19.1.1
 ipython==2.2.0
 paramiko==1.14.1
 pycrypto==2.6.1
