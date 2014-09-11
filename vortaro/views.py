@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from django.http import HttpResponse, HttpResponseRedirect
-from django.template import Context, loader, RequestContext
+from django.http import HttpResponseRedirect
+from django.template import Context
 from django.shortcuts import render_to_response
 
 from models import Word, Variant, PrimaryDefinition, Subdefinition, Example, Remark, Translation
-from spelling import get_spelling_variations, alphabet
+from spelling import get_spelling_variations
 from morphology import parse_morphology
 from esperanto_sort import compare_esperanto_strings
 
