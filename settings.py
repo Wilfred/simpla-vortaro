@@ -80,4 +80,9 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     'vortaro',
+
+    # third party apps
+    'django_nose',
 )
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
