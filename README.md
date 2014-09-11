@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/Wilfred/simpla-vortaro.svg?branch=master)](https://travis-ci.org/Wilfred/simpla-vortaro)
+[![Coverage Status](https://img.shields.io/coveralls/Wilfred/simpla-vortaro.svg)](https://coveralls.io/r/Wilfred/simpla-vortaro?branch=master)
 [![Requirements Status](https://requires.io/github/Wilfred/simpla-vortaro/requirements.png?branch=master)](https://requires.io/github/Wilfred/simpla-vortaro/requirements/?branch=master)
 
 *La Simpla Vortaro* is a Django website intended to push what's possible
