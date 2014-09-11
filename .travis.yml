@@ -4,4 +4,6 @@ python:
 install:
   - pip install -r requirements.pip
 script:
-  - python manage.py test --with-coverage
+  - python manage.py test --with-coverage --cover-package=vortaro
+after_success:
+  coveralls
