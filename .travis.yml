@@ -4,4 +4,4 @@ python:
 install:
   - pip install -r requirements.pip
 script:
-  - python manage.py test
+  - python manage.py test --with-coverage
