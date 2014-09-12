@@ -11,13 +11,15 @@ from esperanto_sort import compare_esperanto_strings
 def clean_search_term(search_term):
     # substitute ' if used, since e.g. vort' == vorto
     if search_term.endswith("'"):
-        clean_term = search_term[:-1] + 'o'
-    else:
-        clean_term = search_term
+        search_term = search_term[:-1] + 'o'
 
-    # strip any hyphens used, since we can't guarantee where they
-    # will/will not appear
-    clean_term = clean_term.replace('-', '')
+    # Strip any hyphens used, since we can't guarantee where they
+    # will/will not appear.
+    clean_term = search_term.replace('-', '')
+    # However, we have words in the dictionary that start with hyphens,
+    # e.g. '-eg', so we want to preserve hyphens in that case.
+    if search_term.startswith('-'):
+        clean_term = '-' + clean_term
 
     # all variants were stored lower case, so in case the user does
     # all caps:
@@ -116,13 +118,6 @@ def search_word(request):
         search_term = search_term[:40]
 
     word = clean_search_term(search_term)
-
-    # strip any hyphens used, since we can't guarantee where they
-    # will/will not appear
-    word = word.replace('-', '')
-    # except if we start with a hyphen, which was probably deliberate
-    if search_term.startswith('-'):
-        word = '-' + word
 
     # all variants were stored lower case, so in case the user does
     # all caps:

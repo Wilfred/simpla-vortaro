@@ -64,6 +64,17 @@ class SearchPageTests(HttpCodeTestCase):
         response = self.client.get(reverse('search_word') + "?s=salut-o")
         self.assertFindsWord(response, word)
 
+    def test_search_term_leading_hyphen(self):
+        """We should preserve leading hyphens, since we have words of this form
+        in our dictionary.
+
+        """
+        word = Word.objects.create(word="-eg")
+        Variant.objects.create(word=word, variant="-eg")
+        
+        response = self.client.get(reverse('search_word') + "?s=-eg")
+        self.assertFindsWord(response, word)
+
     def test_search_i_feel_lucky(self):
         word = Word.objects.create(word="saluto")
         Variant.objects.create(word=word, variant="salutoj")
