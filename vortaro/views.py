@@ -116,17 +116,15 @@ def search_word(request):
     if len(search_term) > 40:
         search_term = search_term[:40]
 
-    word = clean_search_term(search_term)
-
-    matching_words = precise_word_search(word)
+    matching_words = precise_word_search(search_term)
 
     # imprecise search, excluding those already found in the precise search
-    similar_words = [term for term in imprecise_word_search(word)
+    similar_words = [term for term in imprecise_word_search(search_term)
                      if term not in matching_words]
 
     # get morphological parsing results
     # of form [['konk', 'lud'], ['konklud']]
-    potential_parses = parse_morphology(word)
+    potential_parses = parse_morphology(search_term)
 
     # potential parses are weighted by likelihood, only show top two
     # since the rest are probably nonsensical
