@@ -36,7 +36,8 @@
   <form action="{% url 'index'%}" method="get">
     <p>
       <input type="text" value="{% block searchterm %}{% endblock %}"
-	     name="serĉo" id="search_box">
+	     name="serĉo" id="search_box"
+             placeholder="Entajpu vorton">
     </p>
     <p>
       <button type="submit" value="Serĉi">Serĉi</button>
