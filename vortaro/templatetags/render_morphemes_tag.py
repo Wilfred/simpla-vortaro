@@ -6,10 +6,6 @@ register = template.Library()
 @register.simple_tag
 def render_morphemes(morphemes):
     # {% render_morphemes morphemes %}
-
-    final_string = u""
-    is_first = True
-
     return '-'.join([morpheme_to_html(morpheme) for morpheme in morphemes])
 
 def morpheme_to_html(morpheme):
