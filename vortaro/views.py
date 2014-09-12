@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.http import HttpResponseRedirect
 from django.template import Context
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render_to_response, render, redirect
 
 from models import Word, Variant, PrimaryDefinition, Subdefinition, Example, Remark, Translation
 from spelling import get_spelling_variations
@@ -35,8 +35,8 @@ def index(request):
 
     if 'vorto' in request.GET:
         word = request.GET['vorto'].strip()
+        return redirect('view_word', word)
 
-        return render_word_view(word)
     elif u'serĉo' in request.GET:
         search_term = request.GET[u'serĉo'].strip()
 
@@ -46,9 +46,9 @@ def index(request):
             matches = precise_word_search(word)
 
             if matches:
-                return render_word_view(matches[0].word)
+                return redirect('view_word', matches[0].word)
 
-        return render_word_search(search_term)
+        return render_word_search(request, search_term)
     else:
         return render_to_response('index.html', {})
 
@@ -136,7 +136,7 @@ def group_translations(translations):
 
     return grouped_translations
 
-def render_word_search(search_term):
+def render_word_search(request, search_term):
     # if search term is stupidly long, truncate it
     if len(search_term) > 40:
         search_term = search_term[:40]
@@ -178,12 +178,13 @@ def render_word_search(search_term):
     # esperanto words
     translations = translation_search(search_term)
 
-    context = Context({'search_term':search_term,
-                       'matching_words':matching_words,
-                       'similar_words':similar_words,
-                       'potential_parses':potential_parses,
-                       'translations':translations})
-    return render_to_response('search.html', context)
+    return render(request, 'search.html',
+                  {'search_term':search_term,
+                   'matching_words':matching_words,
+                   'similar_words':similar_words,
+                   'potential_parses':potential_parses,
+                   'translations':translations})
+
 
 def render_word_view(word):
     # get the word

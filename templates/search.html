@@ -10,9 +10,9 @@
 <p>
 {% for word in matching_words %}
   {% if forloop.last %}
-    <a href="{% url 'index'%}?vorto={{ word }}">{{ word }}</a>
+    <a href="{% url 'view_word' word%}">{{ word }}</a>
   {% else %}
-    <a href="{% url 'index'%}?vorto={{ word }}">{{ word }}</a>,
+    <a href="{% url 'view_word' word%}">{{ word }}</a>,
   {% endif %}
 {% empty %}
   <em>Neniu trovita</em>
@@ -24,9 +24,9 @@
 <p>
 {% for word in similar_words %}
   {% if forloop.last %}
-    <a href="{% url 'index'%}?vorto={{ word }}">{{ word }}</a>
+    <a href="{% url 'view_word' word%}">{{ word }}</a>
   {% else %}
-    <a href="{% url 'index'%}?vorto={{ word }}">{{ word }}</a>,
+    <a href="{% url 'view_word' word%}">{{ word }}</a>,
   {% endif %}
 {% empty %}
   <em>Neniu trovita</em>
@@ -65,10 +65,10 @@ of the most likely {% endcomment %}
       {{ translation.language }}:
     {% endif %}
     {% if forloop.last %}
-      <a href="{% url 'index'%}?vorto={{ translation.word }}">{{ translation.word }}</a>
+      <a href="{% url 'index' translation.word %}">{{ translation.word }}</a>
       ({{ translation.translation }})
     {% else %}
-      <a href="{% url 'index'%}?vorto={{ translation.word }}">{{ translation.word }}</a>
+      <a href="{% url 'index' translation.word %}">{{ translation.word }}</a>
       ({{ translation.translation }}),
     {% endif %}
   {% endfor %}

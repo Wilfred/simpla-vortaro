@@ -11,6 +11,14 @@ class IndexTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+class LegacyUrlTests(HttpCodeTestCase):
+    def test_vorto_get_parameter(self):
+        Word.objects.create(word="saluto")
+
+        response = self.client.get(reverse('index') + "?vorto=saluto")
+        self.assertHttpRedirect(response)
+
+
 class AboutTests(TestCase):
     def test_about_renders(self):
         response = self.client.get(reverse('about'))

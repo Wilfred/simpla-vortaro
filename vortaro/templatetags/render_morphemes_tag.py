@@ -1,4 +1,5 @@
 from django import template
+from django.core.urlresolvers import reverse
 
 register = template.Library()
 
@@ -19,8 +20,9 @@ def morpheme_to_html(morpheme):
     # morpheme object:
     if morpheme.primary_word:
         # normal case
-        return u'<a href="?vorto=%s">%s</a>' % \
-            (morpheme.primary_word, morpheme.morpheme)
+        return u'<a href="%s">%s</a>' % \
+            (reverse('view_word', args=[morpheme.primary_word]),
+             morpheme.morpheme)
     else:
         # only occurs on participle affixes and endings
         return morpheme.morpheme
