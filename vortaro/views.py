@@ -155,16 +155,12 @@ def precise_word_search(word):
     matching_variants = Variant.objects.filter(variant=word)
 
     # find corresponding words, stripping duplicates
-    matching_words = []
-    for variant in matching_variants:
-        if not variant.word in matching_words:
-            matching_words.append(variant.word)
+    matching_words = set(variant.word for variant in matching_variants)
 
     # sort alphabetically
     compare = lambda x, y: compare_esperanto_strings(x.word, y.word)
-    matching_words.sort(cmp=compare)
+    return sorted(matching_words, cmp=compare)
 
-    return matching_words
 
 def imprecise_word_search(word):
     """We generate alternative strings and also look them up in the
