@@ -50,7 +50,7 @@ def index(request):
 
         return render_word_search(request, search_term)
     else:
-        return render_to_response('index.html', {})
+        return render(request, 'index.html')
 
 
 def view_word(request, word):
