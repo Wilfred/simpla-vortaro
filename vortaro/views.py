@@ -104,8 +104,8 @@ def search_word(request):
 
     # allow users to go directly to a word definition if we can find one
     if 'rekte' in request.GET:
-        word = clean_search_term(query)
-        matches = precise_word_search(word)
+        clean_query = clean_search_term(query)
+        matches = precise_word_search(clean_query)
 
         if matches:
             return redirect('view_word', matches[0].word)
