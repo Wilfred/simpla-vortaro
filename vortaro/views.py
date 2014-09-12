@@ -117,12 +117,6 @@ def search_word(request):
 
     word = clean_search_term(search_term)
 
-    # substitute ' if used, since e.g. vort' == vorto
-    if search_term.endswith("'"):
-        word = search_term[:-1] + 'o'
-    else:
-        word = search_term
-
     # strip any hyphens used, since we can't guarantee where they
     # will/will not appear
     word = word.replace('-', '')
@@ -154,7 +148,7 @@ def search_word(request):
 
     return render(request, 'search.html',
                   {'search_term':search_term,
-                   'matching_words':matching_words,
+                   'matching_words': matching_words,
                    'similar_words':similar_words,
                    'potential_parses':potential_parses,
                    'translations':translations})

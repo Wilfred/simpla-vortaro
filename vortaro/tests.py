@@ -43,9 +43,19 @@ class WordPageTests(HttpCodeTestCase):
 
 
 class SearchPageTests(HttpCodeTestCase):
+    def assertFindsWord(self, request, word):
+        self.assertIn(word, request.context['matching_words'])
+    
     def test_search_renders(self):
         response = self.client.get(reverse('search_word') + '?s=saluton')
         self.assertHttpOK(response)
+
+    def test_search_trailing_apostrophe(self):
+        word = Word.objects.create(word="saluto")
+        Variant.objects.create(word=word, variant="saluto")
+        
+        response = self.client.get(reverse('search_word') + "?s=salut'")
+        self.assertFindsWord(response, word)
 
     def test_search_i_feel_lucky(self):
         word = Word.objects.create(word="saluto")
