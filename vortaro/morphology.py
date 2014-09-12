@@ -2,7 +2,7 @@
 
 from models import Morpheme
 
-r"""Esperanto morphology tools. We have methods for identifying word
+"""Esperanto morphology tools. We have methods for identifying word
 type, for stemming and for parsing combined words.
 
 A major use of this code is for generating every possible form of a
