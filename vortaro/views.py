@@ -187,14 +187,13 @@ def render_word_search(search_term):
 
 def render_word_view(word):
     # get the word
-    matching_words = Word.objects.filter(word=word)
-
-    # search instead if this word doesn't exist
-    if len(matching_words) == 0:
+    try:
+        word_obj = Word.objects.get(word=word)
+    except Word.DoesNotExist:
+        # search instead if this word doesn't exist
         return HttpResponseRedirect(u'/?serĉo=' + word)
 
     # get definitions
-    word_obj = matching_words[0]
     definitions = PrimaryDefinition.objects.filter(word=word_obj)
 
     # get any examples, remarks, subdefinitions and subdefinition examples
