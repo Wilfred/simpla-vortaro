@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.http import HttpResponseRedirect
 from django.template import Context
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 
 from models import Word, Variant, PrimaryDefinition, Subdefinition, Example, Remark, Translation
 from spelling import get_spelling_variations
@@ -25,8 +25,10 @@ def clean_search_term(search_term):
 
     return clean_term
 
+
 def about(request):
-    return render_to_response('about.html', {})
+    return render(request, 'about.html')
+
 
 def index(request):
     # all requests are dispatched from here, to keep URLs simple
