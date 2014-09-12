@@ -102,15 +102,62 @@ def view_word(request, word):
 def search_word(request):
     query = request.GET[u's'].strip()
 
+    search_term = clean_search_term(query)
+
     # allow users to go directly to a word definition if we can find one
     if 'rekte' in request.GET:
-        clean_query = clean_search_term(query)
-        matches = precise_word_search(clean_query)
+        matches = precise_word_search(search_term)
 
         if matches:
             return redirect('view_word', matches[0].word)
 
-    return render_word_search(request, query)
+    # if search term is stupidly long, truncate it
+    if len(search_term) > 40:
+        search_term = search_term[:40]
+
+    word = clean_search_term(search_term)
+
+    # substitute ' if used, since e.g. vort' == vorto
+    if search_term.endswith("'"):
+        word = search_term[:-1] + 'o'
+    else:
+        word = search_term
+
+    # strip any hyphens used, since we can't guarantee where they
+    # will/will not appear
+    word = word.replace('-', '')
+    # except if we start with a hyphen, which was probably deliberate
+    if search_term.startswith('-'):
+        word = '-' + word
+
+    # all variants were stored lower case, so in case the user does
+    # all caps:
+    word = word.lower()
+
+    matching_words = precise_word_search(word)
+
+    # imprecise search, excluding those already found in the precise search
+    similar_words = [term for term in imprecise_word_search(word)
+                     if term not in matching_words]
+
+    # get morphological parsing results
+    # of form [['konk', 'lud'], ['konklud']]
+    potential_parses = parse_morphology(word)
+
+    # potential parses are weighted by likelihood, only show top two
+    # since the rest are probably nonsensical
+    potential_parses = potential_parses[:2]
+
+    # get matching translations, ignoring changes we made for
+    # esperanto words
+    translations = translation_search(search_term)
+
+    return render(request, 'search.html',
+                  {'search_term':search_term,
+                   'matching_words':matching_words,
+                   'similar_words':similar_words,
+                   'potential_parses':potential_parses,
+                   'translations':translations})
 
 
 def precise_word_search(word):
@@ -191,52 +238,3 @@ def group_translations(translations):
             grouped_translations.append([translation])
 
     return grouped_translations
-
-def render_word_search(request, search_term):
-    # if search term is stupidly long, truncate it
-    if len(search_term) > 40:
-        search_term = search_term[:40]
-
-    word = clean_search_term(search_term)
-
-    # substitute ' if used, since e.g. vort' == vorto
-    if search_term.endswith("'"):
-        word = search_term[:-1] + 'o'
-    else:
-        word = search_term
-
-    # strip any hyphens used, since we can't guarantee where they
-    # will/will not appear
-    word = word.replace('-', '')
-    # except if we start with a hyphen, which was probably deliberate
-    if search_term.startswith('-'):
-        word = '-' + word
-
-    # all variants were stored lower case, so in case the user does
-    # all caps:
-    word = word.lower()
-
-    matching_words = precise_word_search(word)
-
-    # imprecise search, excluding those already found in the precise search
-    similar_words = [term for term in imprecise_word_search(word)
-                     if term not in matching_words]
-
-    # get morphological parsing results
-    # of form [['konk', 'lud'], ['konklud']]
-    potential_parses = parse_morphology(word)
-
-    # potential parses are weighted by likelihood, only show top two
-    # since the rest are probably nonsensical
-    potential_parses = potential_parses[:2]
-
-    # get matching translations, ignoring changes we made for
-    # esperanto words
-    translations = translation_search(search_term)
-
-    return render(request, 'search.html',
-                  {'search_term':search_term,
-                   'matching_words':matching_words,
-                   'similar_words':similar_words,
-                   'potential_parses':potential_parses,
-                   'translations':translations})
