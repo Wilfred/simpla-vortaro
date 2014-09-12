@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 from django_test_mixins import HttpCodeTestCase
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 
-from vortaro.models import Word
+from vortaro.models import Word, Translation, Definition
 
 
 class IndexTests(TestCase):
@@ -40,4 +41,13 @@ class WordPageTests(HttpCodeTestCase):
 class SearchPageTests(HttpCodeTestCase):
     def test_search_renders(self):
         response = self.client.get(reverse('search_word', args=['saluton']))
+        self.assertHttpOK(response)
+
+    def test_search_renders_translations(self):
+        word = Word.objects.create(word="saluto")
+        definition = Definition.objects.create(definition="foo")
+        Translation.objects.create(word=word, definition=definition,
+                                   translation="hello", language_code="en")
+
+        response = self.client.get(reverse('search_word', args=['hello']))
         self.assertHttpOK(response)
