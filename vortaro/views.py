@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 
@@ -51,8 +50,9 @@ def view_word(request, word):
     try:
         word_obj = Word.objects.get(word=word)
     except Word.DoesNotExist:
-        # search instead if this word doesn't exist
-        return HttpResponseRedirect(u'/?serĉo=' + word)
+        # Search instead if this word doesn't exist.
+        redirect_url = reverse('search_word')
+        return redirect(redirect_url + u"?s=" + word)
 
     # get definitions
     definitions = PrimaryDefinition.objects.filter(word=word_obj)
