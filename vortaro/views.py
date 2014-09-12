@@ -54,7 +54,57 @@ def index(request):
 
 
 def view_word(request, word):
-    return render_word_view(word)
+    # get the word
+    try:
+        word_obj = Word.objects.get(word=word)
+    except Word.DoesNotExist:
+        # search instead if this word doesn't exist
+        return HttpResponseRedirect(u'/?serĉo=' + word)
+
+    # get definitions
+    definitions = PrimaryDefinition.objects.filter(word=word_obj)
+
+    # get any examples, remarks, subdefinitions and subdefinition examples
+    definition_trees = []
+    for definition in definitions:
+        examples = Example.objects.filter(definition=definition)
+
+        remarks = Remark.objects.filter(definition=definition)
+
+        # get subdefinitions with index and examples
+        # e.g. [('ĉ the definition', ['blah', 'blah blah']
+        subdefinitions = Subdefinition.objects.filter(root_definition=definition)
+        subdefs_with_examples = []
+        for i in range(subdefinitions.count()):
+            sub_examples = Example.objects.filter(definition=subdefinitions[i])
+            subdefs_with_examples.append((subdefinitions[i].definition,
+                                          sub_examples))
+
+        # we want to count according the esperanto alphabet for subdefinitions
+        definition_trees.append((definition, remarks, examples,
+                                 subdefs_with_examples))
+
+    # get translations for every definition and subdefinition
+    translations = []
+    for definition in definitions:
+        definition_translations = list(Translation.objects.filter(definition=definition))
+        definition_translations = group_translations(definition_translations)
+
+        subdefinitions = Subdefinition.objects.filter(root_definition=definition)
+        subdefinitions_translations = []
+        for subdefinition in subdefinitions:
+            subdefinition_translations = list(Translation.objects.filter(definition=subdefinition))
+            subdefinition_translations = group_translations(subdefinition_translations)
+
+            if subdefinition_translations:
+                subdefinitions_translations.append(subdefinition_translations)
+
+        if definition_translations or subdefinitions_translations:
+            translations.append((definition_translations, subdefinitions_translations))
+
+    return render(request, 'word.html',
+                  {'word': word, 'definitions': definition_trees,
+                   'translations': translations})
 
 
 def precise_word_search(word):
@@ -184,58 +234,3 @@ def render_word_search(request, search_term):
                    'similar_words':similar_words,
                    'potential_parses':potential_parses,
                    'translations':translations})
-
-
-def render_word_view(word):
-    # get the word
-    try:
-        word_obj = Word.objects.get(word=word)
-    except Word.DoesNotExist:
-        # search instead if this word doesn't exist
-        return HttpResponseRedirect(u'/?serĉo=' + word)
-
-    # get definitions
-    definitions = PrimaryDefinition.objects.filter(word=word_obj)
-
-    # get any examples, remarks, subdefinitions and subdefinition examples
-    definition_trees = []
-    for definition in definitions:
-        examples = Example.objects.filter(definition=definition)
-
-        remarks = Remark.objects.filter(definition=definition)
-
-        # get subdefinitions with index and examples
-        # e.g. [('ĉ the definition', ['blah', 'blah blah']
-        subdefinitions = Subdefinition.objects.filter(root_definition=definition)
-        subdefs_with_examples = []
-        for i in range(subdefinitions.count()):
-            sub_examples = Example.objects.filter(definition=subdefinitions[i])
-            subdefs_with_examples.append((subdefinitions[i].definition,
-                                          sub_examples))
-
-        # we want to count according the esperanto alphabet for subdefinitions
-        definition_trees.append((definition, remarks, examples,
-                                 subdefs_with_examples))
-
-    # get translations for every definition and subdefinition
-    translations = []
-    for definition in definitions:
-        definition_translations = list(Translation.objects.filter(definition=definition))
-        definition_translations = group_translations(definition_translations)
-
-        subdefinitions = Subdefinition.objects.filter(root_definition=definition)
-        subdefinitions_translations = []
-        for subdefinition in subdefinitions:
-            subdefinition_translations = list(Translation.objects.filter(definition=subdefinition))
-            subdefinition_translations = group_translations(subdefinition_translations)
-
-            if subdefinition_translations:
-                subdefinitions_translations.append(subdefinition_translations)
-
-        if definition_translations or subdefinitions_translations:
-            translations.append((definition_translations, subdefinitions_translations))
-
-    # we also pass an array of the esperanto alphabet for numbering
-    context = Context({'word':word, 'definitions':definition_trees,
-                       'translations': translations})
-    return render_to_response('word.html', context)
