@@ -57,6 +57,13 @@ class SearchPageTests(HttpCodeTestCase):
         response = self.client.get(reverse('search_word') + "?s=salut'")
         self.assertFindsWord(response, word)
 
+    def test_search_term_contains_hyphen(self):
+        word = Word.objects.create(word="saluto")
+        Variant.objects.create(word=word, variant="saluto")
+        
+        response = self.client.get(reverse('search_word') + "?s=salut-o")
+        self.assertFindsWord(response, word)
+
     def test_search_i_feel_lucky(self):
         word = Word.objects.create(word="saluto")
         Variant.objects.create(word=word, variant="salutoj")
