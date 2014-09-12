@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.http import HttpResponseRedirect
-from django.template import Context
-from django.shortcuts import render_to_response, render, redirect
+from django.shortcuts import render, redirect
 
 from models import Word, Variant, PrimaryDefinition, Subdefinition, Example, Remark, Translation
 from spelling import get_spelling_variations
@@ -105,6 +104,10 @@ def view_word(request, word):
     return render(request, 'word.html',
                   {'word': word, 'definitions': definition_trees,
                    'translations': translations})
+
+
+def search_word(request, query):
+    return render_word_search(request, query)
 
 
 def precise_word_search(word):

@@ -35,3 +35,9 @@ class WordPageTests(HttpCodeTestCase):
     def test_view_redirects_nonexistent_word(self):
         response = self.client.get(reverse('view_word', args=['no_such_word']))
         self.assertHttpRedirect(response)
+
+
+class SearchPageTests(HttpCodeTestCase):
+    def test_search_renders(self):
+        response = self.client.get(reverse('search_word', args=['saluton']))
+        self.assertHttpOK(response)
