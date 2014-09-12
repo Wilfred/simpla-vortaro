@@ -33,10 +33,10 @@
 
 <div id="search">
   <p id="status">Nun funkcias multe pli rapide!</p>
-  <form action="{% url 'index'%}" method="get">
+  <form action="{% url 'search_word' %}" method="get">
     <p>
       <input type="text" value="{% block searchterm %}{% endblock %}"
-	     name="serĉo" id="search_box"
+	     name="s" id="search_box"
              placeholder="Entajpu vorton">
     </p>
     <p>

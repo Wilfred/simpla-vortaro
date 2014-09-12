@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.core.urlresolvers import reverse
 
 from models import Word, Variant, PrimaryDefinition, Subdefinition, Example, Remark, Translation
 from spelling import get_spelling_variations
@@ -36,20 +37,12 @@ def index(request):
         word = request.GET['vorto'].strip()
         return redirect('view_word', word)
 
-    elif u'serĉo' in request.GET:
+    if u'serĉo' in request.GET:
         search_term = request.GET[u'serĉo'].strip()
+        redirect_url = reverse('search_word')
+        return redirect(redirect_url + u"?s=" + search_term)
 
-        # allow users to go directly to a word definition if we can find one
-        if 'rekte' in request.GET:
-            word = clean_search_term(search_term)
-            matches = precise_word_search(word)
-
-            if matches:
-                return redirect('view_word', matches[0].word)
-
-        return render_word_search(request, search_term)
-    else:
-        return render(request, 'index.html')
+    return render(request, 'index.html')
 
 
 def view_word(request, word):
@@ -106,7 +99,17 @@ def view_word(request, word):
                    'translations': translations})
 
 
-def search_word(request, query):
+def search_word(request):
+    query = request.GET[u's'].strip()
+
+    # allow users to go directly to a word definition if we can find one
+    if 'rekte' in request.GET:
+        word = clean_search_term(query)
+        matches = precise_word_search(word)
+
+        if matches:
+            return redirect('view_word', matches[0].word)
+
     return render_word_search(request, query)
 
 

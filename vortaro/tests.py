@@ -19,6 +19,10 @@ class LegacyUrlTests(HttpCodeTestCase):
         response = self.client.get(reverse('index') + "?vorto=saluto")
         self.assertHttpRedirect(response)
 
+    def test_sercxo_get_parameter(self):
+        response = self.client.get(reverse('index') + "?serĉo=saluto")
+        self.assertHttpRedirect(response)
+
 
 class AboutTests(TestCase):
     def test_about_renders(self):
@@ -40,7 +44,7 @@ class WordPageTests(HttpCodeTestCase):
 
 class SearchPageTests(HttpCodeTestCase):
     def test_search_renders(self):
-        response = self.client.get(reverse('search_word', args=['saluton']))
+        response = self.client.get(reverse('search_word') + '?s=saluton')
         self.assertHttpOK(response)
 
     def test_search_renders_translations(self):
@@ -49,5 +53,5 @@ class SearchPageTests(HttpCodeTestCase):
         Translation.objects.create(word=word, definition=definition,
                                    translation="hello", language_code="en")
 
-        response = self.client.get(reverse('search_word', args=['hello']))
+        response = self.client.get(reverse('search_word') + '?s=hello')
         self.assertHttpOK(response)
