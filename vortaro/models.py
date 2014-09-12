@@ -1,11 +1,47 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 
+from spelling import get_spelling_variations
+
+
+class WordManager(models.Manager):
+    def find_by_variant(self, text):
+        """Find every possible term this word could be. Our variant table
+        holds every possible conjugation and declension.
+
+        E.g. 'hundoj' -> we return the word 'hundo'.
+
+        """
+        # This can return multiple words in principle, in practice it
+        # only seems to occur when we have two words that only differ by case.
+        return Word.objects.filter(variant__variant=text)
+
+    def find_by_variant_fuzzy(self, text):
+        """Find every possible term that this word could be, tolerating
+        spelling errors.
+
+        E.g. 'hundjo' -> we return the word 'hundo' and 'hundejo'.
+
+        """
+        spelling_variations = get_spelling_variations(text)
+
+        # SQLite can't handle more than 999 strings in an IN
+        # query. This occurs for words of more than 12 characters.
+        if len(spelling_variations) > 999:
+            spelling_variations = spelling_variations[:999]
+
+        return Word.objects.filter(variant__variant__in=spelling_variations)
+
+
 class Word(models.Model):
-    """A term from the dictionary. Nouns will always be singular,
-    verbs will always be infinitives and so on.
+    """A term from the dictionary, in its canonical form.
+
+    Nouns will always be singular, verbs will always be infinitives
+    and so on. For example, 'saluti', 'hundo'.
 
     """
+    objects = WordManager()
+
     word = models.CharField(max_length=50, unique=True)
 
     def __unicode__(self):

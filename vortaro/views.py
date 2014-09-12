@@ -2,10 +2,10 @@
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 
-from models import Word, Variant, PrimaryDefinition, Subdefinition, Example, Remark, Translation
-from spelling import get_spelling_variations
+from models import Word, PrimaryDefinition, Subdefinition, Example, Remark, Translation
 from morphology import parse_morphology
 from esperanto_sort import compare_esperanto_strings
+
 
 def clean_search_term(search_term):
     # substitute ' if used, since e.g. vort' == vorto
@@ -102,25 +102,22 @@ def view_word(request, word):
 
 def search_word(request):
     query = request.GET[u's'].strip()
-
     search_term = clean_search_term(query)
-
-    # allow users to go directly to a word definition if we can find one
-    if 'rekte' in request.GET:
-        matches = precise_word_search(search_term)
-
-        if matches:
-            return redirect('view_word', matches[0].word)
 
     # if search term is stupidly long, truncate it
     if len(search_term) > 40:
         search_term = search_term[:40]
 
-    matching_words = precise_word_search(search_term)
+    matching_words = Word.objects.find_by_variant(search_term)
+    
+    # allow users to go directly to a word definition if we can find one
+    if 'rekte' in request.GET:
+        if matching_words:
+            return redirect('view_word', matching_words[0].word)
 
-    # imprecise search, excluding those already found in the precise search
-    similar_words = [term for term in imprecise_word_search(search_term)
-                     if term not in matching_words]
+    # Fuzzy search, discarding words already found in the precise search.
+    similar_words = set(Word.objects.find_by_variant_fuzzy(search_term))
+    similar_words = similar_words - set(matching_words)
 
     # get morphological parsing results
     # of form [['konk', 'lud'], ['konklud']]
@@ -141,56 +138,6 @@ def search_word(request):
                    'potential_parses':potential_parses,
                    'translations':translations})
 
-
-def precise_word_search(word):
-    """Find every possible term this word could be. Our variant table
-    holds every possible conjugation and declension, so we just query
-    that and remove duplicates.
-
-    We return results in alphabetical order. However, the only way to
-    get more than one result is if we have the same string in
-    different cases, so really this just means lower case first.
-
-    """
-    matching_variants = Variant.objects.filter(variant=word)
-
-    # find corresponding words, stripping duplicates
-    matching_words = set(variant.word for variant in matching_variants)
-
-    # sort alphabetically
-    compare = lambda x, y: compare_esperanto_strings(x.word, y.word)
-    return sorted(matching_words, cmp=compare)
-
-
-def imprecise_word_search(word):
-    """We generate alternative strings and also look them up in the
-    dictionary. For very long words (13 letters or more) we generate
-    too many alternatives so we only test the first 999 to keep sqlite
-    happy.
-
-    Results are returned in alphabetical order.
-
-    """
-    spelling_variations = get_spelling_variations(word)
-
-    # limit for sqlite
-    if len(spelling_variations) > 999:
-        spelling_variations = spelling_variations[:999]
-
-    # find matches
-    matching_variants = Variant.objects.filter(variant__in=spelling_variations)
-
-    # find corresponding words, stripping duplicates
-    similar_words = []
-    for variant in matching_variants:
-        if (not variant.word in similar_words):
-            similar_words.append(variant.word)
-
-    # sort spelling variants into alphabetical order
-    compare = lambda x, y: compare_esperanto_strings(x.word, y.word)
-    similar_words.sort(cmp=compare)
-
-    return similar_words
 
 def translation_search(search_term):
     translations = list(Translation.objects.filter(translation=search_term))
