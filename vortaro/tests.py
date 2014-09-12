@@ -3,7 +3,7 @@ from django_test_mixins import HttpCodeTestCase
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 
-from vortaro.models import Word, Translation, Definition
+from vortaro.models import Word, Translation, Definition, Variant
 
 
 class IndexTests(TestCase):
@@ -46,6 +46,13 @@ class SearchPageTests(HttpCodeTestCase):
     def test_search_renders(self):
         response = self.client.get(reverse('search_word') + '?s=saluton')
         self.assertHttpOK(response)
+
+    def test_search_i_feel_lucky(self):
+        word = Word.objects.create(word="saluto")
+        Variant.objects.create(word=word, variant="salutoj")
+        
+        response = self.client.get(reverse('search_word') + '?s=salutoj&rekte=yes')
+        self.assertHttpRedirect(response)
 
     def test_search_renders_translations(self):
         word = Word.objects.create(word="saluto")
