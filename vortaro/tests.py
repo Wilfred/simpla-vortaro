@@ -75,6 +75,13 @@ class SearchPageTests(HttpCodeTestCase):
         response = self.client.get(reverse('search_word') + "?s=-eg")
         self.assertFindsWord(response, word)
 
+    def test_search_term_case_insensitive(self):
+        word = Word.objects.create(word="eĥoŝanĝo")
+        Variant.objects.create(word=word, variant="eĥoŝanĝo")
+        
+        response = self.client.get(reverse('search_word') + "?s=EĤOŜANĜO")
+        self.assertFindsWord(response, word)
+
     def test_search_i_feel_lucky(self):
         word = Word.objects.create(word="saluto")
         Variant.objects.create(word=word, variant="salutoj")

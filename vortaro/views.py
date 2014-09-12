@@ -21,8 +21,7 @@ def clean_search_term(search_term):
     if search_term.startswith('-'):
         clean_term = '-' + clean_term
 
-    # all variants were stored lower case, so in case the user does
-    # all caps:
+    # Our variants are stored in lower case, so ensure we match.
     clean_term = clean_term.lower()
 
     return clean_term
@@ -118,10 +117,6 @@ def search_word(request):
         search_term = search_term[:40]
 
     word = clean_search_term(search_term)
-
-    # all variants were stored lower case, so in case the user does
-    # all caps:
-    word = word.lower()
 
     matching_words = precise_word_search(word)
 
