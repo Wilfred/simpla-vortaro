@@ -52,6 +52,11 @@ def index(request):
     else:
         return render_to_response('index.html', {})
 
+
+def view_word(request, word):
+    return render_word_view(word)
+
+
 def precise_word_search(word):
     """Find every possible term this word could be. Our variant table
     holds every possible conjugation and declension, so we just query
