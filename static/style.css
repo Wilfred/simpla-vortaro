@@ -7,6 +7,19 @@
     height: 100%;
 }
 
+#background-overlay {
+    height: 100%;
+    position: fixed;
+    width: 40em;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+
+    /* colour with transparency */
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
 #everything {
     /* size and positioning */
     position: relative;
@@ -14,12 +27,6 @@
     margin-right: auto;
     width: 40em;
     z-index: 1;
-    margin-top: -1em; /* otherwise we always scroll. There is probably
-			 a better solution which I haven't spotted. */
-    
-    /* colour with transparency */
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #fff;
     font-family: serif;
 }
 
