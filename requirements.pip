@@ -1,4 +1,4 @@
-Django==1.5.10
+Django==1.7
 Fabric==1.10.0
 PyYAML==3.11
 argparse==1.2.1
