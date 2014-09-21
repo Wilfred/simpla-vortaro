@@ -55,6 +55,10 @@ class Definition(models.Model):
     """
     definition = models.TextField(null=True)
 
+    def __unicode__(self):
+        return self.definition[:20]
+
+
 class PrimaryDefinition(Definition):
     """A definition for a word. One word can have many primary
     definitions. The definition text may be null in a few rare
@@ -80,6 +84,10 @@ class Example(models.Model):
     definition = models.ForeignKey(Definition)
     example = models.TextField()
     source = models.TextField(null=True)
+
+    def __unicode__(self):
+        return self.example[:20]
+
 
 class Remark(models.Model):
     """A string that holds a remark about a definition. One definition
