@@ -13,7 +13,7 @@ urlpatterns = patterns('vortaro.views',
 )
 
 urlpatterns += patterns('api.views',
-    url(u'^api/v1/vorto/(?P<word>.*)$', 'view_word', name="api_view_word"),
+    url(u'^api/v1/vorto/(?P<word>.+)$', 'view_word', name="api_view_word"),
 )
 
 if settings.DEBUG:
