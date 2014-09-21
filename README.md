@@ -23,7 +23,7 @@ Create a virtual environment:
     $ mkdir -p ~/.envs
     $ virtualenv ~/.envs/simplavortaro
     $ . ~/.envs/simplavortaro/bin/activate
-    $ pip install -r requirements.pip
+    $ pip install -r requirements_pinned.txt
     
 Then copy word.db from the GitHub downloads page for this project. It
 should be in the root of the project with the name `word_db`. Finally:
@@ -53,6 +53,18 @@ The tests require production data, since the entire site is read only
 anyway. Make sure you have `word_db`.
 
     $ DJANGO_SETTINGS_MODULE=settings python test_parser.py
+
+Updating requirements
+---------------------
+
+You can find out which packages are out of date with:
+
+    $ pip-review
+
+We also keep a dump of a known-good set of packages, which you can
+update with:
+
+    $ pip freeze > requirements_pinned.txt
 
 Deployment
 ----------

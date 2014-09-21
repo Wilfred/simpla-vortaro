@@ -15,7 +15,7 @@ def deploy():
         run('git checkout master')        
         run('git fetch')
         run('git reset --hard origin/master')
-        _virtualenv('pip install -r requirements.pip')
+        _virtualenv('pip install -r requirements_pinned.txt')
 
         _virtualenv('python manage.py syncdb')
 

@@ -1,0 +1,18 @@
+# The website
+Django==1.5.10
+django-tastypie==0.12.0
+gunicorn==19.1.1
+
+# Deploying
+Fabric
+
+# Testing
+coverage
+coveralls
+django-nose
+django-test-mixins
+
+# Dev tools
+ipdb
+ipython
+pip-tools
