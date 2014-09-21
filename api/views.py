@@ -17,18 +17,8 @@ def view_word(request, word):
 
     definition_objs = word_obj.primarydefinition_set.all()
 
-    definitions = []
+    definitions = [definition_obj.as_json() for definition_obj in definition_objs]
 
-    for definition_obj in definition_objs:
-        examples = []
-        for example_obj in definition_obj.example_set.all():
-            examples.append({'ekzemplo': example_obj.example,
-                             'fonto': example_obj.source})
-        
-        definitions.append({
-            'difino': definition_obj.definition,
-            'ekzemploj': examples})
-    
     return JsonResponse({
         'vorto': word_obj.word,
         'difinoj': definitions})

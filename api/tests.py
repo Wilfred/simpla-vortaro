@@ -29,6 +29,7 @@ class WordApiTest(HttpCodeTestCase):
 
         definition_json = response['difinoj'][0]
         self.assertIn("difino", definition_json)
+        self.assertIn("pludifinoj", definition_json)
         self.assertIn("ekzemploj", definition_json)
 
         example_json = definition_json['ekzemploj'][0]

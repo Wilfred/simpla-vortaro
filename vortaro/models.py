@@ -58,6 +58,12 @@ class Definition(models.Model):
     def __unicode__(self):
         return self.definition[:20]
 
+    def as_json(self):
+        return {
+            'difino': self.definition,
+            'ekzemploj': [example.as_json() for example in self.example_set.all()]
+        }
+
 
 class PrimaryDefinition(Definition):
     """A definition for a word. One word can have many primary
@@ -67,6 +73,13 @@ class PrimaryDefinition(Definition):
 
     """
     word = models.ForeignKey(Word)
+
+    def as_json(self):
+        definition = super(PrimaryDefinition, self).as_json()
+        definition['pludifinoj'] = [subdefinition.as_json()
+                                    for subdefinition in self.subdefinition_set.all()]
+
+        return definition
 
 class Subdefinition(Definition):
     """A subdefinition of a specfic definition. One definition can
@@ -87,6 +100,12 @@ class Example(models.Model):
 
     def __unicode__(self):
         return self.example[:20]
+
+    def as_json(self):
+        return {
+            'ekzemplo': self.example,
+            'fonto': self.source,
+        }
 
 
 class Remark(models.Model):
