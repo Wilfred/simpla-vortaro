@@ -9,7 +9,12 @@ urlpatterns = patterns('vortaro.views',
     url(r'^informo$', 'about', name="about"),
     url(ur'^serĉo$', 'search_word', name="search_word"),
     url(r'^vorto/(?P<word>.*)$', 'view_word', name="view_word"),
-    url(u'^$', 'index', name="index"))
+    url(u'^$', 'index', name="index"),
+)
+
+urlpatterns += patterns('api.views',
+    url(u'^api/v1/vorto/(?P<word>.*)$', 'view_word', name="api_view_word"),
+)
 
 if settings.DEBUG:
     # Serve static files using Django during development.
