@@ -1,0 +1,17 @@
+# The website
+Django==1.7
+gunicorn==19.1.1
+
+# Deploying
+Fabric
+
+# Testing
+coverage
+coveralls
+django-nose
+django-test-mixins
+
+# Dev tools
+ipdb
+ipython
+pip-tools
