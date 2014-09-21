@@ -14,4 +14,11 @@ class JsonResponse(HttpResponse):
 
 def view_word(request, word):
     word_obj = get_object_or_404(Word, word=word)
-    return JsonResponse({'hello': 'world'})
+
+    definition_objs = word_obj.primarydefinition_set.all()
+    definitions = [{'difino': definition_obj.definition}
+                   for definition_obj in definition_objs]
+    
+    return JsonResponse({
+        'vorto': word_obj.word,
+        'difinoj': definitions})
