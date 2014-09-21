@@ -15,6 +15,10 @@ class WordApiTest(HttpCodeTestCase):
         self.assertHttpOK(response)
         self.assertEqual(response['Content-Type'], 'application/json')
 
+    def test_get_word_404(self):
+        response = self.client.get(reverse('api_view_word', args=['no-such-word']))
+        self.assertHttpNotFound(response)
+
     def test_get_word_has_fields(self):
         """Ensure that responses from our API have the right fields."""
         word = Word.objects.create(word="saluto")
