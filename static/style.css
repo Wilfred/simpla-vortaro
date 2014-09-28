@@ -129,3 +129,8 @@ input {
 acronym {
     border-bottom: 1px dotted;
 }
+
+code {
+    font-size: 18px;
+    white-space: pre-line;
+}

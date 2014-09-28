@@ -1,0 +1,56 @@
+{% extends "index.html" %}
+
+{% block title %}Pri La Simpla Vortaro{% endblock %}
+
+{% block content %}
+<h2>API</h2>
+
+<p>La Simpla Vortaro havas JSON-an API-n. Vi povas uzi ĝin por
+projektoj, kiuj bezonas vortaron aŭ serĉilo.
+</p>
+
+<h3>Serĉado</h3>
+
+<code>{% url 'api_search_word' "VIA_VORTO" %}</code>
+
+<p>Vi povas sercxi per cxi tiu URL. Jen ezkemploj:
+</p>
+
+<code>normala vorto
+    <a href="{% url 'api_search_word' "saluti" %}">{% url 'api_search_word' "saluti" %}</a>
+    
+    ĉapelaj literoj
+    <a href="{% url 'api_search_word' "manĝi" %}">{% url 'api_search_word' "manĝi" %}</a>
+    
+    x-sistemo
+    <a href="{% url 'api_search_word' "mangxi" %}">{% url 'api_search_word' "mangxi" %}</a>
+    
+    h-sistemo
+    <a href="{% url 'api_search_word' "manghi" %}">{% url 'api_search_word' "manghi" %}</a>
+    
+    malbona literumado
+    <a href="{% url 'api_search_word' "zaluti" %}">{% url 'api_search_word' "zaluti" %}</a>
+    
+    majuskloj kaj miniskuloj
+    <a href="{% url 'api_search_word' "SALuti" %}">{% url 'api_search_word' "SALuti" %}</a>
+    
+    majuskleco gravas por rezultoj! (vidu 'preciza'-n)
+    <a href="{% url 'api_search_word' "vorto" %}">{% url 'api_search_word' "vorto" %}</a>
+    
+    tradukoj
+    <a href="{% url 'api_search_word' "dog" %}">{% url 'api_search_word' "dog" %}</a>
+    
+    vortfarado
+    <a href="{% url 'api_search_word' "mansanigi" %}">{% url 'api_search_word' "malsanigi" %}</a>
+</code>
+
+
+<h3>Limoj</h3>
+
+<p>Ĉi-momente, ne ekzistas limoj. Se vi volas uzi la API-n multege
+(pli ol unuvice dum sekundo), mi preferus ke vi
+<a href="http://lalingvisto.wordpress.com/pri-mi/">kontaktu
+min</a> antaŭe.
+</p>
+
+{% endblock %}

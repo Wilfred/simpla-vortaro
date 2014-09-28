@@ -29,6 +29,10 @@ class AboutTests(TestCase):
         response = self.client.get(reverse('about'))
         self.assertEqual(response.status_code, 200)
 
+    def test_about_api_renders(self):
+        response = self.client.get(reverse('about_the_api'))
+        self.assertEqual(response.status_code, 200)
+
 
 class WordPageTests(HttpCodeTestCase):
     def test_view_renders(self):

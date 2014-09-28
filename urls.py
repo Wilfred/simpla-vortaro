@@ -7,6 +7,7 @@ static_files_path = os.path.join(settings.PROJECT_DIR, "static")
 
 urlpatterns = patterns('vortaro.views',
     url(r'^informo$', 'about', name="about"),
+    url(r'^informo/api$', 'about_the_api', name="about_the_api"),
     url(ur'^serĉo$', 'search_word', name="search_word"),
     url(r'^vorto/(?P<word>.*)$', 'view_word', name="view_word"),
     url(u'^$', 'index', name="index"),

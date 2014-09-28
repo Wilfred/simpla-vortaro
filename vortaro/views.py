@@ -11,6 +11,10 @@ def about(request):
     return render(request, 'about.html')
 
 
+def about_the_api(request):
+    return render(request, 'about_the_api.html')
+
+
 def index(request):
     # all requests are dispatched from here, to keep URLs simple
 
