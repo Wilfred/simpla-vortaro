@@ -3,27 +3,8 @@ from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 
 from models import Word, PrimaryDefinition, Subdefinition, Example, Remark, Translation
-from morphology import parse_morphology
+from .morphology import parse_morphology, canonicalise_word
 from .esperanto_sort import compare_esperanto_strings
-
-
-def clean_search_term(search_term):
-    # substitute ' if used, since e.g. vort' == vorto
-    if search_term.endswith("'"):
-        search_term = search_term[:-1] + 'o'
-
-    # Strip any hyphens used, since we can't guarantee where they
-    # will/will not appear.
-    clean_term = search_term.replace('-', '')
-    # However, we have words in the dictionary that start with hyphens,
-    # e.g. '-eg', so we want to preserve hyphens in that case.
-    if search_term.startswith('-'):
-        clean_term = '-' + clean_term
-
-    # Our variants are stored in lower case, so ensure we match.
-    clean_term = clean_term.lower()
-
-    return clean_term
 
 
 def about(request):
@@ -102,7 +83,7 @@ def view_word(request, word):
 
 def search_word(request):
     query = request.GET[u's'].strip()
-    search_term = clean_search_term(query)
+    search_term = canonicalise_word(query)
 
     # if search term is stupidly long, truncate it
     if len(search_term) > 40:

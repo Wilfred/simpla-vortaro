@@ -394,5 +394,34 @@ def find_matching(word):
     else:
         return None
 
+
+def canonicalise_word(word):
+    """Given a word, convert it to a canonical form that matches how we
+    store words in our database.
+
+    >>> canonicalise_word("Mal-salut' ") # a silly word
+    "malsaluto"
+
+    """
+    word = word.strip()
+    
+    # substitute ' if used, since e.g. vort' == vorto
+    if word.endswith("'"):
+        word = word[:-1] + 'o'
+
+    # Strip any hyphens used, since we can't guarantee where they
+    # will/will not appear.
+    clean_word = word.replace('-', '')
+    # However, we have words in the dictionary that start with hyphens,
+    # e.g. '-eg', so we want to preserve hyphens in that case.
+    if word.startswith('-'):
+        clean_word = '-' + clean_word
+
+    # Our variants are stored in lower case, so ensure we match.
+    clean_word = clean_word.lower()
+
+    return clean_word
+
+
 if __name__ == '__main__':
     print parse_morphology(u'konkludo')

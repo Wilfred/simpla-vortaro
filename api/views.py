@@ -5,6 +5,7 @@ from django.http import HttpResponse
 
 from vortaro.models import Word
 from vortaro.esperanto_sort import compare_esperanto_strings
+from vortaro.morphology import canonicalise_word
 
 
 # TODO: move to Django 1.7, which already provides this.
@@ -27,6 +28,7 @@ def view_word(request, word):
 
 
 def search_word(request, search_term):
+    search_term = canonicalise_word(search_term)
     matching_words = Word.objects.find_by_variant(search_term)
 
     similar_words = set(Word.objects.find_by_variant_fuzzy(search_term))
