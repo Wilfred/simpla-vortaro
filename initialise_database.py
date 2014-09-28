@@ -79,6 +79,17 @@ def get_variants(word):
 
     return variants
 
+def get_all_spellings(word):
+    """Return a list of all the ways this word can be written according to
+    all Esperanto writing systems.
+
+    >>> get_all_spellings("eĥo")
+    set(['eĥo', 'eho', 'ehxo'])
+
+    """
+    return set([word, to_h_system(word), to_x_system(word)])
+
+
 @transaction.commit_on_success
 def populate_database(dictionary):
     """Given a dictionary file from a JSON dump created by
@@ -152,40 +163,22 @@ def populate_database(dictionary):
             although 'dormo' is also in the dictionary. 
             
             """
-            # add morphemes (e.g. 'dorm'), forbidding those of one
-            # letter since none actually exist in word buidling
+            # Add roots (e.g. 'dorm'), forbidding those of one
+            # letter since none actually exist in word building.
             root = entry['root']
-            if len(root) > 1 and root not in seen_morphemes:
-                seen_morphemes[root] = True
-                Morpheme(primary_word=word_obj, morpheme=root).save()
-
-                # also add in other writing systems if different
-                if to_h_system(root) not in seen_morphemes:
-                    seen_morphemes[to_h_system(root)] = True
-                    Morpheme(primary_word=word_obj,
-                             morpheme=to_h_system(root)).save()
-
-                if to_x_system(root) not in seen_morphemes:
-                    seen_morphemes[to_x_system(root)] = True
-                    Morpheme(primary_word=word_obj,
-                             morpheme=to_x_system(root)).save()
-
+            if len(root) > 1:
+                for spelling in get_all_spellings(root):
+                    if spelling not in seen_morphemes:
+                        seen_morphemes[spelling] = True
+                        Morpheme.objects.create(primary_word=word_obj, morpheme=spelling)
+            
         # also add words as morphemes if they end -o or -a
-        if (is_declinable_noun(word) or is_declinable_adjective(word)) \
-                and word not in seen_morphemes:
-            seen_morphemes[word] = True
-            Morpheme(primary_word=word_obj, morpheme=word).save()
-
-            # and again also add if different in other writing systems
-            if to_h_system(word) not in seen_morphemes:
-                seen_morphemes[to_h_system(word)] = True
-                Morpheme(primary_word=word_obj,
-                         morpheme=to_h_system(word)).save()
-
-            if to_x_system(word) not in seen_morphemes:
-                seen_morphemes[to_x_system(word)] = True
-                Morpheme(primary_word=word_obj,
-                         morpheme=to_x_system(word)).save()
+        if (is_declinable_noun(word) or is_declinable_adjective(word)):
+            
+            for spelling in get_all_spellings(word):
+                if spelling not in seen_morphemes:
+                    seen_morphemes[spelling] = True
+                    Morpheme.objects.create(primary_word=word_obj, morpheme=spelling)
 
     # add -ant, etc morphemes which aren't in ReVo
     assert 'ant' not in seen_morphemes
