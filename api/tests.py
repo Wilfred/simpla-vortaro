@@ -19,13 +19,9 @@ class WordApiTest(HttpCodeTestCase):
         response = self.client.get(reverse('api_view_word', args=['no-such-word']))
         self.assertHttpNotFound(response)
 
-    def test_get_word_has_fields(self):
+    def test_get_word_has_top_level_fields(self):
         """Ensure that responses from our API have the right fields."""
-        word = Word.objects.create(word="saluto")
-        definition = PrimaryDefinition.objects.create(word=word, definition="foo bar")
-        Example.objects.create(definition=definition, example="bar baz")
-        Translation.objects.create(definition=definition, translation="foo",
-                                   language_code='en', word=word)
+        Word.objects.create(word="saluto")
 
         raw_response = self.client.get(reverse('api_view_word', args=['saluto']))
         response = json.loads(raw_response.content)
@@ -33,16 +29,42 @@ class WordApiTest(HttpCodeTestCase):
         self.assertIn("vorto", response)
         self.assertIn("difinoj", response)
 
+    def test_get_word_has_definitions(self):
+        word = Word.objects.create(word="saluto")
+        PrimaryDefinition.objects.create(word=word, definition="foo bar")
+
+        raw_response = self.client.get(reverse('api_view_word', args=['saluto']))
+        response = json.loads(raw_response.content)
+
         definition_json = response['difinoj'][0]
         self.assertIn("difino", definition_json)
         self.assertIn("pludifinoj", definition_json)
         self.assertIn("ekzemploj", definition_json)
         self.assertIn("tradukoj", definition_json)
 
+    def test_get_word_has_examples(self):
+        word = Word.objects.create(word="saluto")
+        definition = PrimaryDefinition.objects.create(word=word, definition="foo bar")
+        Example.objects.create(definition=definition, example="bar baz")
+
+        raw_response = self.client.get(reverse('api_view_word', args=['saluto']))
+        response = json.loads(raw_response.content)
+
+        definition_json = response['difinoj'][0]
         example_json = definition_json['ekzemploj'][0]
         self.assertIn("ekzemplo", example_json)
         self.assertIn("fonto", example_json)
 
+    def test_get_word_has_translations(self):
+        word = Word.objects.create(word="saluto")
+        definition = PrimaryDefinition.objects.create(word=word, definition="foo bar")
+        Translation.objects.create(definition=definition, translation="foo",
+                                   language_code='en', word=word)
+
+        raw_response = self.client.get(reverse('api_view_word', args=['saluto']))
+        response = json.loads(raw_response.content)
+
+        definition_json = response['difinoj'][0]
         translation_json = definition_json['tradukoj'][0]
         self.assertIn("traduko", translation_json)
         self.assertIn("kodo", translation_json)
