@@ -3,10 +3,6 @@ from django.conf.urls import patterns, url
 from django.conf import settings
 from django.views.generic import TemplateView
 
-import os.path
-
-static_files_path = os.path.join(settings.PROJECT_DIR, "static")
-
 urlpatterns = patterns('vortaro.views',
     url(r'^informo$', 'about', name="about"),
     url(r'^informo/api$', 'about_the_api', name="about_the_api"),
