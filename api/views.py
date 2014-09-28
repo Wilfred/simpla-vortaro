@@ -43,14 +43,17 @@ def search_word(request, search_term):
             else:
                 printable_parts.append(part)
 
-        constituent_words = [
-            part.primary_word.word
-            for part in parse_result
-            if isinstance(part, Morpheme)]
-                
+        parts = []
+        for part in parse_result:
+            if isinstance(part, Morpheme):
+                parts.append({'vorto': part.primary_word.word,
+                              'parto': part.morpheme})
+            else:
+                parts.append({'vorto': None, 'parto': part})
+            
         parsed_words.append({
             'rezulto': "-".join(printable_parts),
-            'partoj': constituent_words,
+            'partoj': parts,
         })
 
     translations = [

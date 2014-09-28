@@ -224,8 +224,15 @@ class SearchApiTest(HttpCodeTestCase):
         response = json.loads(raw_response.content)
 
         self.assertEqual(response['vortfarado'], [
-            {'rezulto': 'person-e', 'partoj': ['persono']},
-            {'rezulto': 'per-son-e', 'partoj': ['per', 'soni']},
+            {'rezulto': 'person-e', 'partoj': [
+                {'vorto': 'persono', 'parto': 'person'},
+                {'vorto': None, 'parto': 'e'},
+            ]},
+            {'rezulto': 'per-son-e', 'partoj': [
+                {'vorto': 'per', 'parto': 'per'},
+                {'vorto': 'soni', 'parto': 'son'},
+                {'vorto': None, 'parto': 'e'},
+            ]},
         ])
 
     def test_search_translations(self):
