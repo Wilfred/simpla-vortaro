@@ -3,8 +3,13 @@ import json
 
 from django.db import transaction
 
-from vortaro.morphology import *
-from vortaro.models import *
+from vortaro.morphology import (
+    is_declinable_adjective, is_declinable_noun, is_declinable_adverb,
+    is_infinitive, is_pronoun,
+)
+from vortaro.models import (
+    Word, Morpheme, Variant, PrimaryDefinition, Subdefinition, Translation,
+    Example, Remark)
 
 """A simple script that populates the sqlite database from a JSON dump produced
 by ReVo-utilities. Database must be empty to start with.
