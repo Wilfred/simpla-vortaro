@@ -48,6 +48,8 @@ USE_L10N = True
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/resources/'
 
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'staticfiles')
+
 # Additional locations of static files
 STATICFILES_DIRS = (
     os.path.join(PROJECT_DIR, "static"),
@@ -92,6 +94,10 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    # django apps
+    'django.contrib.staticfiles',
+
+    # our apps
     'vortaro',
 
     # third party apps

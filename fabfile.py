@@ -17,6 +17,7 @@ def deploy():
         run('git reset --hard origin/master')
         _virtualenv('pip install -r requirements_pinned.txt')
 
+        _virtualenv('python manage.py collectstatic --noinput')
         _virtualenv('python manage.py syncdb')
 
     restart()
