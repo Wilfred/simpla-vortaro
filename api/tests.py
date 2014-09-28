@@ -92,7 +92,7 @@ class SearchApiTest(HttpCodeTestCase):
 
         self.assertEqual(response['preciza'], ['saluto'])
 
-    def test_search_precise_results_returns_canonical_form(self):
+    def test_search_precise_results_returns_canonical_noun_form(self):
         word_obj = Word.objects.create(word="hundo")
         for variant in get_variants('hundo'):
             Variant.objects.create(word=word_obj, variant=variant)
@@ -101,6 +101,16 @@ class SearchApiTest(HttpCodeTestCase):
         response = json.loads(raw_response.content)
 
         self.assertEqual(response['preciza'], ['hundo'])
+
+    def test_search_precise_results_returns_canonical_verb_form(self):
+        word_obj = Word.objects.create(word="iri")
+        for variant in get_variants('iri'):
+            Variant.objects.create(word=word_obj, variant=variant)
+
+        raw_response = self.client.get(reverse('api_search_word', args=['iras']))
+        response = json.loads(raw_response.content)
+
+        self.assertEqual(response['preciza'], ['iri'])
 
     def test_search_imprecise_results(self):
         word = Word.objects.create(word="hundo")
