@@ -175,7 +175,7 @@ class Morpheme(models.Model):
     morpheme = models.CharField(max_length=50, unique=True)
 
     def __unicode__(self):
-        return self.morpheme
+        return u"%s (from %s)" % (self.morpheme, self.primary_word.word)
 
 class Translation(models.Model):
     """The matching word for this definition of this word in another
