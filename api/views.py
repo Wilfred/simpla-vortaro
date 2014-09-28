@@ -4,6 +4,8 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 
 from vortaro.models import Word
+from vortaro.esperanto_sort import compare_esperanto_strings
+
 
 # TODO: move to Django 1.7, which already provides this.
 class JsonResponse(HttpResponse):
@@ -32,5 +34,6 @@ def search_word(request, search_term):
     
     return JsonResponse({
         'preciza': [word.word for word in matching_words],
-        'malpreciza': [word.word for word in similar_words],
+        'malpreciza': sorted([word.word for word in similar_words],
+                             cmp=compare_esperanto_strings),
     })

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.core.urlresolvers import reverse
 from django_test_mixins import HttpCodeTestCase
 
@@ -109,3 +110,15 @@ class SearchApiTest(HttpCodeTestCase):
         response = json.loads(raw_response.content)
 
         self.assertEqual(response['malpreciza'], ['hundo'])
+
+    def test_search_imprecise_results_sorted(self):
+        for word in ['sati', 'savi', 'bati', u'ŝati']:
+            word_obj = Word.objects.create(word=word)
+            for variant in get_variants(word):
+                Variant.objects.create(word=word_obj, variant=variant)
+
+        raw_response = self.client.get(reverse('api_search_word', args=['sati']))
+        response = json.loads(raw_response.content)
+
+        # We don't expect 'sati' in this list, as that will be in the precise search.
+        self.assertEqual(response['malpreciza'], ['bati', 'savi', u'ŝati'])
