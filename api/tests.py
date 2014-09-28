@@ -101,6 +101,15 @@ class SearchApiTest(HttpCodeTestCase):
 
         self.assertEqual(response['preciza'], ['saluto'])
 
+    def test_search_precise_dash(self):
+        word_obj = Word.objects.create(word="saluto")
+        Variant.objects.create(word=word_obj, variant="saluto")
+
+        raw_response = self.client.get(reverse('api_search_word', args=["salut-o"]))
+        response = json.loads(raw_response.content)
+
+        self.assertEqual(response['preciza'], ['saluto'])
+
     def test_search_precise_results_returns_canonical_noun_form(self):
         word_obj = Word.objects.create(word="hundo")
         for variant in get_variants('hundo'):
