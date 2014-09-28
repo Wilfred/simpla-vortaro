@@ -138,7 +138,28 @@ class SearchApiTest(HttpCodeTestCase):
         response = json.loads(raw_response.content)
         self.assertEqual(response['preciza'], ['bona'])
 
+        raw_response = self.client.get(reverse('api_search_word', args=['bonaj']))
+        response = json.loads(raw_response.content)
+        self.assertEqual(response['preciza'], ['bona'])
+
         raw_response = self.client.get(reverse('api_search_word', args=['bonajn']))
+        response = json.loads(raw_response.content)
+        self.assertEqual(response['preciza'], ['bona'])
+
+    def test_search_precise_results_returns_canonical_table_word_form(self):
+        word_obj = Word.objects.create(word="kiu")
+        for variant in get_variants('kiu'):
+            Variant.objects.create(word=word_obj, variant=variant)
+
+        raw_response = self.client.get(reverse('api_search_word', args=['kiun']))
+        response = json.loads(raw_response.content)
+        self.assertEqual(response['preciza'], ['kiu'])
+
+        raw_response = self.client.get(reverse('api_search_word', args=['kiuj']))
+        response = json.loads(raw_response.content)
+        self.assertEqual(response['preciza'], ['kiu'])
+
+        raw_response = self.client.get(reverse('api_search_word', args=['kiujn']))
         response = json.loads(raw_response.content)
         self.assertEqual(response['preciza'], ['bona'])
 
@@ -156,6 +177,10 @@ class SearchApiTest(HttpCodeTestCase):
         self.assertEqual(response['preciza'], ['iri'])
 
         raw_response = self.client.get(reverse('api_search_word', args=['iros']))
+        response = json.loads(raw_response.content)
+        self.assertEqual(response['preciza'], ['iri'])
+
+        raw_response = self.client.get(reverse('api_search_word', args=['irus']))
         response = json.loads(raw_response.content)
         self.assertEqual(response['preciza'], ['iri'])
 
