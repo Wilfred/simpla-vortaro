@@ -150,6 +150,7 @@ class SearchApiTest(HttpCodeTestCase):
         word_obj = Word.objects.create(word="kiu")
         for variant in get_variants('kiu'):
             Variant.objects.create(word=word_obj, variant=variant)
+        Morpheme.objects.create(primary_word=word_obj, morpheme="kiu")
 
         raw_response = self.client.get(reverse('api_search_word', args=['kiun']))
         response = json.loads(raw_response.content)
@@ -161,7 +162,7 @@ class SearchApiTest(HttpCodeTestCase):
 
         raw_response = self.client.get(reverse('api_search_word', args=['kiujn']))
         response = json.loads(raw_response.content)
-        self.assertEqual(response['preciza'], ['bona'])
+        self.assertEqual(response['preciza'], ['kiu'])
 
     def test_search_precise_results_returns_canonical_verb_form(self):
         word_obj = Word.objects.create(word="iri")
