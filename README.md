@@ -41,18 +41,23 @@ definitions.
 Copy the JSON file to the root of the project and call it
 `dictionary.json`. You can then create a database with:
 
-    $ python manage.py flush`
-    $ python manage.py shell`
-    In [1]: %run initialise_database.py`
+    $ python manage.py flush
+    $ python manage.py shell
+    In [1]: %run initialise_database.py
     
     
 Running the tests
 -----------------
 
-The tests require production data, since the entire site is read only
-anyway. Make sure you have `word_db`.
+The unit tests (as run by Travis) have no dependencies, and can be run
+with:
 
-    $ DJANGO_SETTINGS_MODULE=settings python test_parser.py
+    $ python manage.py test
+
+The word parsing tests require the full dictionary dataset. Make sure
+you have `word_db` set up.
+
+    $ DJANGO_SETTINGS_MODULE=settings python _test_parser.py
 
 Updating requirements
 ---------------------
