@@ -22,6 +22,8 @@ DATABASES = {
     }
 }
 
+ALLOWED_HOSTS = ['*']
+
 WSGI_APPLICATION = "wsgi.application"
 
 # Local time zone for this installation. Choices can be found here:
