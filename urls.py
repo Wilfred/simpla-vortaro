@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import patterns, url
 from django.conf import settings
+from django.views.generic import TemplateView
+
 import os.path
 
 static_files_path = os.path.join(settings.PROJECT_DIR, "static")
@@ -24,4 +26,6 @@ if settings.DEBUG:
     # Serve static files using Django during development.
     urlpatterns += patterns('',
         (r'^resources/(?P<path>.*)$', 'django.views.static.serve',
-         {'document_root': static_files_path}))
+         {'document_root': static_files_path}),
+        url(r'^404$', TemplateView.as_view(template_name='404.html')),
+    )
