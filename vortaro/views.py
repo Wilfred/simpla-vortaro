@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 
 from models import Word, PrimaryDefinition, Subdefinition, Example, Remark, Translation
 from morphology import parse_morphology
-from esperanto_sort import compare_esperanto_strings
+from .esperanto_sort import compare_esperanto_strings
 
 
 def clean_search_term(search_term):
