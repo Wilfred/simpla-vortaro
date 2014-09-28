@@ -7,6 +7,8 @@ from vortaro.models import (
     Word, PrimaryDefinition, Example,
     Translation, Variant)
 
+from initialise_database import get_variants
+
 
 class WordApiTest(HttpCodeTestCase):
     def test_get_word(self):
@@ -91,7 +93,8 @@ class SearchApiTest(HttpCodeTestCase):
 
     def test_search_precise_results_returns_canonical_form(self):
         word = Word.objects.create(word="hundo")
-        Variant.objects.create(word=word, variant="hundojn")
+        for variant in get_variants('hundo'):
+            Variant.objects.create(word=word, variant=variant)
 
         raw_response = self.client.get(reverse('api_search_word', args=['hundojn']))
         response = json.loads(raw_response.content)
