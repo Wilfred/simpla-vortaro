@@ -6,7 +6,7 @@ import json
 
 from vortaro.models import (
     Word, PrimaryDefinition, Example,
-    Translation, Variant)
+    Translation, Variant, Morpheme)
 
 from initialise_database import get_variants
 
@@ -141,3 +141,23 @@ class SearchApiTest(HttpCodeTestCase):
 
         # We don't expect 'sati' in this list, as that will be in the precise search.
         self.assertEqual(response['malpreciza'], ['bati', 'savi', u'ŝati'])
+
+    def test_search_word_building(self):
+        word_obj = Word.objects.create(word="per")
+        Morpheme.objects.create(primary_word=word_obj, morpheme="per")
+
+        word_obj = Word.objects.create(word="soni")
+        Morpheme.objects.create(primary_word=word_obj, morpheme="soni")
+        Morpheme.objects.create(primary_word=word_obj, morpheme="son")
+
+        word_obj = Word.objects.create(word="persono")
+        Morpheme.objects.create(primary_word=word_obj, morpheme="persono")
+        Morpheme.objects.create(primary_word=word_obj, morpheme="person")
+
+        raw_response = self.client.get(reverse('api_search_word', args=['persone']))
+        response = json.loads(raw_response.content)
+
+        self.assertEqual(response['vortfarado'], [
+            {'rezulto': 'person-e', 'partoj': ['persono']},
+            {'rezulto': 'per-son-e', 'partoj': ['per', 'soni']},
+        ])

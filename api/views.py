@@ -3,9 +3,9 @@ import json
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 
-from vortaro.models import Word
+from vortaro.models import Word, Morpheme
 from vortaro.esperanto_sort import compare_esperanto_strings
-from vortaro.morphology import canonicalise_word
+from vortaro.morphology import canonicalise_word, parse_morphology
 
 
 # TODO: move to Django 1.7, which already provides this.
@@ -33,9 +33,31 @@ def search_word(request, search_term):
 
     similar_words = set(Word.objects.find_by_variant_fuzzy(search_term))
     similar_words = similar_words - set(matching_words)
+
+    parsed_words = []
+    for parse_result in parse_morphology(search_term):
+        printable_parts = []
+        for part in parse_result:
+            if isinstance(part, Morpheme):
+                printable_parts.append(part.morpheme)
+            else:
+                printable_parts.append(part)
+
+        constituent_words = [
+            part.primary_word.word
+            for part in parse_result
+            if isinstance(part, Morpheme)]
+                
+        parsed_words.append({
+            'rezulto': "-".join(printable_parts),
+            'partoj': constituent_words,
+        })
     
     return JsonResponse({
         'preciza': [word.word for word in matching_words],
         'malpreciza': sorted([word.word for word in similar_words],
                              cmp=compare_esperanto_strings),
+        'vortfarado': parsed_words,
+        # test me!
+        'tradukoj': [],
     })
