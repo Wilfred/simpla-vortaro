@@ -22,6 +22,8 @@ DATABASES = {
     }
 }
 
+WSGI_APPLICATION = "wsgi.application"
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 TIME_ZONE = 'Europe/London'
