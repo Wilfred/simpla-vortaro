@@ -285,6 +285,12 @@ def score_parse(parse):
     return badness
 
 def parse_morphology(word):
+    # potential parses are weighted by likelihood, only show top two
+    # since the rest are probably nonsensical
+    return parse_morphology_all(word)[:2]
+
+
+def parse_morphology_all(word):
     """Given a word (possibly constructed using word-building
     ('vortfarado'), stem it (if possible) then split it into its
     constituent roots.

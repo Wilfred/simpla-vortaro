@@ -104,10 +104,6 @@ def search_word(request):
     # of form [['konk', 'lud'], ['konklud']]
     potential_parses = parse_morphology(search_term)
 
-    # potential parses are weighted by likelihood, only show top two
-    # since the rest are probably nonsensical
-    potential_parses = potential_parses[:2]
-
     # get matching translations, ignoring changes we made for
     # esperanto words
     translations = translation_search(search_term)
