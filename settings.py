@@ -83,7 +83,6 @@ INSTALLED_APPS = (
 
     # third party apps
     'django_nose',
-    'tastypie',
 )
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
