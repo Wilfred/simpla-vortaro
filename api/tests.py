@@ -3,7 +3,7 @@ from django_test_mixins import HttpCodeTestCase
 
 import json
 
-from vortaro.models import Word, PrimaryDefinition, Example
+from vortaro.models import Word, PrimaryDefinition, Example, Translation
 
 
 class WordApiTest(HttpCodeTestCase):
@@ -24,6 +24,8 @@ class WordApiTest(HttpCodeTestCase):
         word = Word.objects.create(word="saluto")
         definition = PrimaryDefinition.objects.create(word=word, definition="foo bar")
         Example.objects.create(definition=definition, example="bar baz")
+        Translation.objects.create(definition=definition, translation="foo",
+                                   language_code='en', word=word)
 
         raw_response = self.client.get(reverse('api_view_word', args=['saluto']))
         response = json.loads(raw_response.content)
@@ -35,8 +37,13 @@ class WordApiTest(HttpCodeTestCase):
         self.assertIn("difino", definition_json)
         self.assertIn("pludifinoj", definition_json)
         self.assertIn("ekzemploj", definition_json)
+        self.assertIn("tradukoj", definition_json)
 
         example_json = definition_json['ekzemploj'][0]
         self.assertIn("ekzemplo", example_json)
         self.assertIn("fonto", example_json)
-        
+
+        translation_json = definition_json['tradukoj'][0]
+        self.assertIn("traduko", translation_json)
+        self.assertIn("kodo", translation_json)
+        self.assertIn("lingvo", translation_json)

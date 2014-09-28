@@ -61,7 +61,7 @@ class Definition(models.Model):
     def as_json(self):
         return {
             'difino': self.definition,
-            'ekzemploj': [example.as_json() for example in self.example_set.all()]
+            'ekzemploj': [example.as_json() for example in self.example_set.all()],
         }
 
 
@@ -78,6 +78,8 @@ class PrimaryDefinition(Definition):
         definition = super(PrimaryDefinition, self).as_json()
         definition['pludifinoj'] = [subdefinition.as_json()
                                     for subdefinition in self.subdefinition_set.all()]
+        definition['tradukoj'] = [translation.as_json()
+                                  for translation in self.translation_set.all()]
 
         return definition
 
@@ -181,11 +183,18 @@ class Translation(models.Model):
 
     """
     # word is just a convenience to save us working out which word a
-    # definition belog to
+    # definition belongs to.
     word = models.ForeignKey(Word)
     definition = models.ForeignKey(Definition)
     translation = models.TextField()
     language_code = models.CharField(max_length=10)
+
+    def as_json(self):
+        return {
+            'lingvo': self.language,
+            'kodo': self.language_code,
+            'traduko': self.translation,
+        }
 
     @property
     def language(self):
