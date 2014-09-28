@@ -3,7 +3,7 @@ import json
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 
-from vortaro.models import Word, Morpheme
+from vortaro.models import Word, Morpheme, Translation
 from vortaro.esperanto_sort import compare_esperanto_strings
 from vortaro.morphology import canonicalise_word, parse_morphology
 
@@ -52,12 +52,17 @@ def search_word(request, search_term):
             'rezulto': "-".join(printable_parts),
             'partoj': constituent_words,
         })
+
+    translations = [
+        {'vorto': trans.word.word, 'traduko': trans.translation,
+         'kodo': trans.language_code, 'lingvo': trans.language}
+        for trans in Translation.objects.filter(translation=search_term)
+    ]
     
     return JsonResponse({
         'preciza': [word.word for word in matching_words],
         'malpreciza': sorted([word.word for word in similar_words],
                              cmp=compare_esperanto_strings),
         'vortfarado': parsed_words,
-        # test me!
-        'tradukoj': [],
+        'tradukoj': translations,
     })

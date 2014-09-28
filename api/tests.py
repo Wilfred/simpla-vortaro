@@ -161,3 +161,17 @@ class SearchApiTest(HttpCodeTestCase):
             {'rezulto': 'person-e', 'partoj': ['persono']},
             {'rezulto': 'per-son-e', 'partoj': ['per', 'soni']},
         ])
+
+    def test_search_translations(self):
+        word_obj = Word.objects.create(word="hundo")
+        definition = PrimaryDefinition.objects.create(
+            word=word_obj, definition="besto")
+        Translation.objects.create(word=word_obj, definition=definition,
+                                   translation="dog", language_code="en")
+
+        raw_response = self.client.get(reverse('api_search_word', args=['dog']))
+        response = json.loads(raw_response.content)
+
+        self.assertEqual(response['tradukoj'], [
+            {'vorto': 'hundo', 'traduko': 'dog', 'kodo': 'en', 'lingvo': 'La angla'},
+        ])
