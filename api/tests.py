@@ -129,6 +129,19 @@ class SearchApiTest(HttpCodeTestCase):
 
         self.assertEqual(response['preciza'], ['hundo'])
 
+    def test_search_precise_results_returns_canonical_adjective_form(self):
+        word_obj = Word.objects.create(word="bona")
+        for variant in get_variants('bona'):
+            Variant.objects.create(word=word_obj, variant=variant)
+
+        raw_response = self.client.get(reverse('api_search_word', args=['bonan']))
+        response = json.loads(raw_response.content)
+        self.assertEqual(response['preciza'], ['bona'])
+
+        raw_response = self.client.get(reverse('api_search_word', args=['bonajn']))
+        response = json.loads(raw_response.content)
+        self.assertEqual(response['preciza'], ['bona'])
+
     def test_search_precise_results_returns_canonical_verb_form(self):
         word_obj = Word.objects.create(word="iri")
         for variant in get_variants('iri'):
@@ -136,7 +149,18 @@ class SearchApiTest(HttpCodeTestCase):
 
         raw_response = self.client.get(reverse('api_search_word', args=['iras']))
         response = json.loads(raw_response.content)
+        self.assertEqual(response['preciza'], ['iri'])
 
+        raw_response = self.client.get(reverse('api_search_word', args=['iris']))
+        response = json.loads(raw_response.content)
+        self.assertEqual(response['preciza'], ['iri'])
+
+        raw_response = self.client.get(reverse('api_search_word', args=['iros']))
+        response = json.loads(raw_response.content)
+        self.assertEqual(response['preciza'], ['iri'])
+
+        raw_response = self.client.get(reverse('api_search_word', args=['iru']))
+        response = json.loads(raw_response.content)
         self.assertEqual(response['preciza'], ['iri'])
 
     def test_search_imprecise_results(self):
