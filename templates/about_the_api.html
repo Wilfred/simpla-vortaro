@@ -13,7 +13,8 @@ projektoj, kiuj bezonas vortaron aŭ serĉilo.
 
 <code>{% url 'api_search_word' "VIA_VORTO" %}</code>
 
-<p>Vi povas sercxi per cxi tiu URL. Jen ezkemploj:
+<p>Vi povas serĉi per ĉi tiu URL. La Simpla Vortaro multe provas
+trovi la vorton, kiun vi deziras. Jen ezkemploj de serĉoj:
 </p>
 
 <code>normala vorto
@@ -28,13 +29,13 @@ projektoj, kiuj bezonas vortaron aŭ serĉilo.
     h-sistemo
     <a href="{% url 'api_search_word' "manghi" %}">{% url 'api_search_word' "manghi" %}</a>
     
-    malbona literumado
+    malbona literumado (vidu 'malpreciza')
     <a href="{% url 'api_search_word' "zaluti" %}">{% url 'api_search_word' "zaluti" %}</a>
     
     majuskloj kaj miniskuloj
     <a href="{% url 'api_search_word' "SALuti" %}">{% url 'api_search_word' "SALuti" %}</a>
     
-    majuskleco gravas por rezultoj! (vidu 'preciza'-n)
+    majuskleco gravas por rezultoj! (vidu 'preciza')
     <a href="{% url 'api_search_word' "vorto" %}">{% url 'api_search_word' "vorto" %}</a>
     
     tradukoj
@@ -44,6 +45,24 @@ projektoj, kiuj bezonas vortaron aŭ serĉilo.
     <a href="{% url 'api_search_word' "mansanigi" %}">{% url 'api_search_word' "malsanigi" %}</a>
 </code>
 
+<h3>Difinoj De Vortoj</h3>
+
+<code>{% url 'api_view_word' "VIA_VORTO" %}</code>
+
+<p>Vi povas vidi vortojn per ĉi tiu URL. Jen ezkemploj:
+</p>
+
+<code>normala vorto
+    <a href="{% url 'api_view_word' "saluti" %}">{% url 'api_view_word' "saluti" %}</a>
+    
+    404 se ĝi ne ekzistas
+    <a href="{% url 'api_view_word' "zaluti" %}">{% url 'api_view_word' "zaluti" %}</a>
+    
+    majuskleco gravas
+    <a href="{% url 'api_view_word' "vorto" %}">{% url 'api_view_word' "vorto" %}</a>
+    <a href="{% url 'api_view_word' "Vorto" %}">{% url 'api_view_word' "Vorto" %}</a>
+    <a href="{% url 'api_view_word' "VORTO" %}">{% url 'api_view_word' "VORTO" %}</a>
+</code>
 
 <h3>Limoj</h3>
 
