@@ -42,6 +42,17 @@ USE_I18N = True
 # calendars according to the current locale
 USE_L10N = True
 
+# URL prefix for static files.
+# Example: "http://media.lawrence.com/static/"
+STATIC_URL = '/resources/'
+
+PROJECT_ROOT = os.path.dirname(__file__)
+
+# Additional locations of static files
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, "static"),
+)
+
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = ''
