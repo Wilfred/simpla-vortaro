@@ -1,4 +1,8 @@
 /* inspired in part by http://www.htmlite.com/faq022.php */
+body {
+    color: white;
+}
+
 #background {
     position: fixed;
     top: 0;
@@ -70,7 +74,6 @@ h2 {
     padding: 0.1em;
 }
 h3 {
-    color: #fff;
 }
 
 a {
@@ -82,7 +85,7 @@ a:hover {
 }
 
 h1 a {
-    color: #fff;
+    color: white;
     text-decoration: none;
 }
 h1 a:hover {
@@ -90,18 +93,10 @@ h1 a:hover {
 }
 
 /* todo: bump up font size */
-p {
-    color: #fff;
-}
-
-ol {
-    color: #fff;
-}
 li {
     margin-top: 1em;
 }
 ul {
-    color: #fff;
     list-style-type: none;
     margin-left: 0;
     padding-left: 0;
