@@ -3,7 +3,9 @@ from django_test_mixins import HttpCodeTestCase
 
 import json
 
-from vortaro.models import Word, PrimaryDefinition, Example, Translation
+from vortaro.models import (
+    Word, PrimaryDefinition, Example,
+    Translation, Variant)
 
 
 class WordApiTest(HttpCodeTestCase):
@@ -69,3 +71,38 @@ class WordApiTest(HttpCodeTestCase):
         self.assertIn("traduko", translation_json)
         self.assertIn("kodo", translation_json)
         self.assertIn("lingvo", translation_json)
+
+
+class SearchApiTest(HttpCodeTestCase):
+    def test_search(self):
+        """Ensure that we can call our JSON API and get a response."""
+        response = self.client.get(reverse('api_search_word', args=['saluto']))
+        self.assertHttpOK(response)
+        self.assertEqual(response['Content-Type'], 'application/json')
+
+    def test_search_precise_results(self):
+        word = Word.objects.create(word="saluto")
+        Variant.objects.create(word=word, variant="saluto")
+
+        raw_response = self.client.get(reverse('api_search_word', args=['saluto']))
+        response = json.loads(raw_response.content)
+
+        self.assertEqual(response['preciza'], ['saluto'])
+
+    def test_search_precise_results_returns_canonical_form(self):
+        word = Word.objects.create(word="hundo")
+        Variant.objects.create(word=word, variant="hundojn")
+
+        raw_response = self.client.get(reverse('api_search_word', args=['hundojn']))
+        response = json.loads(raw_response.content)
+
+        self.assertEqual(response['preciza'], ['hundo'])
+
+    def test_search_imprecise_results(self):
+        word = Word.objects.create(word="hundo")
+        Variant.objects.create(word=word, variant="hundo")
+
+        raw_response = self.client.get(reverse('api_search_word', args=['zundo']))
+        response = json.loads(raw_response.content)
+
+        self.assertEqual(response['malpreciza'], ['hundo'])

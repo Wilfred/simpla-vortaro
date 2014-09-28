@@ -22,3 +22,15 @@ def view_word(request, word):
     return JsonResponse({
         'vorto': word_obj.word,
         'difinoj': definitions})
+
+
+def search_word(request, search_term):
+    matching_words = Word.objects.find_by_variant(search_term)
+
+    similar_words = set(Word.objects.find_by_variant_fuzzy(search_term))
+    similar_words = similar_words - set(matching_words)
+    
+    return JsonResponse({
+        'preciza': [word.word for word in matching_words],
+        'malpreciza': [word.word for word in similar_words],
+    })

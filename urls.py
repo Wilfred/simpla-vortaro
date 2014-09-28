@@ -14,6 +14,9 @@ urlpatterns = patterns('vortaro.views',
 
 urlpatterns += patterns('api.views',
     url(u'^api/v1/vorto/(?P<word>.+)$', 'view_word', name="api_view_word"),
+    # We're deliberately using a non-UTF8 URL prefix to hopefully make it easier
+    # to use the API.
+    url(u'^api/v1/trovi/(?P<search_term>.+)$', 'search_word', name="api_search_word"),
 )
 
 if settings.DEBUG:
