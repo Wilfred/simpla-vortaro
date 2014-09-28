@@ -48,7 +48,11 @@
 
             <div id="content">
                 {% block content%}
-                <p><a href="{% url 'about'%}">Informo pri La Simpla Vortaro</a></p>
+                <p>
+                    <a href="{% url 'about' %}">Informo</a>
+                    |
+                    <a href="http://lalingvisto.wordpress.com/">Blogo</a>
+                </p>
                 {% endblock %}
             </div>
 
