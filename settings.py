@@ -87,3 +87,8 @@ INSTALLED_APPS = (
 )
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+try:
+    from live_settings import *
+except ImportError:
+    pass
