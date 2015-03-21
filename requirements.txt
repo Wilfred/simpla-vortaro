@@ -1,6 +1,6 @@
 # The website
-Django==1.7.1
-gunicorn==19.1.1
+Django==1.7.7
+gunicorn==19.3.0
 dj-static
 
 # Deploying
