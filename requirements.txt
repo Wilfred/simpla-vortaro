@@ -2,6 +2,7 @@
 Django==1.6.11
 gunicorn==19.1.1
 dj-static
+django-cors-headers
 
 # Deploying
 Fabric

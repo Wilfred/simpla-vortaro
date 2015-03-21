@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.core.urlresolvers import reverse
+from django.test import TestCase
 from django_test_mixins import HttpCodeTestCase
 
 import json
@@ -20,6 +21,23 @@ def create_word(word):
         Variant.objects.create(word=word_obj, variant=variant)
 
     return word_obj
+
+
+class CorsHeadersTest(TestCase):
+    def test_cors_header(self):
+        """Ensure that we set CORS headers such that anyone can access our
+        API.
+
+        """
+        response = self.client.get(
+            reverse('api_search_word', args=['saluto']),
+            HTTP_ORIGIN='http://www.example.com')
+
+        cors_header = response._headers.get('access-control-allow-origin')
+        self.assertEqual(
+            cors_header, ('Access-Control-Allow-Origin', '*'),
+            "Expected CORS header set to *, but got {!r}.\nAll headers: {!r}".format(
+                cors_header, response._headers))
 
 
 class WordApiTest(HttpCodeTestCase):

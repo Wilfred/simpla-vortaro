@@ -80,6 +80,7 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
 )
@@ -99,7 +100,10 @@ INSTALLED_APPS = (
 
     # third party apps
     'django_nose',
+    'corsheaders',
 )
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
