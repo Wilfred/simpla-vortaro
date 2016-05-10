@@ -16,4 +16,4 @@ paramiko==2.0.0
 pycrypto==2.6.1
 PyYAML==3.11
 requests==2.10.0
-static3==0.6.2
+static3==0.7.0
