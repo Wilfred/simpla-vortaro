@@ -1,6 +1,6 @@
 # The website
 Django==1.9.6
-gunicorn==19.4.5
+gunicorn==19.5.0
 dj-static
 django-cors-headers
 
