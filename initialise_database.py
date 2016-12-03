@@ -173,7 +173,8 @@ def populate_database(dictionary):
                         Morpheme.objects.create(primary_word=word_obj, morpheme=spelling)
             
         # also add words as morphemes if they end -o or -a
-        if (is_declinable_noun(word) or is_declinable_adjective(word)):
+        if (is_declinable_noun(word) or is_declinable_adjective(word) or
+            is_declinable_adverb(word)):
             
             for spelling in get_all_spellings(word):
                 if spelling not in seen_morphemes:

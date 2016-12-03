@@ -83,7 +83,9 @@ if __name__ == '__main__':
                       (u'ĉifrita', [u'ĉifr-it-a']),
                       (u'ĉifrata', [u'ĉifr-at-a']),
                       (u'ĉifrota', [u'ĉifr-ot-a']),
-                      (u'eraremulo', [u'erar-em-ul-o'])]
+                      (u'eraremulo', [u'erar-em-ul-o']),
+                      # Using a whole -e word in word-building
+                      (u'multekosta', [u'multe-kost-a'])]
 
     suite = unittest.TestSuite()
     for (compound, expected_output) in correct_parses:
