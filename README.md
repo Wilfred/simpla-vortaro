@@ -34,9 +34,9 @@ Creating a database
 -------------------
 
 You can create a database of definitions from the XML files provided
-by Reta Vortaro. There's a separate GitHub project called
-ReVo-utilities, which you can use to create a JSON file of
-definitions.
+by Reta Vortaro. Use
+[ReVo-utilities](https://github.com/Wilfred/ReVo-utilities) to create
+a JSON file of definitions.
 
 Copy the JSON file to the root of the project and call it
 `dictionary.json`. You can then create a database with:
