@@ -25,7 +25,8 @@ Create a virtual environment:
     $ . ~/.envs/simplavortaro/bin/activate
     $ pip install -r requirements_pinned.txt
     
-Then copy word.db from the GitHub downloads page for this project. It
+Then copy word.db from the
+[GitHub downloads page for this project](https://github.com/Wilfred/simpla-vortaro/downloads). It
 should be in the root of the project with the name `word_db`. Finally:
 
     $ python manage.py runserver
