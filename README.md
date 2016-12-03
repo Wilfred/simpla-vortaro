@@ -20,9 +20,7 @@ Development
 
 Create a virtual environment:
 
-    $ mkdir -p ~/.envs
-    $ virtualenv ~/.envs/simplavortaro
-    $ . ~/.envs/simplavortaro/bin/activate
+    $ mkvirtualenv simpla -p `which python2`
     $ pip install -r requirements_pinned.txt
     
 Then copy word.db from the
