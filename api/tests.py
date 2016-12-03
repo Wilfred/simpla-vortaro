@@ -266,3 +266,13 @@ class SearchApiTest(HttpCodeTestCase):
         self.assertEqual(response['tradukoj'], [
             {'vorto': 'hundo', 'traduko': 'dog', 'kodo': 'en', 'lingvo': 'La angla'},
         ])
+
+    def test_search_handles_morphemes_without_root_words(self):
+        """If we search for a morpheme without a primary word, we should not
+        crash.
+
+        """
+        Morpheme.objects.create(morpheme="ant")
+
+        raw_response = self.client.get(reverse('api_search_word', args=['ant']))
+        self.assertHttpOK(raw_response)

@@ -46,8 +46,12 @@ def search_word(request, search_term):
         parts = []
         for part in parse_result:
             if isinstance(part, Morpheme):
-                parts.append({'vorto': part.primary_word.word,
-                              'parto': part.morpheme})
+                if part.primary_word:
+                    parts.append({'vorto': part.primary_word.word,
+                                  'parto': part.morpheme})
+                else:
+                    parts.append({'vorto': None,
+                                  'parto': part.morpheme})
             else:
                 parts.append({'vorto': None, 'parto': part})
             
