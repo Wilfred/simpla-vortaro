@@ -1,4 +1,4 @@
-coverage==4.3.4
+coverage==4.4
 coveralls==1.1
 dj-static==0.0.6
 Django==1.11.1
