@@ -1,7 +1,7 @@
 coverage==4.5.1
 coveralls==1.5.1
 dj-static==0.0.6
-Django==2.1.1
+Django==2.1.2
 django-cors-headers==2.4.0
 django-nose==1.4.5
 django-test-mixins==1.11
