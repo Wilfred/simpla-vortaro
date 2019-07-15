@@ -4,9 +4,6 @@ gunicorn==19.1.1
 dj-static
 django-cors-headers
 
-# Deploying
-Fabric
-
 # Testing
 coverage
 coveralls
