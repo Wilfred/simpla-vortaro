@@ -1,4 +1,4 @@
-FROM python:2-buster
+FROM python:2-alpine
 
 # Create app directory
 WORKDIR /usr/src/app
