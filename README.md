@@ -74,3 +74,13 @@ Deployment
 ----------
 
 Make sure you turn off debug in settings.py.
+
+Docker
+------
+
+Assuming you have dictionary.json locally:
+
+```
+$ docker build . -t sv
+$ docker run --name sv -p 9001:9001 --rm -ti sv
+```
