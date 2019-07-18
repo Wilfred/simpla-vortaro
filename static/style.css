@@ -134,3 +134,26 @@ code {
     font-size: 18px;
     white-space: pre-line;
 }
+
+@media only screen and (max-width: 600px) {
+    #background {
+        width: auto;
+        margin-left: 50%;
+        transform: translateX(-50%);
+    }
+    #header h1 {
+        font-size: 30px;
+    }
+    #header {
+        margin-bottom: 1em;
+    }
+    #everything {
+        max-width: 100vw;
+    }
+    #search {
+        margin-bottom: 0;
+    }
+    #content {
+        padding-top: 0;
+    }
+}
