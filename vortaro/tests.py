@@ -16,11 +16,11 @@ class LegacyUrlTests(HttpCodeTestCase):
     def test_vorto_get_parameter(self):
         Word.objects.create(word="saluto")
 
-        response = self.client.get(reverse('index') + "?vorto=saluto")
+        response = self.client.get(reverse('index') + u"?vorto=saluto")
         self.assertHttpRedirect(response)
 
     def test_sercxo_get_parameter(self):
-        response = self.client.get(reverse('index') + "?serĉo=saluto")
+        response = self.client.get(reverse('index') + u"?serĉo=saluto")
         self.assertHttpRedirect(response)
 
 
@@ -83,7 +83,7 @@ class SearchPageTests(HttpCodeTestCase):
         word = Word.objects.create(word="eĥoŝanĝo")
         Variant.objects.create(word=word, variant="eĥoŝanĝo")
         
-        response = self.client.get(reverse('search_word') + "?s=EĤOŜANĜO")
+        response = self.client.get(reverse('search_word') + u"?s=EĤOŜANĜO")
         self.assertFindsWord(response, word)
 
     def test_search_i_feel_lucky(self):

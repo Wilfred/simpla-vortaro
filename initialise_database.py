@@ -90,7 +90,7 @@ def get_all_spellings(word):
     return set([word, to_h_system(word), to_x_system(word)])
 
 
-@transaction.commit_on_success
+@transaction.atomic
 def populate_database(dictionary):
     """Given a dictionary file from a JSON dump created by
     ReVo-utilities, write its contents to the database.
