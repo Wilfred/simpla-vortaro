@@ -70,7 +70,9 @@ MEDIA_URL = ''
 ADMIN_MEDIA_PREFIX = '/media/'
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '57-4u2^ad_udjwzo163p3x#!_wre!wyh)88mtqh79fqe-e05zq'
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    '57-4u2^ad_udjwzo163p3x#!_wre!wyh)88mtqh79fqe-e05zq')
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
