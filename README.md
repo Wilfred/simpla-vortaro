@@ -62,12 +62,8 @@ you have `word_db` set up.
 
     $ DJANGO_SETTINGS_MODULE=settings python _test_parser.py
 
-Updating requirements
----------------------
-
-You can find out which packages are out of date with:
-
-    $ pip-review
+Dumping requirements
+--------------------
 
 We also keep a dump of a known-good set of packages, which you can
 update with:
