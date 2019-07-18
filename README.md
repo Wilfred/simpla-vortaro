@@ -82,7 +82,7 @@ Assuming you have dictionary.json locally:
 
 ```
 $ docker build . -t sv
-$ docker run --name sv -p 9001:9001 --rm -ti sv
+$ docker run --name sv -p 9001:9001 -t -d wilfred/simplavortaro
 ```
 
 This image is [available on Docker
