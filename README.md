@@ -22,6 +22,10 @@ Create a virtual environment:
 
     $ mkvirtualenv simpla -p `which python2`
     $ pip install -r requirements_pinned.txt
+
+I also recommend the following developer tools:
+
+    $ pip install ipdb ipython
     
 Then copy word.db from the
 [GitHub downloads page for this project](https://github.com/Wilfred/simpla-vortaro/downloads). It
