@@ -22,7 +22,7 @@ DATABASES = {
     }
 }
 
-ALLOWED_HOSTS = ['simplavortaro.org', 'localhost', '127.0.0.1', '[::1]']
+ALLOWED_HOSTS = ['www.simplavortaro.org', 'localhost', '127.0.0.1', '[::1]']
 
 WSGI_APPLICATION = "wsgi.application"
 
