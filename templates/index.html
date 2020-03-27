@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html> 
-    
-    <head> 
-        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" > 
-        <title>{% block title %}La Simpla Vortaro de Esperanto{% endblock %}</title> 
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}La Simpla Vortaro de Esperanto{% endblock %}</title>
+        <meta name="description" content="La Simpla Vortaro estas interfaco por la difinoj de ReVo. Ĝi inkluzivas kelkajn helpilojn kaj simplan strukturon.">
 
         <link rel="stylesheet" type="text/css" href="/resources/style.css">
         <!--[if IE]>
@@ -16,17 +16,17 @@
               href="/resources/search.xml"
               title="La Simpla Vortaro" />
 
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="{% block title %}La Simpla Vortaro de Esperanto{% endblock %}">
+        <meta property="og:description" content="La Simpla Vortaro estas interfaco por la difinoj de ReVo. Ĝi inkluzivas kelkajn helpilojn kaj simplan strukturon.">
     </head>
-    
-    <body> 
-
-        <img id="background" src="/resources/book.jpg" alt="background">
+    <body>
+        <img id="background" src="/resources/book.jpg" alt="">
 
         <div id="background-overlay">
         </div>
 
         <div id="everything">
-
             <div id="header">
                 <h1><a href="{% url 'index'%}">La Simpla Vortaro</a></h1>
             </div>
@@ -35,13 +35,12 @@
                 <form action="{% url 'search_word' %}" method="get">
                     <p>
                         <input type="text" value="{% block searchterm %}{% endblock %}"
-	                       name="s" id="search_box"
-                               placeholder="Entajpu vorton">
+                           name="s" id="search_box" placeholder="Entajpu vorton">
                     </p>
                     <p>
                         <button type="submit" value="Serĉi">Serĉi</button>
                         <button type="submit" name="rekte" value="jes">
-	                    Mi sentas min bonŝanca</button>
+                            Mi sentas min bonŝanca</button>
                     </p>
                 </form>
             </div>
@@ -53,31 +52,24 @@
                     |
                     <a href="{% url 'about_the_api' %}">API</a>
                     |
-                    <a href="http://lalingvisto.wordpress.com/">Blogo</a>
+                    <a href="https://lalingvisto.wordpress.com/">Blogo</a>
                 </p>
                 {% endblock %}
             </div>
-
         </div>
 
         <script type="text/javascript">
             document.getElementById('search_box').focus();
-        </script>
 
-        <script type="text/javascript"> 
-            
             var _gaq = _gaq || [];
             _gaq.push(['_setAccount', 'UA-11973220-3']);
             _gaq.push(['_trackPageview']);
-            
+
             (function() {
             var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
             ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
             })();
-            
         </script>
-
-    </body> 
-    
+    </body>
 </html>
