@@ -130,7 +130,7 @@ class Variant(models.Model):
     writing system.
 
     An example:
-    
+
     The variants of the word "aĉeti" will have include "aĉeti",
     "aĉetas", "aĉetu", "aĉetanta", "acxetis", "achetata" and so on.
 
@@ -140,7 +140,7 @@ class Variant(models.Model):
 
     def __unicode__(self):
         return self.variant
-    
+
 class Morpheme(models.Model):
     """A potential component of a word that has been put together. We
     generate morphemes in all three major writing systems, and also
@@ -150,8 +150,8 @@ class Morpheme(models.Model):
     manually with a null primary_word. No other Morphemes should be
     like this.
 
-    Note that the following words produce clashes: 
-    
+    Note that the following words produce clashes:
+
     sumo, haplo, nova, togo, vila, koto, metro, polo, alo --
     because they could be <word> or <word>o
 
@@ -219,42 +219,44 @@ class Translation(models.Model):
             'et': u'La estona', 'eu': u'La eŭska',
             'fa': u'La persa', 'fi': u'La finna',
             'fj': u'La fiĝia', 'fo': u'La feroa',
-            'fr': u'La franca', 'fy': u'La frisa',
-            'ga': u'La irlanda', 'gd': u'La gaela',
+            'fr': u'La franca', 'fy': u'La okcidentfrisa',
+            'ga': u'La irlanda', 'gd': u'La skotgaela',
             'gl': u'La galega', 'gn': u'La gvarania',
-            'grc': u'La malnovgreka', 'gu': u'La guĝarata',
-            'ha': u'La haŭsa', 'he': u'La hebrea',
-            'hi': u'La hinda', 'hr': u'La kroata',
-            'hu': u'La hungara', 'hy': u'La armena',
-            'ia': u'Interlingvao', 'id': u'La indonezia',
-            'ie': u'La okcidentala', 'ik': u'La eskima',
+            'goyu': u'La tajvana', 'grc': u'La malnovgreka',
+            'gu': u'La guĝarata', 'ha': u'La haŭsa',
+            'he': u'La hebrea', 'hi': u'La hinda',
+            'hr': u'La kroata', 'hu': u'La hungara',
+            'hy': u'La armena', 'ia': u'Interlingvao',
+            'id': u'La indonezia', 'ie': u'Okcidentalo',
+            'ik': u'La inupiaka', 'io': u'Ido',
             'is': u'La islanda', 'it': u'La itala',
-            'iu': u'La inuita', 'ja': u'La japana',
+            'iu': u'La inuktituta', 'ja': u'La japana',
             'jbo': u'Loĵbano', 'jw': u'La java',
-            'ka': u'La kartvela', 'kk': u'La kazaĥa',
-            'kl': u'La gronlanda', 'km': u'La kmera',
-            'kn': u'La kanara', 'ko': u'La korea',
-            'ks': u'La kaŝmira', 'ku': u'La kurda',
-            'ky': u'La kirgiza', 'la': u'La latina/scienca',
-            'lat': u'La malnovlatina', 'ln': u'La lingala',
-            'lo': u'La laŭa', 'lt': u'La litova',
-            'lv': u'La latva', 'mg': u'La malagasa',
-            'mi': u'La maoria', 'mk': u'La makedona',
-            'ml': u'La malajalama', 'mn': u'La mongola',
-            'mo': u'La moldava', 'mr': u'La marata',
-            'ms': u'La malaja', 'mt': u'La malta',
-            'my': u'La birma', 'na': u'La naura',
-            'ne': u'La nepala', 'nl': u'La nederlanda',
-            'no': u'La norvega', 'oc': u'La okcitana',
-            'om': u'La oroma', 'or': u'La orijo',
-            'os': u'La oseta', 'pa': u'La panĝaba',
-            'pl': u'La pola', 'ps': u'La paŝtua',
-            'pt': u'La portugala', 'qu': u'La keĉua',
-            'rm': u'La romanĉa', 'rn': u'La burunda',
-            'ro': u'La rumana', 'ru': u'La rusa',
-            'rw': u'La ruanda', 'sa': u'La sanskrita',
-            'sd': u'La sinda', 'sg': u'La sangoa',
-            'sh': u'La serbo-kroata', 'si': u'La sinhala',
+            'ka': u'La kartvela', 'kek': u'La kekĉia',
+            'kk': u'La kazaĥa', 'kl': u'La gronlanda',
+            'km': u'La kmera', 'kn': u'La kanara',
+            'ko': u'La korea', 'ks': u'La kaŝmira',
+            'ku': u'La kurda', 'ky': u'La kirgiza',
+            'la': u'Latineca nomo', 'lat': u'Latino',
+            'ln': u'La lingala', 'lo': u'La laŭa',
+            'lt': u'La litova', 'lv': u'La latva',
+            'mg': u'La malagasa', 'mi': u'La maoria',
+            'mk': u'La makedona', 'ml': u'La malajalama',
+            'mn': u'La mongola', 'mo': u'La moldava',
+            'mr': u'La marata', 'ms': u'La malaja',
+            'mt': u'La malta', 'my': u'La birma',
+            'na': u'La naura', 'ne': u'La nepala',
+            'nl': u'La nederlanda', 'no': u'La norvega',
+            'oc': u'La okcitana', 'om': u'La oroma',
+            'or': u'La odia', 'os': u'La oseta',
+            'pa': u'La panĝaba', 'pl': u'La pola',
+            'ps': u'La paŝtua', 'pt': u'La portugala',
+            'qu': u'La keĉua', 'rm': u'La romanĉa',
+            'rn': u'La burunda', 'ro': u'La rumana',
+            'ru': u'La rusa', 'rw': u'La ruanda',
+            'sa': u'Sanskrito', 'sd': u'La sinda',
+            'se': u'La nordsamea', 'sg': u'La sangoa',
+            'sh': u'La serbokroata', 'si': u'La sinhala',
             'sk': u'La slovaka', 'sl': u'La slovena',
             'sm': u'La samoa', 'sn': u'La ŝona',
             'so': u'La somala', 'sq': u'La albana',
@@ -268,10 +270,10 @@ class Translation(models.Model):
             'to': u'La tongaa', 'tp': u'Tokipono',
             'tr': u'La turka', 'ts': u'La conga',
             'tt': u'La tatara', 'tw': u'La akana',
-            'ug': u'La ujgura', 'uk': u'La ukrajna',
-            'ur': u'La urduo', 'uz': u'La uzbeka',
+            'ug': u'La ujgura', 'uk': u'La ukraina',
+            'ur': u'Urduo', 'uz': u'La uzbeka',
             'vi': u'La vjetnama', 'vo': u'Volapuko',
-            'wo': u'La volofa', 'xh': u'La ksosa',
+            'wo': u'La volofa', 'xh': u'La kosa',
             'yi': u'La jida', 'yo': u'La joruba',
             'za': u'La ĝuanga', 'zh': u'La ĉina',
             'zu': u'La zulua'}
