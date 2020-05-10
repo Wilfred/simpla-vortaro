@@ -221,10 +221,7 @@ def split_adverb(word):
     return None
 
 def is_pronoun(word):
-    if word in ['ci', 'ĝi', 'ili', 'li', 'mi', 'ni', 'oni', 'ri', 'si', 'ŝi', 'vi']:
-        return True
-
-    return False
+    return word in ['ci', 'ĝi', 'ili', 'li', 'mi', 'ni', 'oni', 'ri', 'si', 'ŝi', 'vi']
 
 def is_infinitive(word):
     if split_verb(word):
