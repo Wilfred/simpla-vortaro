@@ -27,7 +27,7 @@ def split_verb(word):
     # infinitives
     if word.endswith('i'):
         # *i words that are not verbs:
-        pronouns = [u'mi', u'vi', u'li', u'ŝi', u'ĝi', u'oni', u'ili', u'si', u'ci']
+        pronouns = [u'ci', u'ĝi', u'ili', u'li', u'mi', u'ni', u'oni', u'ri', u'si', u'ŝi', u'vi']
         adverbs = [u'ĉi']
         exclamations = [u'ahi', u'fi']
         abbreviations = [u'ĥi'] # same as ĥio actually
@@ -159,10 +159,10 @@ def split_noun(word):
         exclamation = ['ho']
         # we list the prefices for completeness
         # although they arguably end '-'
-        affices = ['-o', 'bo-', 'geo-']
+        affixes = ['-o', 'bo-', 'geo-']
         conjunction = ['do']
         preposition = ['po']
-        if word in [exclamation + affices + conjunction + preposition]:
+        if word in [exclamation + affixes + conjunction + preposition]:
             return None
         else:
             return (word[:-1], 'o')
@@ -200,8 +200,8 @@ def split_adverb(word):
         particle = ['ne'] # vague category I know, but nothing else fits
         fixed_adverbs = ['tre']
         name = ['Kabe']
-        affix = ['tele-'] # again affices only for completeness
-        if word in (preposition + exclamation + conjunctions + 
+        affix = ['tele-'] # again affixes only for completeness
+        if word in (preposition + exclamation + conjunctions +
                     particle + fixed_adverbs + name + affix):
             return None
         else:
@@ -221,7 +221,7 @@ def split_adverb(word):
     return None
 
 def is_pronoun(word):
-    if word in ['mi', 'vi', 'li', u'ŝi', 'ni', 'ili', 'si', 'ci']:
+    if word in ['ci', 'ĝi', 'ili', 'li', 'mi', 'ni', 'oni', 'ri', 'si', 'ŝi', 'vi']:
         return True
 
     return False
@@ -410,7 +410,7 @@ def canonicalise_word(word):
 
     """
     word = word.strip()
-    
+
     # substitute ' if used, since e.g. vort' == vorto
     if word.endswith("'"):
         word = word[:-1] + 'o'
