@@ -44,7 +44,7 @@ a JSON file of definitions.
 Copy the JSON file to the root of the project and call it
 `dictionary.json`. You can then create a database with:
 
-    $ python manage.py flush
+    $ python manage.py flush --noinput
     $ python manage.py shell
     In [1]: %run initialise_database.py
     
