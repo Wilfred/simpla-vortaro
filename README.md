@@ -78,12 +78,19 @@ Make sure you turn off debug in settings.py.
 Docker
 ------
 
-Assuming you have dictionary.json locally:
+Assuming you have word_db already created and in the working
+directory:
 
 ```
-$ docker build . -t sv
-$ docker run -e SECRET_KEY=abc123 --name sv -p 9001:9001 -t -d wilfred/simplavortaro
+$ docker build . -t wilfred/simplavortaro:latest
+$ docker run -e SECRET_KEY=abc123 --name sv -p 9001:9001 -t -d wilfred/simplavortaro:latest
 ```
 
 This image is [available on Docker
 Hub](https://cloud.docker.com/u/wilfred/repository/docker/wilfred/simplavortaro).
+
+To push a new release:
+
+```
+$ docker push wilfred/simplavortaro:latest
+```
