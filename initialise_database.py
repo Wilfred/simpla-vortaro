@@ -181,14 +181,9 @@ def populate_database(dictionary):
                     seen_morphemes[spelling] = True
                     Morpheme.objects.create(primary_word=word_obj, morpheme=spelling)
 
-    # add -ant, etc morphemes which aren't in ReVo
-    assert 'ant' not in seen_morphemes
-    for morpheme in ['int', 'ant', 'ont', 'unt']:
-        Morpheme(morpheme=morpheme).save()
+    # add -unt morpheme which isn't in ReVo
+    Morpheme(morpheme='unt').save()
 
-    assert 'at' not in seen_morphemes
-    for morpheme in ['it', 'at', 'ot']:
-        Morpheme(morpheme=morpheme).save()
 
 if __name__ == '__main__':
     dictionary_file = open('dictionary.json', 'r')
