@@ -1,5 +1,5 @@
 coverage==5.2.1
-coveralls==2.1.1
+coveralls==2.1.2
 dj-static==0.0.6
 Django==3.1
 django-cors-headers==3.4.0
