@@ -1,5 +1,5 @@
 # The website
-Django==1.8
+Django==2.2.24
 gunicorn==19.1.1
 dj-static
 django-cors-headers
