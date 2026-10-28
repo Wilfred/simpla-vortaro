@@ -73,7 +73,7 @@ SECRET_KEY = os.environ.get(
     'SECRET_KEY',
     '57-4u2^ad_udjwzo163p3x#!_wre!wyh)88mtqh79fqe-e05zq')
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

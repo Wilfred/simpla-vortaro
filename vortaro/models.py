@@ -72,7 +72,7 @@ class PrimaryDefinition(Definition):
     any "" definitions.
 
     """
-    word = models.ForeignKey(Word)
+    word = models.ForeignKey(Word, on_delete=models.CASCADE)
 
     def as_json(self):
         definition = super(PrimaryDefinition, self).as_json()
@@ -89,14 +89,14 @@ class Subdefinition(Definition):
     null.
 
     """
-    root_definition = models.ForeignKey(PrimaryDefinition)
+    root_definition = models.ForeignKey(PrimaryDefinition, on_delete=models.CASCADE)
 
 class Example(models.Model):
     """A string that holds a sentence which shows usage of a specific
     definition of a word. One definition can have many examples.
 
     """
-    definition = models.ForeignKey(Definition)
+    definition = models.ForeignKey(Definition, on_delete=models.CASCADE)
     example = models.TextField()
     source = models.TextField(null=True)
 
@@ -115,7 +115,7 @@ class Remark(models.Model):
     can have multiple remarks.
 
     """
-    definition = models.ForeignKey(Definition)
+    definition = models.ForeignKey(Definition, on_delete=models.CASCADE)
     remark = models.TextField()
 
 class Variant(models.Model):
@@ -135,7 +135,7 @@ class Variant(models.Model):
     "aĉetas", "aĉetu", "aĉetanta", "acxetis", "achetata" and so on.
 
     """
-    word = models.ForeignKey(Word)
+    word = models.ForeignKey(Word, on_delete=models.CASCADE)
     variant = models.CharField(max_length=50)
 
     def __str__(self):
@@ -171,7 +171,7 @@ class Morpheme(models.Model):
 
     """
 
-    primary_word = models.ForeignKey(Word, null=True)
+    primary_word = models.ForeignKey(Word, null=True, on_delete=models.CASCADE)
     morpheme = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
@@ -188,8 +188,8 @@ class Translation(models.Model):
     """
     # word is just a convenience to save us working out which word a
     # definition belongs to.
-    word = models.ForeignKey(Word)
-    definition = models.ForeignKey(Definition)
+    word = models.ForeignKey(Word, on_delete=models.CASCADE)
+    definition = models.ForeignKey(Definition, on_delete=models.CASCADE)
     translation = models.TextField()
     language_code = models.CharField(max_length=10)
 

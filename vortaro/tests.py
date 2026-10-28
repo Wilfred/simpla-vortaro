@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django_test_mixins import HttpCodeTestCase
 from django.test import TestCase
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from vortaro.models import Word, Translation, Definition, Variant, Morpheme
 
