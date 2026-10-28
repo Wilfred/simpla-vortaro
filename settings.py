@@ -1,7 +1,6 @@
 import os
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     ('Vilfredo Hjuz', 'yowilfred@gmail.com'),
@@ -74,14 +73,7 @@ SECRET_KEY = os.environ.get(
     'SECRET_KEY',
     '57-4u2^ad_udjwzo163p3x#!_wre!wyh)88mtqh79fqe-e05zq')
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
-)
-
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -89,9 +81,13 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'urls'
 
-TEMPLATE_DIRS = (
-    os.path.join(PROJECT_DIR, "templates"),
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(PROJECT_DIR, "templates")],
+        'APP_DIRS': True,
+    },
+]
 
 INSTALLED_APPS = (
     # django apps

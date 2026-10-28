@@ -2,7 +2,7 @@
 from functools import cmp_to_key
 
 from django.shortcuts import render, redirect
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from .models import Word, PrimaryDefinition, Subdefinition, Example, Remark, Translation
 from .morphology import parse_morphology, canonicalise_word

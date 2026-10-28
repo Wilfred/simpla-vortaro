@@ -8,9 +8,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    # Django 1.8 supports Python up to 3.5, which setup-python no longer
+    # Django 1.11 supports Python up to 3.7, which setup-python no longer
     # provides on current runners.
-    container: python:3.5
+    container: python:3.7
     steps:
       - uses: actions/checkout@v4
       - run: pip install -r requirements_pinned.txt

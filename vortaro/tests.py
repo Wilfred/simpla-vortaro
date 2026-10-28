@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from django_test_mixins import HttpCodeTestCase
 from django.test import TestCase
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
-from vortaro.models import Word, Translation, Definition, Variant
+from vortaro.models import Word, Translation, Definition, Variant, Morpheme
 
 
 class IndexTests(TestCase):
@@ -101,3 +101,11 @@ class SearchPageTests(HttpCodeTestCase):
 
         response = self.client.get(reverse('search_word') + '?s=hello')
         self.assertHttpOK(response)
+
+    def test_search_renders_morpheme_links(self):
+        word = Word.objects.create(word="per")
+        Morpheme.objects.create(primary_word=word, morpheme="per")
+
+        response = self.client.get(reverse('search_word') + '?s=per')
+        self.assertContains(
+            response, '<a href="%s">per</a>' % reverse('view_word', args=['per']))

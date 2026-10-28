@@ -1,4 +1,4 @@
-FROM python:3.5-alpine
+FROM python:3.7-alpine
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -11,7 +11,7 @@ RUN pip install -r requirements_pinned.txt
 # force us to reinstall.
 COPY . .
 
-RUN python manage.py collectstatic --noinput && python manage.py syncdb
+RUN python manage.py collectstatic --noinput && python manage.py migrate --run-syncdb
 COPY live_settings_example.py live_settings.py
 
 EXPOSE 9001
