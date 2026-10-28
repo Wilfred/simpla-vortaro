@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Wilfred/simpla-vortaro.svg?branch=master)](https://travis-ci.org/Wilfred/simpla-vortaro)
+[![Tests](https://github.com/Wilfred/simpla-vortaro/actions/workflows/test.yml/badge.svg)](https://github.com/Wilfred/simpla-vortaro/actions/workflows/test.yml)
 [![Coverage Status](https://img.shields.io/coveralls/Wilfred/simpla-vortaro.svg)](https://coveralls.io/r/Wilfred/simpla-vortaro?branch=master)
 [![Requirements Status](https://requires.io/github/Wilfred/simpla-vortaro/requirements.png?branch=master)](https://requires.io/github/Wilfred/simpla-vortaro/requirements/?branch=master)
 
@@ -52,7 +52,7 @@ Copy the JSON file to the root of the project and call it
 Running the tests
 -----------------
 
-The unit tests (as run by Travis) have no dependencies, and can be run
+The unit tests (as run by CI) have no dependencies, and can be run
 with:
 
     $ python manage.py test
