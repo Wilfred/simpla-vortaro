@@ -7,17 +7,8 @@ def compare_esperanto_strings(x_mixed_case, y_mixed_case):
     # permitting whole latin alphabet (so including q, x etc)
     # falling back on unicode ordering for unknown characters
 
-    # need utf8 strings or we cannot iterate over them
-    # esperanto uses multibyte characters
-    
-    if type(x_mixed_case) == str:
-        x = x_mixed_case.decode('utf8').strip()
-    else:
-        x = x_mixed_case.strip()
-    if type(y_mixed_case) == str:
-        y = y_mixed_case.decode('utf8').strip()
-    else:
-        y = y_mixed_case.strip()
+    x = x_mixed_case.strip()
+    y = y_mixed_case.strip()
 
     # we explicitly add ' ' and '-' to the alphabet
     # ' ' is first in the alphabet so 'a b' comes before 'ab'

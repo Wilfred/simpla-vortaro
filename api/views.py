@@ -1,4 +1,5 @@
 import json
+from functools import cmp_to_key
 
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
@@ -69,7 +70,7 @@ def search_word(request, search_term):
     return JsonResponse({
         'preciza': [word.word for word in matching_words],
         'malpreciza': sorted([word.word for word in similar_words],
-                             cmp=compare_esperanto_strings),
+                             key=cmp_to_key(compare_esperanto_strings)),
         'vortfarado': parsed_words,
         'tradukoj': translations,
     })

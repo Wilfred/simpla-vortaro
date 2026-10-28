@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+from functools import cmp_to_key
+
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 
-from models import Word, PrimaryDefinition, Subdefinition, Example, Remark, Translation
+from .models import Word, PrimaryDefinition, Subdefinition, Example, Remark, Translation
 from .morphology import parse_morphology, canonicalise_word
 from .esperanto_sort import compare_esperanto_strings
 
@@ -134,7 +136,7 @@ def group_translations(translations):
     if not translations:
         return []
 
-    translations.sort(key=(lambda t: t.language), cmp=compare_esperanto_strings)
+    translations.sort(key=lambda t: cmp_to_key(compare_esperanto_strings)(t.language))
 
     grouped_translations = [[translations[0]]]
     for translation in translations[1:]:
