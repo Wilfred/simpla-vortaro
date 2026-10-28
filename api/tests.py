@@ -58,7 +58,7 @@ class WordApiTest(HttpCodeTestCase):
         create_word('saluto')
 
         raw_response = self.client.get(reverse('api_view_word', args=['saluto']))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
 
         self.assertIn("vorto", response)
         self.assertIn("difinoj", response)
@@ -68,7 +68,7 @@ class WordApiTest(HttpCodeTestCase):
         PrimaryDefinition.objects.create(word=word_obj, definition="foo bar")
 
         raw_response = self.client.get(reverse('api_view_word', args=['saluto']))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
 
         definition_json = response['difinoj'][0]
         self.assertIn("difino", definition_json)
@@ -82,7 +82,7 @@ class WordApiTest(HttpCodeTestCase):
         Example.objects.create(definition=definition, example="bar baz")
 
         raw_response = self.client.get(reverse('api_view_word', args=['saluto']))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
 
         definition_json = response['difinoj'][0]
         example_json = definition_json['ekzemploj'][0]
@@ -96,7 +96,7 @@ class WordApiTest(HttpCodeTestCase):
                                    language_code='en', word=word_obj)
 
         raw_response = self.client.get(reverse('api_view_word', args=['saluto']))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
 
         definition_json = response['difinoj'][0]
         translation_json = definition_json['tradukoj'][0]
@@ -116,7 +116,7 @@ class SearchApiTest(HttpCodeTestCase):
         create_word('saluto')
 
         raw_response = self.client.get(reverse('api_search_word', args=['saluto']))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
 
         self.assertEqual(response['preciza'], ['saluto'])
 
@@ -124,7 +124,7 @@ class SearchApiTest(HttpCodeTestCase):
         create_word('saluto')
 
         raw_response = self.client.get(reverse('api_search_word', args=["salut'"]))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
 
         self.assertEqual(response['preciza'], ['saluto'])
 
@@ -132,7 +132,7 @@ class SearchApiTest(HttpCodeTestCase):
         create_word('saluto')
 
         raw_response = self.client.get(reverse('api_search_word', args=["salut-o"]))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
 
         self.assertEqual(response['preciza'], ['saluto'])
 
@@ -140,7 +140,7 @@ class SearchApiTest(HttpCodeTestCase):
         create_word('saluto')
 
         raw_response = self.client.get(reverse('api_search_word', args=["SaLuTo"]))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
 
         self.assertEqual(response['preciza'], ['saluto'])
 
@@ -148,7 +148,7 @@ class SearchApiTest(HttpCodeTestCase):
         create_word('hundo')
 
         raw_response = self.client.get(reverse('api_search_word', args=['hundojn']))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
 
         self.assertEqual(response['preciza'], ['hundo'])
 
@@ -156,15 +156,15 @@ class SearchApiTest(HttpCodeTestCase):
         create_word('bona')
 
         raw_response = self.client.get(reverse('api_search_word', args=['bonan']))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
         self.assertEqual(response['preciza'], ['bona'])
 
         raw_response = self.client.get(reverse('api_search_word', args=['bonaj']))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
         self.assertEqual(response['preciza'], ['bona'])
 
         raw_response = self.client.get(reverse('api_search_word', args=['bonajn']))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
         self.assertEqual(response['preciza'], ['bona'])
 
     def test_search_precise_results_returns_canonical_table_word_form(self):
@@ -174,45 +174,45 @@ class SearchApiTest(HttpCodeTestCase):
         Morpheme.objects.create(primary_word=word_obj, morpheme="kiu")
 
         raw_response = self.client.get(reverse('api_search_word', args=['kiun']))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
         self.assertEqual(response['preciza'], ['kiu'])
 
         raw_response = self.client.get(reverse('api_search_word', args=['kiuj']))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
         self.assertEqual(response['preciza'], ['kiu'])
 
         raw_response = self.client.get(reverse('api_search_word', args=['kiujn']))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
         self.assertEqual(response['preciza'], ['kiu'])
 
     def test_search_precise_results_returns_canonical_verb_form(self):
         create_word('iri')
 
         raw_response = self.client.get(reverse('api_search_word', args=['iras']))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
         self.assertEqual(response['preciza'], ['iri'])
 
         raw_response = self.client.get(reverse('api_search_word', args=['iris']))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
         self.assertEqual(response['preciza'], ['iri'])
 
         raw_response = self.client.get(reverse('api_search_word', args=['iros']))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
         self.assertEqual(response['preciza'], ['iri'])
 
         raw_response = self.client.get(reverse('api_search_word', args=['irus']))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
         self.assertEqual(response['preciza'], ['iri'])
 
         raw_response = self.client.get(reverse('api_search_word', args=['iru']))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
         self.assertEqual(response['preciza'], ['iri'])
 
     def test_search_imprecise_results(self):
         create_word('hundo')
 
         raw_response = self.client.get(reverse('api_search_word', args=['zundo']))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
 
         self.assertEqual(response['malpreciza'], ['hundo'])
 
@@ -221,7 +221,7 @@ class SearchApiTest(HttpCodeTestCase):
             create_word(word)
 
         raw_response = self.client.get(reverse('api_search_word', args=['sati']))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
 
         # We don't expect 'sati' in this list, as that will be in the precise search.
         self.assertEqual(response['malpreciza'], ['bati', 'savi', u'ŝati'])
@@ -239,7 +239,7 @@ class SearchApiTest(HttpCodeTestCase):
         Morpheme.objects.create(primary_word=word_obj, morpheme="person")
 
         raw_response = self.client.get(reverse('api_search_word', args=['persone']))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
 
         self.assertEqual(response['vortfarado'], [
             {'rezulto': 'person-e', 'partoj': [
@@ -261,7 +261,7 @@ class SearchApiTest(HttpCodeTestCase):
                                    translation="dog", language_code="en")
 
         raw_response = self.client.get(reverse('api_search_word', args=['dog']))
-        response = json.loads(raw_response.content)
+        response = json.loads(raw_response.content.decode('utf-8'))
 
         self.assertEqual(response['tradukoj'], [
             {'vorto': 'hundo', 'traduko': 'dog', 'kodo': 'en', 'lingvo': 'La angla'},

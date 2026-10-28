@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from models import Morpheme
+from .models import Morpheme
 
 """Esperanto morphology tools. We have methods for identifying word
 type, for stemming and for parsing combined words.
@@ -296,7 +296,7 @@ def parse_morphology_all(word):
     string of the ending.
 
     """
-    assert isinstance(word, basestring)
+    assert isinstance(word, str)
 
     # for table words, just get them as-is
     if word in [u'ĉio', 'cxio', 'chio', 'nenio', 'tio', 'io', 'kio',
@@ -427,4 +427,4 @@ def canonicalise_word(word):
 
 
 if __name__ == '__main__':
-    print parse_morphology(u'konkludo')
+    print(parse_morphology(u'konkludo'))

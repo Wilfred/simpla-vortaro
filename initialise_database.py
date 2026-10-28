@@ -186,6 +186,6 @@ def populate_database(dictionary):
 
 
 if __name__ == '__main__':
-    dictionary_file = open('dictionary.json', 'r')
+    dictionary_file = open('dictionary.json', encoding='utf-8')
     dictionary = json.load(dictionary_file)
     populate_database(dictionary)

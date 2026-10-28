@@ -20,7 +20,7 @@ Development
 
 Create a virtual environment:
 
-    $ mkvirtualenv simpla -p python2
+    $ mkvirtualenv simpla -p python3.5
     $ pip install -r requirements_pinned.txt
 
 I also recommend the following developer tools:

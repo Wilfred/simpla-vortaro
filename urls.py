@@ -9,7 +9,7 @@ import api.views as api
 urlpatterns = [
     url(r'^informo$', v.about, name="about"),
     url(r'^informo/api$', v.about_the_api, name="about_the_api"),
-    url(ur'^serĉo$', v.search_word, name="search_word"),
+    url(r'^serĉo$', v.search_word, name="search_word"),
     url(r'^vorto/(?P<word>.*)$', v.view_word, name="view_word"),
     url(u'^$', v.index, name="index"),
 

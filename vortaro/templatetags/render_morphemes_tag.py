@@ -9,7 +9,7 @@ def render_morphemes(morphemes):
     return '-'.join([morpheme_to_html(morpheme) for morpheme in morphemes])
 
 def morpheme_to_html(morpheme):
-    if type(morpheme) == str or type(morpheme) == unicode:
+    if isinstance(morpheme, str):
         # successful stemming produces strings in the parse
         return morpheme
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 
-from spelling import get_spelling_variations
+from .spelling import get_spelling_variations
 
 
 class WordManager(models.Manager):
@@ -44,7 +44,7 @@ class Word(models.Model):
 
     word = models.CharField(max_length=50, unique=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.word
 
 class Definition(models.Model):
@@ -55,7 +55,7 @@ class Definition(models.Model):
     """
     definition = models.TextField(null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.definition[:20]
 
     def as_json(self):
@@ -100,7 +100,7 @@ class Example(models.Model):
     example = models.TextField()
     source = models.TextField(null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.example[:20]
 
     def as_json(self):
@@ -138,7 +138,7 @@ class Variant(models.Model):
     word = models.ForeignKey(Word)
     variant = models.CharField(max_length=50)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.variant
 
 class Morpheme(models.Model):
@@ -174,7 +174,7 @@ class Morpheme(models.Model):
     primary_word = models.ForeignKey(Word, null=True)
     morpheme = models.CharField(max_length=50, unique=True)
 
-    def __unicode__(self):
+    def __str__(self):
         if self.primary_word:
             return u"%s (from %s)" % (self.morpheme, self.primary_word.word)
         else:
@@ -280,5 +280,5 @@ class Translation(models.Model):
 
         return language_map[self.language_code]
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s: %s" % (self.language, self.translation)
